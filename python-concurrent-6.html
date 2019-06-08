@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="之前学习了多线程以及线程池，他们在执行I/O密集的程序的时候，性能是很高的，但是如果我们有大量的CPU密集型工作的程序，现在想利用多个CPU的优势运行的更快，应该怎么解决呢？ 这时候，就不能使用多线程了，而是需要真正的并行来解决问题。 在concurrent.futures库中提供了一个ProcessPoolExecutor类，可用来在单独运行的python解释器实例中执行计算密集的函数。 Pro">
+<meta name="keywords" content="python,并发,多进程,进程池">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python的并发编程（六）- 多进程">
+<meta property="og:url" content="https://zz.zzs7.top/python-concurrent-6.html">
+<meta property="og:site_name" content="SavingUnhappy">
+<meta property="og:description" content="之前学习了多线程以及线程池，他们在执行I/O密集的程序的时候，性能是很高的，但是如果我们有大量的CPU密集型工作的程序，现在想利用多个CPU的优势运行的更快，应该怎么解决呢？ 这时候，就不能使用多线程了，而是需要真正的并行来解决问题。 在concurrent.futures库中提供了一个ProcessPoolExecutor类，可用来在单独运行的python解释器实例中执行计算密集的函数。 Pro">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-05-12T07:22:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python的并发编程（六）- 多进程">
+<meta name="twitter:description" content="之前学习了多线程以及线程池，他们在执行I/O密集的程序的时候，性能是很高的，但是如果我们有大量的CPU密集型工作的程序，现在想利用多个CPU的优势运行的更快，应该怎么解决呢？ 这时候，就不能使用多线程了，而是需要真正的并行来解决问题。 在concurrent.futures库中提供了一个ProcessPoolExecutor类，可用来在单独运行的python解释器实例中执行计算密集的函数。 Pro">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://zz.zzs7.top/python-concurrent-6">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Python的并发编程（六）- 多进程 | SavingUnhappy</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SavingUnhappy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">If you give someone a program, you will frustrate them for a day.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/python-concurrent-6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="张智">
+      <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SavingUnhappy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python的并发编程（六）- 多进程
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-12 15:21:15 / 修改时间：15:22:30" itemprop="dateCreated datePublished" datetime="2019-05-12T15:21:15+08:00">2019-05-12</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前学习了多线程以及线程池，他们在执行I/O密集的程序的时候，性能是很高的，但是如果我们有大量的CPU密集型工作的程序，现在想利用多个CPU的优势运行的更快，应该怎么解决呢？</p>
+<p>这时候，就不能使用多线程了，而是需要真正的并行来解决问题。</p>
+<p>在<code>concurrent.futures</code>库中提供了一个<code>ProcessPoolExecutor</code>类，可用来在单独运行的python解释器实例中执行计算密集的函数。</p>
+<p><code>ProcessPoolExecutor</code>的典型用法是下面这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> ProcessPoolExecutor() <span class="keyword">as</span> pool:</span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    在进程池pool中并行执行任务</span></span><br><span class="line"><span class="string">    """</span></span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>在底层，<code>ProcessPoolExecutor</code>创建了N个独立运行的Python解释器，这里的N就是系统上检测到的可用的CPU个数。可以创建和修改Python的进程数，只要给<code>ProcessPoolExecutor(N)</code>提供一个可选的参数。进程池会一直运行，直到with语句块中的最后一条语句执行完毕为止，此时进程池就会关闭。但是程序会一直等待所有已经提交的任务都处理完毕为止。</p>
+<p>提交到进程池中的任务必须定义为函数形式。有两种方法可以提交任务。如果想并行处理一个列表推导式或者map()操作，可以使用<code>pool.map()</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">work</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="string">"""任务逻辑"""</span></span><br><span class="line">    <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line">data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> ProcessPoolExecutor() <span class="keyword">as</span> pool:</span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    在进程池pool中并行执行任务</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    results = pool.map(work, data)</span><br></pre></td></tr></table></figure>
+
+<p>另一种方式是通过<code>pool.submit()</code>来手动提交单独的任务：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">work</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="string">"""任务逻辑"""</span></span><br><span class="line">    <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line">data = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> ProcessPoolExecutor() <span class="keyword">as</span> pool:</span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    在进程池pool中并行执行任务</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    future_result = pool.submit(work, data)</span><br><span class="line">    result = future_result.result()</span><br></pre></td></tr></table></figure>
+
+<p>如果手动提交任务，得到的结果就是一个Future实例。要获取到结果还需要手动调用<code>result()</code>方法。这么做会阻塞进程，直到结果返回为止。所以与其让进程阻塞，不如提供一个回调函数，让他执行任务完成时出发执行。示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">work</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="string">"""任务逻辑"""</span></span><br><span class="line">    <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">when_done</span><span class="params">(r)</span>:</span></span><br><span class="line">    print(<span class="string">"result："</span>, r.result())</span><br><span class="line"></span><br><span class="line">data = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> ProcessPoolExecutor() <span class="keyword">as</span> pool:</span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    在进程池pool中并行执行任务</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    future_result = pool.submit(work, data)</span><br><span class="line">    future_result.add_done_callback(when_done)</span><br></pre></td></tr></table></figure>
+
+<p>用户提供的回调函数需要接受一个Future实例，必须用他才能获取实际的结果。</p>
+<p>尽管进程池看起来很简单，但是在设计规模更大的程序时有下面几个重要的因素需要考虑。</p>
+<ul>
+<li>这种并行处理的技术只适用于可以将问题分解成各个独立部分的情况。</li>
+<li>任务必须定义成普通函数来提交。实例方法，比包或者其他类型的可调用对象都是不支持并行处理的。</li>
+<li>函数的参数和返回值必须可兼容<code>pickle</code>编码。任务的执行是在单独的解释器进程中完成的。这中间需要进程间通信。因此，在不同的解释器之间交换数据必须要进行序列化处理。</li>
+<li>提交的工作函数都不应该维护持久的状态或者带有副作用。除了简单的日志功能，一旦子进程启动，将无法控制他的行为。因此，为了让思路保持清晰，最好让每件事情都保持简单，让任务在不会修改执行环境的纯函数中执行。</li>
+<li>进程池是通过调用UNIX上的fork()系统调用来创建的。这么做会克隆一个Python解释器，在fork()时会包含所有的程序状态。在windows上，这么做会加载一个独立的解释器拷贝，但不包含状态。克隆出来的进程在首次调用<code>pool.map()</code>或者<code>pool.submit()</code>之前不会实际运行。</li>
+<li>既然是克隆一个独立的解释器，那每个进程都可以再执行线程。当进程池和多线程技术结合在一起使用的时候需要格外的小心。特别是，很可能我们应该在创建任何线程之前优先创建并加载进程池（例如，当程序启动时在主线程中创建进程池）。</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/并发/" rel="tag"># 并发</a>
+          
+            <a href="/tags/多进程/" rel="tag"># 多进程</a>
+          
+            <a href="/tags/进程池/" rel="tag"># 进程池</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/python-concurrent-5.html" rel="next" title="Python的并发编程（五）- 线程池">
+                <i class="fa fa-chevron-left"></i> Python的并发编程（五）- 线程池
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/python-concurrent-7.html" rel="prev" title="Python的并发编程（七）- 如何规避GIL带来的限制">
+                Python的并发编程（七）- 如何规避GIL带来的限制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">张智</p>
+              <div class="site-description motion-element" itemprop="description">问题解决的那一刻的快乐是无法言表的。</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">21</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张智</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.1.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
