@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://zz.zzs7.top/use-git-1.html</loc>
+    <lastmod>2019-06-14</lastmod>
+  </url>  <url>
     <loc>https://zz.zzs7.top/hexo-con.html</loc>
     <lastmod>2019-06-08</lastmod>
   </url>  <url>
@@ -12,9 +15,6 @@
   </url>  <url>
     <loc>https://zz.zzs7.top/git-pull-request.html</loc>
     <lastmod>2019-06-04</lastmod>
-  </url>  <url>
-    <loc>https://zz.zzs7.top/use-git-1.html</loc>
-    <lastmod>2019-05-30</lastmod>
   </url>  <url>
     <loc>https://zz.zzs7.top/same-origin-policy.html</loc>
     <lastmod>2019-05-26</lastmod>
