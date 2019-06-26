@@ -1,18 +1,75 @@
 <!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
 <html class="theme-next pisces use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
   <meta name="google-site-verification" content="jfiTzJL4QReMSaJi0l8TDoVyg56AXdg6uPW8b4lVeaU">
+
+
+
+
+
+
+
   <meta name="baidu-site-verification" content="T51n5dxa3zuPzDcC">
+
+
+
+
+
+
+
+
+
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
 <link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.1.2">
+
+
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.1.2">
+
+
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.1.2">
+
+
   <link rel="mask-icon" href="/images/favicon.png?v=7.1.2" color="#222">
+
+
+
+
+
+
+
 <script id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
@@ -36,6 +93,13 @@
     }
   };
 </script>
+
+
+  
+
+
+
+
   <meta name="description" content="昨天面试的时候，被问到有关于MySQL的优化方面的知识。回答了一些sql语句方面的优化，以及分表，对于MySQL数据库设计的方面回答也不是很完善，所以回来重新整理了一下这方面的知识。整理的比较片面，如果想要学习更深的东西，推荐阅读专业的书籍。 尽量遵循数据库设计范式遵循设计范式，是为了能够建立冗余小，结构合理的数据库。最常见的设计范式有三个：">
 <meta name="keywords" content="数据库,MySQL,优化,面试">
 <meta property="og:type" content="article">
@@ -48,13 +112,29 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL优化整理">
 <meta name="twitter:description" content="昨天面试的时候，被问到有关于MySQL的优化方面的知识。回答了一些sql语句方面的优化，以及分表，对于MySQL数据库设计的方面回答也不是很完善，所以回来重新整理了一下这方面的知识。整理的比较片面，如果想要学习更深的东西，推荐阅读专业的书籍。 尽量遵循数据库设计范式遵循设计范式，是为了能够建立冗余小，结构合理的数据库。最常见的设计范式有三个：">
+
+
+
+
+
+  
+  
   <link rel="canonical" href="https://zz.zzs7.top/mysql-optimization">
+
+
+
 <script id="page.configurations">
   CONFIG.page = {
     sidebar: "",
   };
 </script>
+
   <title>MySQL优化整理 | SavingUnhappy</title>
+  
+
+
+
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139508983-1"></script>
   <script>
     var host = window.location.hostname;
@@ -65,6 +145,15 @@
       gtag('config', 'UA-139508983-1');
     }
   </script>
+
+
+
+
+
+
+
+
+
   <noscript>
   <style>
   .use-motion .motion-element,
@@ -77,23 +166,36 @@
   .use-motion .post-header,
   .use-motion .post-body,
   .use-motion .collection-title { opacity: initial; }
+
   .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
     top: initial;
   }
+
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
 </noscript>
+
 </head>
+
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
+
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta">
+    
+
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
@@ -101,8 +203,14 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
+    
+      
         <h1 class="site-subtitle" itemprop="description">If you give someone a program, you will frustrate them for a day.</h1>
+      
+    
+    
   </div>
+
   <div class="site-nav-toggle">
     <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
@@ -111,26 +219,108 @@
     </button>
   </div>
 </div>
+
+
+
 <nav class="site-nav">
+  
     <ul id="menu" class="menu">
+      
+        
+        
+        
+          
           <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
     <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
   </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
     <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">28</span></a>
+
   </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
     <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">7</span></a>
+
   </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-archives">
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">23</span></a>
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">24</span></a>
+
   </li>
+
+      
+      
         <li class="menu-item menu-item-search">
+          
             <a href="javascript:;" class="popup-trigger">
+          
+            
               <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
         </li>
+      
     </ul>
+  
+
+  
+
+  
     <div class="site-search">
+      
   <div class="popup search-popup local-search-popup">
   <div class="local-search-header clearfix">
     <span class="search-icon">
@@ -145,75 +335,191 @@
   </div>
   <div id="local-search-result"></div>
 </div>
+
+
+
     </div>
+  
 </nav>
+
+
+
+  
+
+
+
 </div>
     </header>
+
+    
+
+
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
+            
+
+          
           <div id="content" class="content">
+            
+
   <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/mysql-optimization.html">
+
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
       <meta itemprop="image" content="/images/ava.gif">
     </span>
+
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
+
+    
       <header class="post-header">
+
+        
+        
           <h2 class="post-title" itemprop="name headline">MySQL优化整理
+
+              
+            
           </h2>
+        
+
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
+            
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
+              
                 <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
               <time title="创建时间：2019-05-17 10:39:14" itemprop="dateCreated datePublished" datetime="2019-05-17T10:39:14+08:00">2019-05-17</time>
+            
+
+            
+              
+
+              
+                
                 <span class="post-meta-divider">|</span>
+                
+
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
+                
                   <span class="post-meta-item-text">更新于</span>
+                
                 <time title="修改时间：2019-06-18 19:18:31" itemprop="dateModified" datetime="2019-06-18T19:18:31+08:00">2019-06-18</time>
+              
+            
           </span>
+
+          
             <span class="post-category">
+            
               <span class="post-meta-divider">|</span>
+            
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
+              
                 <span class="post-meta-item-text">分类于</span>
+              
+              
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
             </span>
+          
+
+          
+            
+            
+              
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
+            
                 <span class="post-meta-item-text">评论数：</span>
                 <a href="/mysql-optimization.html#comments" itemprop="discussionUrl">
                   <span class="post-comments-count valine-comment-count" data-xid="/mysql-optimization.html" itemprop="commentCount"></span>
                 </a>
               </span>
+            
+          
+
+          
+          
             <span id="/mysql-optimization.html" class="leancloud_visitors" data-flag-title="MySQL优化整理">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
+              
                 <span class="post-meta-item-text">阅读次数：</span>
+              
                 <span class="leancloud-visitors-count"></span>
             </span>
+          
+
+          
+
+          
+
+          
+
         </div>
       </header>
+    
+
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
         <p>昨天面试的时候，被问到有关于MySQL的优化方面的知识。回答了一些sql语句方面的优化，以及分表，对于MySQL数据库设计的方面回答也不是很完善，所以回来重新整理了一下这方面的知识。整理的比较片面，如果想要学习更深的东西，推荐阅读专业的书籍。</p>
 <h3 id="尽量遵循数据库设计范式"><a href="#尽量遵循数据库设计范式" class="headerlink" title="尽量遵循数据库设计范式"></a>尽量遵循数据库设计范式</h3><p>遵循设计范式，是为了能够建立冗余小，结构合理的数据库。最常见的设计范式有三个：</p>
 <a id="more"></a>
+
 <ol>
 <li><p>第一范式：原子性</p>
 <p>原子性是需要遵循的最基本的范式了，就是需要保证每个字段是最小的不可拆分的。比如下面的用户表就是不符合原子性的，用户信息中的数据是可以继续拆分的：</p>
@@ -411,11 +717,14 @@
 <p>其他的比如：全文索引，组合索引，空间索引等我没用过，就先不介绍了。</p>
 <h4 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h4><p>可以在创建表的时候就创建索引，这是创建索引的语句格式。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE 表名[字段名 数据类型]  [UNIQUE|FULLTEXT|SPATIAL|...] [INDEX|KEY] [索引名字] (字段名[length]) 　　[ASC|DESC]</span><br></pre></td></tr></table></figure>
+
 <p>我自己的话，主要编程语言为Python，项目经验大部分为Django，所以介绍一下python创建索引。</p>
 <p>使用Django框架的话，可以在需要创建索引的字段中添加可选参数<code>db_index=True</code>：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    <span class="comment"># 使用db_index=True对title建立索引</span></span><br><span class="line">    title = models.CharField(<span class="string">'标题'</span>, max_length=<span class="number">200</span>, db_index=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
 <p>或者在class Meta中添加：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    <span class="string">"""文章模型"""</span></span><br><span class="line">    title = models.CharField(<span class="string">'标题'</span>, max_length=<span class="number">200</span>,)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        indexes = [</span><br><span class="line">            models.Index(fields=[<span class="string">'title'</span>]),</span><br><span class="line">        ]</span><br></pre></td></tr></table></figure>
+
 <p>使用sqlalchemy的话，在对应的字段中添加可选的<code>index=True</code>.</p>
 <p>当然，如果不使用ORM，创建索引的方法与SQL语句是相同的。</p>
 <h3 id="查询过程中SQL的注意事项、"><a href="#查询过程中SQL的注意事项、" class="headerlink" title="查询过程中SQL的注意事项、"></a>查询过程中SQL的注意事项、</h3><p>主要避免使用不合适的查询语句，造成数据库放弃使用索引而搜索全表。</p>
@@ -437,35 +746,97 @@
 </ul>
 <h3 id="MySQL配置优化"><a href="#MySQL配置优化" class="headerlink" title="MySQL配置优化"></a>MySQL配置优化</h3><p>我自己了解的只有配置并发数，以及调整缓存大小。详细的配置文件可以看看这个帖子。</p>
 <p><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vemhzaHRvL3AvNjY1MzQyNC5odG1s" title="https://www.cnblogs.com/zhshto/p/6653424.html">MySQL配置及优化<i class="fa fa-external-link"></i></span></p>
+
+      
     </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
     <footer class="post-footer">
+      
+        
+          
+        
         <div class="post-tags">
+          
             <a href="/tags/数据库/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+          
             <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
+          
             <a href="/tags/优化/" rel="tag"><i class="fa fa-tag"></i> 优化</a>
+          
             <a href="/tags/面试/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
+          
         </div>
+      
+
+      
+      
+      
+
+      
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
+            
               <a href="/archlinux-install-mongodb.html" rel="next" title="如何在ArchLinux系统中安装MongoDB">
                 <i class="fa fa-chevron-left"></i> 如何在ArchLinux系统中安装MongoDB
               </a>
+            
           </div>
+
           <span class="post-nav-divider"></span>
+
           <div class="post-nav-prev post-nav-item">
+            
               <a href="/same-origin-policy.html" rel="prev" title="关于同源策略">
                 关于同源策略 <i class="fa fa-chevron-right"></i>
               </a>
+            
           </div>
         </div>
+      
+
+      
+      
     </footer>
   </div>
+  
+  
+  
   </article>
+
+
   </div>
+
+
           </div>
+          
+
+  
     <div class="comments" id="comments">
     </div>
+
+  
+
+
+
         </div>
+        
+          
+  
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
       <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
@@ -473,8 +844,13 @@
       <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
+
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
+
+      
+
+      
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
@@ -483,54 +859,208 @@
             站点概览
           </li>
         </ul>
+      
+
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
               <img class="site-author-image" itemprop="image" src="/images/ava.gif" alt="张智">
+            
               <p class="site-author-name" itemprop="name">张智</p>
               <div class="site-description motion-element" itemprop="description">问题解决的那一刻的快乐是无法言表的。</div>
           </div>
+
+          
             <nav class="site-state motion-element">
+              
                 <div class="site-state-item site-state-posts">
+                
                   <a href="/archives/">
-                    <span class="site-state-item-count">23</span>
+                
+                    <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
+              
+
+              
+                
+                
                 <div class="site-state-item site-state-categories">
+                  
+                    
                       <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
                     <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
+              
+
+              
+                
+                
                 <div class="site-state-item site-state-tags">
+                  
+                    
                       <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
                     <span class="site-state-item-count">28</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
+              
             </nav>
+          
+
+          
+
+          
+
+          
             <div class="links-of-author motion-element">
+              
                 <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
                   <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1poYW5nemhpUw==" title="GitHub &rarr; https://github.com/ZhangzhiS"><i class="fa fa-fw fa-github"></i></span>
                 </span>
+              
                 <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
                   <span class="exturl" data-url="bWFpbHRvOnpoaTc4MTAyOTU4OEBnbWFpbC5jb20=" title="E-Mail &rarr; mailto:zhi781029588@gmail.com"><i class="fa fa-fw fa-envelope"></i></span>
                 </span>
+              
             </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
         </div>
       </div>
+
+      
       <!--noindex-->
         <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
           <div class="post-toc">
+
+            
+            
+            
+            
+
+            
               <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#尽量遵循数据库设计范式"><span class="nav-number">1.</span> <span class="nav-text">尽量遵循数据库设计范式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引"><span class="nav-number">2.</span> <span class="nav-text">索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么要建立索引呢"><span class="nav-number">2.1.</span> <span class="nav-text">为什么要建立索引呢</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优缺点"><span class="nav-number">2.2.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用原则"><span class="nav-number">2.3.</span> <span class="nav-text">使用原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引的分类"><span class="nav-number">2.4.</span> <span class="nav-text">索引的分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建索引"><span class="nav-number">2.5.</span> <span class="nav-text">创建索引</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询过程中SQL的注意事项、"><span class="nav-number">3.</span> <span class="nav-text">查询过程中SQL的注意事项、</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分表"><span class="nav-number">4.</span> <span class="nav-text">分表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写分离"><span class="nav-number">5.</span> <span class="nav-text">读写分离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL配置优化"><span class="nav-number">6.</span> <span class="nav-text">MySQL配置优化</span></a></li></ol></div>
+            
+
           </div>
         </div>
       <!--/noindex-->
+      
+
+      
+
     </div>
   </aside>
+  
+
+
+        
       </div>
     </main>
+
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <div class="copyright">  <span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">京ICP备19016512号 </span>&copy; <span itemprop="copyrightYear">2019</span>
@@ -538,31 +1068,138 @@
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">张智</span>
+
+  
+
+  
 </div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
       </div>
     </footer>
+
+    
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
+        
       </div>
+    
+
+    
+
+    
+
+    
   </div>
+
+  
+
 <script>
   if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
     window.Promise = null;
   }
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
   <script src="/js/utils.js?v=7.1.2"></script>
+
   <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
   <script src="/js/affix.js?v=7.1.2"></script>
+
   <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+  
   <script src="/js/scrollspy.js?v=7.1.2"></script>
 <script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
   <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
   <script src="/js/exturl.js?v=7.1.2"></script>
+
+
+  
+
+  
+  
+
 <script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
 <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
 <script>
   var GUEST = ['nick', 'mail', 'link'];
   var guest = 'nick,mail';
@@ -583,6 +1220,14 @@
     lang: 'zh-cn' || 'zh-cn'
   });
 </script>
+
+
+
+
+  
+
+
+  
   <script>
     // Popup Window;
     var isfetched = false;
@@ -596,6 +1241,7 @@
     }
     var path = "/" + search_path;
     // monitor main search box;
+
     var onPopupClose = function (e) {
       $('.popup').hide();
       $('#local-search-input').val('');
@@ -604,6 +1250,7 @@
       $(".local-search-pop-overlay").remove();
       $('body').css('overflow', '');
     }
+
     function proceedsearch() {
       $("body")
         .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
@@ -615,9 +1262,11 @@
       $localSearchInput.attr("autocorrect", "off");
       $localSearchInput.focus();
     }
+
     // search function;
     var searchFunc = function(path, search_id, content_id) {
       'use strict';
+
       // start loading animation
       $("body")
         .append('<div class="search-popup-overlay local-search-pop-overlay">' +
@@ -627,6 +1276,9 @@
           '</div>')
         .css('overflow', 'hidden');
       $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
       $.ajax({
         url: path,
         dataType: isXml ? "xml" : "json",
@@ -660,6 +1312,7 @@
                 var title = data.title.trim();
                 var titleInLowerCase = title.toLowerCase();
                 var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
                 var contentInLowerCase = content.toLowerCase();
                 var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
                 var indexOfTitle = [];
@@ -683,6 +1336,7 @@
                       }
                       return index;
                     }
+
                     indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
                     indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
                   });
@@ -691,9 +1345,12 @@
                     hitCount = indexOfTitle.length + indexOfContent.length;
                   }
                 }
+
                 // show search results
+
                 if (isMatch) {
                   // sort index by position of keyword
+
                   [indexOfTitle, indexOfContent].forEach(function (index) {
                     index.sort(function (itemLeft, itemRight) {
                       if (itemRight.position !== itemLeft.position) {
@@ -703,7 +1360,9 @@
                       }
                     });
                   });
+
                   // merge hits into slices
+
                   function mergeIntoSlice(text, start, end, index) {
                     var item = index[index.length - 1];
                     var position = item.position;
@@ -716,7 +1375,9 @@
                       }
                       hits.push({position: position, length: word.length});
                       var wordEnd = position + word.length;
+
                       // move to next position of hit
+
                       index.pop();
                       while (index.length != 0) {
                         item = index[index.length - 1];
@@ -737,10 +1398,12 @@
                       searchTextCount: searchTextCountInSlice
                     };
                   }
+
                   var slicesOfTitle = [];
                   if (indexOfTitle.length != 0) {
                     slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
                   }
+
                   var slicesOfContent = [];
                   while (indexOfContent.length != 0) {
                     var item = indexOfContent[indexOfContent.length - 1];
@@ -760,7 +1423,9 @@
                     }
                     slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
                   }
+
                   // sort slices in content by search text's count and hits' count
+
                   slicesOfContent.sort(function (sliceLeft, sliceRight) {
                     if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
                       return sliceRight.searchTextCount - sliceLeft.searchTextCount;
@@ -770,12 +1435,16 @@
                       return sliceLeft.start - sliceRight.start;
                     }
                   });
+
                   // select top N slices in content
+
                   var upperBound = parseInt('1');
                   if (upperBound >= 0) {
                     slicesOfContent = slicesOfContent.slice(0, upperBound);
                   }
+
                   // highlight title and content
+
                   function highlightKeyword(text, slice) {
                     var result = '';
                     var prevEnd = slice.start;
@@ -788,17 +1457,21 @@
                     result += text.substring(prevEnd, slice.end);
                     return result;
                   }
+
                   var resultItem = '';
+
                   if (slicesOfTitle.length != 0) {
                     resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
                   } else {
                     resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
                   }
+
                   slicesOfContent.forEach(function (slice) {
                     resultItem += "<a href='" + articleUrl + "'>" +
                       "<p class=\"search-result\">" + highlightKeyword(content, slice) +
                       "...</p>" + "</a>";
                   });
+
                   resultItem += "</li>";
                   resultItems.push({
                     item: resultItem,
@@ -831,6 +1504,7 @@
               resultContent.innerHTML = searchResultList;
             }
           }
+
           if ('auto' === 'auto') {
             input.addEventListener('input', inputEventFunction);
           } else {
@@ -841,13 +1515,16 @@
               }
             });
           }
+
           // remove loading animation
           $(".local-search-pop-overlay").remove();
           $('body').css('overflow', '');
+
           proceedsearch();
         }
       });
     }
+
     // handle and trigger popup window;
     $('.popup-trigger').click(function(e) {
       e.stopPropagation();
@@ -857,6 +1534,7 @@
         proceedsearch();
       };
     });
+
     $('.popup-btn-close').click(onPopupClose);
     $('.popup').click(function(e){
       e.stopPropagation();
@@ -869,6 +1547,22 @@
       }
     });
   </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
   <script>
     (function(){
       var bp = document.createElement('script');
@@ -878,5 +1572,23 @@
       s.parentNode.insertBefore(bp, s);
     })();
   </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
 </body>
 </html>

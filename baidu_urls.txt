@@ -1,3 +1,4 @@
+https://zz.zzs7.top/bubble-sort.html
 https://zz.zzs7.top/binary-search.html
 https://zz.zzs7.top/add-two-numbers.html
 https://zz.zzs7.top/share-cookies.html
@@ -7,4 +8,3 @@ https://zz.zzs7.top/use-git-1.html
 https://zz.zzs7.top/same-origin-policy.html
 https://zz.zzs7.top/mysql-optimization.html
 https://zz.zzs7.top/archlinux-install-mongodb.html
-https://zz.zzs7.top/leetcode-merge-nums.html

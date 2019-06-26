@@ -1,18 +1,75 @@
 <!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
 <html class="theme-next pisces use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
   <meta name="google-site-verification" content="jfiTzJL4QReMSaJi0l8TDoVyg56AXdg6uPW8b4lVeaU">
+
+
+
+
+
+
+
   <meta name="baidu-site-verification" content="T51n5dxa3zuPzDcC">
+
+
+
+
+
+
+
+
+
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
 <link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.1.2">
+
+
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.1.2">
+
+
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.1.2">
+
+
   <link rel="mask-icon" href="/images/favicon.png?v=7.1.2" color="#222">
+
+
+
+
+
+
+
 <script id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
@@ -36,6 +93,13 @@
     }
   };
 </script>
+
+
+  
+
+
+
+
   <meta name="description" content="我们已经听说过全局解释器锁（GIL），担心会影响到多线程的性能。尽管Python完全支持多线程编程，但是在解释器的C语言实现中，有一部分并不是线程安全的，因此不能完全支持并发执行。 事实上，解释器被一个称为全局解释器锁的东西保护着，在任意时刻只允许一个Python线程投入执行。GIL带来的最明显的影响就是多线程的python程序无法充分利用多个CPU核心带来的优势（即，一个采用多线程技术的计算密集">
 <meta name="keywords" content="python,并发,多进程,进程池">
 <meta property="og:type" content="article">
@@ -50,13 +114,29 @@
 <meta name="twitter:title" content="Python的并发编程（七）- 如何规避GIL带来的限制">
 <meta name="twitter:description" content="我们已经听说过全局解释器锁（GIL），担心会影响到多线程的性能。尽管Python完全支持多线程编程，但是在解释器的C语言实现中，有一部分并不是线程安全的，因此不能完全支持并发执行。 事实上，解释器被一个称为全局解释器锁的东西保护着，在任意时刻只允许一个Python线程投入执行。GIL带来的最明显的影响就是多线程的python程序无法充分利用多个CPU核心带来的优势（即，一个采用多线程技术的计算密集">
 <meta name="twitter:image" content="https://i.loli.net/2019/05/14/5cda794e88ce223620.png">
+
+
+
+
+
+  
+  
   <link rel="canonical" href="https://zz.zzs7.top/python-concurrent-7">
+
+
+
 <script id="page.configurations">
   CONFIG.page = {
     sidebar: "",
   };
 </script>
+
   <title>Python的并发编程（七）- 如何规避GIL带来的限制 | SavingUnhappy</title>
+  
+
+
+
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139508983-1"></script>
   <script>
     var host = window.location.hostname;
@@ -67,6 +147,15 @@
       gtag('config', 'UA-139508983-1');
     }
   </script>
+
+
+
+
+
+
+
+
+
   <noscript>
   <style>
   .use-motion .motion-element,
@@ -79,23 +168,36 @@
   .use-motion .post-header,
   .use-motion .post-body,
   .use-motion .collection-title { opacity: initial; }
+
   .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
     top: initial;
   }
+
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
 </noscript>
+
 </head>
+
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
+
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta">
+    
+
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
@@ -103,8 +205,14 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
+    
+      
         <h1 class="site-subtitle" itemprop="description">If you give someone a program, you will frustrate them for a day.</h1>
+      
+    
+    
   </div>
+
   <div class="site-nav-toggle">
     <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
@@ -113,26 +221,108 @@
     </button>
   </div>
 </div>
+
+
+
 <nav class="site-nav">
+  
     <ul id="menu" class="menu">
+      
+        
+        
+        
+          
           <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
     <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
   </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
     <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">28</span></a>
+
   </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
     <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">7</span></a>
+
   </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-archives">
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">23</span></a>
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">24</span></a>
+
   </li>
+
+      
+      
         <li class="menu-item menu-item-search">
+          
             <a href="javascript:;" class="popup-trigger">
+          
+            
               <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
         </li>
+      
     </ul>
+  
+
+  
+
+  
     <div class="site-search">
+      
   <div class="popup search-popup local-search-popup">
   <div class="local-search-header clearfix">
     <span class="search-icon">
@@ -147,78 +337,194 @@
   </div>
   <div id="local-search-result"></div>
 </div>
+
+
+
     </div>
+  
 </nav>
+
+
+
+  
+
+
+
 </div>
     </header>
+
+    
+
+
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
+            
+
+          
           <div id="content" class="content">
+            
+
   <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/python-concurrent-7.html">
+
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
       <meta itemprop="image" content="/images/ava.gif">
     </span>
+
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
+
+    
       <header class="post-header">
+
+        
+        
           <h2 class="post-title" itemprop="name headline">Python的并发编程（七）- 如何规避GIL带来的限制
+
+              
+            
           </h2>
+        
+
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
+            
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
+              
                 <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
               <time title="创建时间：2019-05-14 19:33:40" itemprop="dateCreated datePublished" datetime="2019-05-14T19:33:40+08:00">2019-05-14</time>
+            
+
+            
+              
+
+              
+                
                 <span class="post-meta-divider">|</span>
+                
+
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
+                
                   <span class="post-meta-item-text">更新于</span>
+                
                 <time title="修改时间：2019-06-18 19:29:04" itemprop="dateModified" datetime="2019-06-18T19:29:04+08:00">2019-06-18</time>
+              
+            
           </span>
+
+          
             <span class="post-category">
+            
               <span class="post-meta-divider">|</span>
+            
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
+              
                 <span class="post-meta-item-text">分类于</span>
+              
+              
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+
+                
+                
+              
             </span>
+          
+
+          
+            
+            
+              
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
+            
                 <span class="post-meta-item-text">评论数：</span>
                 <a href="/python-concurrent-7.html#comments" itemprop="discussionUrl">
                   <span class="post-comments-count valine-comment-count" data-xid="/python-concurrent-7.html" itemprop="commentCount"></span>
                 </a>
               </span>
+            
+          
+
+          
+          
             <span id="/python-concurrent-7.html" class="leancloud_visitors" data-flag-title="Python的并发编程（七）- 如何规避GIL带来的限制">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
+              
                 <span class="post-meta-item-text">阅读次数：</span>
+              
                 <span class="leancloud-visitors-count"></span>
             </span>
+          
+
+          
+
+          
+
+          
+
         </div>
       </header>
+    
+
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
         <p>我们已经听说过全局解释器锁（GIL），担心会影响到多线程的性能。尽管Python完全支持多线程编程，但是在解释器的C语言实现中，有一部分并不是线程安全的，因此不能完全支持并发执行。</p>
 <p>事实上，解释器被一个称为全局解释器锁的东西保护着，在任意时刻只允许一个Python线程投入执行。GIL带来的最明显的影响就是多线程的python程序无法充分利用多个CPU核心带来的优势（即，一个采用多线程技术的计算密集型应用只能在一个CPU上运行）。</p>
 <p>在讨论规避GIL的常用方案之前，需要重点强调的是，GIL只会对CPU密集型的程序产生影响（主要完成计算任务的程序）。如果我们的程序主要是在做I/O操作，比如处理网络连接，那么选择多线程技术常常是一个明智的选择。因为他们大部分时间都花在等待对放发起连接上了。实际上可以创建数以千计的Python线程都没问题。在现代的计算机上运行这么多线程是不会有问题的。</p>
 <p>在理解这部分的内容的时候，你可以将存在全局解释器锁的Python解释器看作一个加油站。</p>
 <p><img src="https://i.loli.net/2019/05/14/5cda794e88ce223620.png" alt="img"></p>
 <a id="more"></a>
+
 <p><strong>I/O密集型</strong>任务中，你可以理解为有多辆小轿车驶入了加油站进行加油，虽然不知道哪个先加完，但是会比只有一个加油点的加油站顺序很快。如果是<strong>计算密集型</strong>的任务呢，就是当这辆车驶入加油站的时候，加油站所有的资源都用来服务这一辆车了，别的车只能等待。</p>
 <p>当然上述比喻只是为了大家方便理解两种不同类型任务的区别。</p>
 <p>对于CPU密集型的程序，我们需要对问题的本质做些研究，例如，仔细选择底层使用的算法，这可能会比尝试将一个没有优化过的算法用多线程来并行处理所带来的性能提升要多得多。同样的，由于Python是解释型语言，往往只需要简单的将性能关键的代码转移到C语言扩展的模块中就可能得到极大的性能提升。类似NumPy这样的扩展模块对于加速涉及数组数据的特定计算也是非常高效的。最后但同样重要的是，还可以尝试使用其他的解释器实现，比如说使用了JIT编译优化技术的PYPY。</p>
@@ -227,43 +533,107 @@
 <ol>
 <li><p>如果完全使用Python来编程，可以使用<code>multiprocessin</code>模块来创建进程池，把它当作协处理器来使用。看看下面的例子：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 大量的计算任务 (CPU bound)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_work</span><span class="params">(args)</span>:</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    result = args</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="comment"># 线程函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_thread</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line">        args = <span class="literal">None</span></span><br><span class="line">        r = some_work(args)</span><br><span class="line">        <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+
 <p>上面是使用线程去处理这个任务，下面我们可以将代码改为进程池的方式：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">pool = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 大量的计算任务 (CPU bound)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_work</span><span class="params">(args)</span>:</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    result = args</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="comment"># 线程函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_thread</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line">        r = pool.apply(some_work, (args))</span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="keyword">import</span> multiprocessing</span><br><span class="line">    pool = multiprocessing.Pool()</span><br></pre></td></tr></table></figure>
+
 <p>使用进程池的例子通过一个巧妙的办法避开了GIL的限制。每当有线程要执行CPU密集型任务的时候，就把任务提交到进程池中，然后进程池将任务转交给运行在另一个进程中的python解释器。当线程等待结果的时候就会释放GIL。此外，由于计算是在另一个单独的解释器中进行的，这就不再受到GIL的限制了，在多核系统上，将会发现采用这种技术能够轻易利用到所有的CPU核心。</p>
 </li>
 <li><p>第二种方式是把重点放在C语言的扩展编程上。主要思想就是将计算密集的任务转移到C语言中，使其独立于Python，在C代码中释放GIL，这里由于我也不会C，就不做示例了。</p>
 </li>
 </ol>
 <p>在我们面对多线程程序性能问题的时候，不能去抱怨GIL是所有问题的根源。但是，这么做只是一种短视和幼稚的行为。举个例子，在多线程网络程序中出现神秘的“僵死”现象，这种现象可能是别的原因造成的，和GIL没有一点关系。所以要先认真研究自己的代码，判断GIL是否才是问题的关键。<strong>CPU密集型的处理才是需要考虑GIL，I/O密集的处理则不必要考虑</strong>。</p>
+
+      
     </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
     <footer class="post-footer">
+      
+        
+          
+        
         <div class="post-tags">
+          
             <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+          
             <a href="/tags/并发/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
+          
             <a href="/tags/多进程/" rel="tag"><i class="fa fa-tag"></i> 多进程</a>
+          
             <a href="/tags/进程池/" rel="tag"><i class="fa fa-tag"></i> 进程池</a>
+          
         </div>
+      
+
+      
+      
+      
+
+      
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
+            
               <a href="/python-concurrent-6.html" rel="next" title="Python的并发编程（六）- 多进程">
                 <i class="fa fa-chevron-left"></i> Python的并发编程（六）- 多进程
               </a>
+            
           </div>
+
           <span class="post-nav-divider"></span>
+
           <div class="post-nav-prev post-nav-item">
+            
               <a href="/leetcode-merge-nums.html" rel="prev" title="leetcode-python-合并两个有序数组">
                 leetcode-python-合并两个有序数组 <i class="fa fa-chevron-right"></i>
               </a>
+            
           </div>
         </div>
+      
+
+      
+      
     </footer>
   </div>
+  
+  
+  
   </article>
+
+
   </div>
+
+
           </div>
+          
+
+  
     <div class="comments" id="comments">
     </div>
+
+  
+
+
+
         </div>
+        
+          
+  
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
       <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
@@ -271,49 +641,197 @@
       <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
+
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
+
+      
+
+      
+
       <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
               <img class="site-author-image" itemprop="image" src="/images/ava.gif" alt="张智">
+            
               <p class="site-author-name" itemprop="name">张智</p>
               <div class="site-description motion-element" itemprop="description">问题解决的那一刻的快乐是无法言表的。</div>
           </div>
+
+          
             <nav class="site-state motion-element">
+              
                 <div class="site-state-item site-state-posts">
+                
                   <a href="/archives/">
-                    <span class="site-state-item-count">23</span>
+                
+                    <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
+              
+
+              
+                
+                
                 <div class="site-state-item site-state-categories">
+                  
+                    
                       <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
                     <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
+              
+
+              
+                
+                
                 <div class="site-state-item site-state-tags">
+                  
+                    
                       <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
                     <span class="site-state-item-count">28</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
+              
             </nav>
+          
+
+          
+
+          
+
+          
             <div class="links-of-author motion-element">
+              
                 <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
                   <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1poYW5nemhpUw==" title="GitHub &rarr; https://github.com/ZhangzhiS"><i class="fa fa-fw fa-github"></i></span>
                 </span>
+              
                 <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
                   <span class="exturl" data-url="bWFpbHRvOnpoaTc4MTAyOTU4OEBnbWFpbC5jb20=" title="E-Mail &rarr; mailto:zhi781029588@gmail.com"><i class="fa fa-fw fa-envelope"></i></span>
                 </span>
+              
             </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
         </div>
       </div>
+
+      
+
+      
+
     </div>
   </aside>
+  
+
+
+        
       </div>
     </main>
+
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <div class="copyright">  <span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">京ICP备19016512号 </span>&copy; <span itemprop="copyrightYear">2019</span>
@@ -321,31 +839,138 @@
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">张智</span>
+
+  
+
+  
 </div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
       </div>
     </footer>
+
+    
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
+        
       </div>
+    
+
+    
+
+    
+
+    
   </div>
+
+  
+
 <script>
   if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
     window.Promise = null;
   }
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
   <script src="/js/utils.js?v=7.1.2"></script>
+
   <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
   <script src="/js/affix.js?v=7.1.2"></script>
+
   <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+  
   <script src="/js/scrollspy.js?v=7.1.2"></script>
 <script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
   <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
   <script src="/js/exturl.js?v=7.1.2"></script>
+
+
+  
+
+  
+  
+
 <script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
 <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
 <script>
   var GUEST = ['nick', 'mail', 'link'];
   var guest = 'nick,mail';
@@ -366,6 +991,14 @@
     lang: 'zh-cn' || 'zh-cn'
   });
 </script>
+
+
+
+
+  
+
+
+  
   <script>
     // Popup Window;
     var isfetched = false;
@@ -379,6 +1012,7 @@
     }
     var path = "/" + search_path;
     // monitor main search box;
+
     var onPopupClose = function (e) {
       $('.popup').hide();
       $('#local-search-input').val('');
@@ -387,6 +1021,7 @@
       $(".local-search-pop-overlay").remove();
       $('body').css('overflow', '');
     }
+
     function proceedsearch() {
       $("body")
         .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
@@ -398,9 +1033,11 @@
       $localSearchInput.attr("autocorrect", "off");
       $localSearchInput.focus();
     }
+
     // search function;
     var searchFunc = function(path, search_id, content_id) {
       'use strict';
+
       // start loading animation
       $("body")
         .append('<div class="search-popup-overlay local-search-pop-overlay">' +
@@ -410,6 +1047,9 @@
           '</div>')
         .css('overflow', 'hidden');
       $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
       $.ajax({
         url: path,
         dataType: isXml ? "xml" : "json",
@@ -443,6 +1083,7 @@
                 var title = data.title.trim();
                 var titleInLowerCase = title.toLowerCase();
                 var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
                 var contentInLowerCase = content.toLowerCase();
                 var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
                 var indexOfTitle = [];
@@ -466,6 +1107,7 @@
                       }
                       return index;
                     }
+
                     indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
                     indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
                   });
@@ -474,9 +1116,12 @@
                     hitCount = indexOfTitle.length + indexOfContent.length;
                   }
                 }
+
                 // show search results
+
                 if (isMatch) {
                   // sort index by position of keyword
+
                   [indexOfTitle, indexOfContent].forEach(function (index) {
                     index.sort(function (itemLeft, itemRight) {
                       if (itemRight.position !== itemLeft.position) {
@@ -486,7 +1131,9 @@
                       }
                     });
                   });
+
                   // merge hits into slices
+
                   function mergeIntoSlice(text, start, end, index) {
                     var item = index[index.length - 1];
                     var position = item.position;
@@ -499,7 +1146,9 @@
                       }
                       hits.push({position: position, length: word.length});
                       var wordEnd = position + word.length;
+
                       // move to next position of hit
+
                       index.pop();
                       while (index.length != 0) {
                         item = index[index.length - 1];
@@ -520,10 +1169,12 @@
                       searchTextCount: searchTextCountInSlice
                     };
                   }
+
                   var slicesOfTitle = [];
                   if (indexOfTitle.length != 0) {
                     slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
                   }
+
                   var slicesOfContent = [];
                   while (indexOfContent.length != 0) {
                     var item = indexOfContent[indexOfContent.length - 1];
@@ -543,7 +1194,9 @@
                     }
                     slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
                   }
+
                   // sort slices in content by search text's count and hits' count
+
                   slicesOfContent.sort(function (sliceLeft, sliceRight) {
                     if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
                       return sliceRight.searchTextCount - sliceLeft.searchTextCount;
@@ -553,12 +1206,16 @@
                       return sliceLeft.start - sliceRight.start;
                     }
                   });
+
                   // select top N slices in content
+
                   var upperBound = parseInt('1');
                   if (upperBound >= 0) {
                     slicesOfContent = slicesOfContent.slice(0, upperBound);
                   }
+
                   // highlight title and content
+
                   function highlightKeyword(text, slice) {
                     var result = '';
                     var prevEnd = slice.start;
@@ -571,17 +1228,21 @@
                     result += text.substring(prevEnd, slice.end);
                     return result;
                   }
+
                   var resultItem = '';
+
                   if (slicesOfTitle.length != 0) {
                     resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
                   } else {
                     resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
                   }
+
                   slicesOfContent.forEach(function (slice) {
                     resultItem += "<a href='" + articleUrl + "'>" +
                       "<p class=\"search-result\">" + highlightKeyword(content, slice) +
                       "...</p>" + "</a>";
                   });
+
                   resultItem += "</li>";
                   resultItems.push({
                     item: resultItem,
@@ -614,6 +1275,7 @@
               resultContent.innerHTML = searchResultList;
             }
           }
+
           if ('auto' === 'auto') {
             input.addEventListener('input', inputEventFunction);
           } else {
@@ -624,13 +1286,16 @@
               }
             });
           }
+
           // remove loading animation
           $(".local-search-pop-overlay").remove();
           $('body').css('overflow', '');
+
           proceedsearch();
         }
       });
     }
+
     // handle and trigger popup window;
     $('.popup-trigger').click(function(e) {
       e.stopPropagation();
@@ -640,6 +1305,7 @@
         proceedsearch();
       };
     });
+
     $('.popup-btn-close').click(onPopupClose);
     $('.popup').click(function(e){
       e.stopPropagation();
@@ -652,6 +1318,22 @@
       }
     });
   </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
   <script>
     (function(){
       var bp = document.createElement('script');
@@ -661,5 +1343,23 @@
       s.parentNode.insertBefore(bp, s);
     })();
   </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
 </body>
 </html>

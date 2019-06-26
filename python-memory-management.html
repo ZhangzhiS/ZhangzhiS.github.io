@@ -1,18 +1,75 @@
 <!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
 <html class="theme-next pisces use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
   <meta name="google-site-verification" content="jfiTzJL4QReMSaJi0l8TDoVyg56AXdg6uPW8b4lVeaU">
+
+
+
+
+
+
+
   <meta name="baidu-site-verification" content="T51n5dxa3zuPzDcC">
+
+
+
+
+
+
+
+
+
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
 <link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.1.2">
+
+
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.1.2">
+
+
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.1.2">
+
+
   <link rel="mask-icon" href="/images/favicon.png?v=7.1.2" color="#222">
+
+
+
+
+
+
+
 <script id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
@@ -36,6 +93,13 @@
     }
   };
 </script>
+
+
+  
+
+
+
+
   <meta name="description" content="面试中被问到python的内存管理，只是说是python有自己的内存管理机制，有自己的垃圾回收机制，却不能详细作答，面试官表示很遗憾。建议我代码的业务逻辑需要想，但是学习需要深入底层，也有助于扩宽自己的知识面，对自己之后的学习路径有帮助，哈哈，感谢面试官帮我指出自己的不足。 回家马上查资料，先解决这个问题。 首先看看各种python常见面试题上的答案：  python内存管理是由私有堆空间管理的，">
 <meta name="keywords" content="python,面试">
 <meta property="og:type" content="article">
@@ -52,13 +116,29 @@
 <meta name="twitter:title" content="深入python内存管理">
 <meta name="twitter:description" content="面试中被问到python的内存管理，只是说是python有自己的内存管理机制，有自己的垃圾回收机制，却不能详细作答，面试官表示很遗憾。建议我代码的业务逻辑需要想，但是学习需要深入底层，也有助于扩宽自己的知识面，对自己之后的学习路径有帮助，哈哈，感谢面试官帮我指出自己的不足。 回家马上查资料，先解决这个问题。 首先看看各种python常见面试题上的答案：  python内存管理是由私有堆空间管理的，">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/16621797-bedd4d280948d8a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+
+
+  
+  
   <link rel="canonical" href="https://zz.zzs7.top/python-memory-management">
+
+
+
 <script id="page.configurations">
   CONFIG.page = {
     sidebar: "",
   };
 </script>
+
   <title>深入python内存管理 | SavingUnhappy</title>
+  
+
+
+
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139508983-1"></script>
   <script>
     var host = window.location.hostname;
@@ -69,6 +149,15 @@
       gtag('config', 'UA-139508983-1');
     }
   </script>
+
+
+
+
+
+
+
+
+
   <noscript>
   <style>
   .use-motion .motion-element,
@@ -81,23 +170,36 @@
   .use-motion .post-header,
   .use-motion .post-body,
   .use-motion .collection-title { opacity: initial; }
+
   .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
     top: initial;
   }
+
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
 </noscript>
+
 </head>
+
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
+
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta">
+    
+
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
@@ -105,8 +207,14 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
+    
+      
         <h1 class="site-subtitle" itemprop="description">If you give someone a program, you will frustrate them for a day.</h1>
+      
+    
+    
   </div>
+
   <div class="site-nav-toggle">
     <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
@@ -115,26 +223,108 @@
     </button>
   </div>
 </div>
+
+
+
 <nav class="site-nav">
+  
     <ul id="menu" class="menu">
+      
+        
+        
+        
+          
           <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
     <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
   </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
     <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">28</span></a>
+
   </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
     <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">7</span></a>
+
   </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-archives">
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">23</span></a>
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">24</span></a>
+
   </li>
+
+      
+      
         <li class="menu-item menu-item-search">
+          
             <a href="javascript:;" class="popup-trigger">
+          
+            
               <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
         </li>
+      
     </ul>
+  
+
+  
+
+  
     <div class="site-search">
+      
   <div class="popup search-popup local-search-popup">
   <div class="local-search-header clearfix">
     <span class="search-icon">
@@ -149,72 +339,187 @@
   </div>
   <div id="local-search-result"></div>
 </div>
+
+
+
     </div>
+  
 </nav>
+
+
+
+  
+
+
+
 </div>
     </header>
+
+    
+
+
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
+            
+
+          
           <div id="content" class="content">
+            
+
   <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/python-memory-management.html">
+
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
       <meta itemprop="image" content="/images/ava.gif">
     </span>
+
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
+
+    
       <header class="post-header">
+
+        
+        
           <h2 class="post-title" itemprop="name headline">深入python内存管理
+
+              
+            
           </h2>
+        
+
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
+            
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
+              
                 <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
               <time title="创建时间：2019-04-30 14:55:13" itemprop="dateCreated datePublished" datetime="2019-04-30T14:55:13+08:00">2019-04-30</time>
+            
+
+            
+              
+
+              
+                
                 <span class="post-meta-divider">|</span>
+                
+
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
+                
                   <span class="post-meta-item-text">更新于</span>
+                
                 <time title="修改时间：2019-06-18 19:29:19" itemprop="dateModified" datetime="2019-06-18T19:29:19+08:00">2019-06-18</time>
+              
+            
           </span>
+
+          
             <span class="post-category">
+            
               <span class="post-meta-divider">|</span>
+            
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
+              
                 <span class="post-meta-item-text">分类于</span>
+              
+              
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+
+                
+                
+              
             </span>
+          
+
+          
+            
+            
+              
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
+            
                 <span class="post-meta-item-text">评论数：</span>
                 <a href="/python-memory-management.html#comments" itemprop="discussionUrl">
                   <span class="post-comments-count valine-comment-count" data-xid="/python-memory-management.html" itemprop="commentCount"></span>
                 </a>
               </span>
+            
+          
+
+          
+          
             <span id="/python-memory-management.html" class="leancloud_visitors" data-flag-title="深入python内存管理">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
+              
                 <span class="post-meta-item-text">阅读次数：</span>
+              
                 <span class="leancloud-visitors-count"></span>
             </span>
+          
+
+          
+
+          
+
+          
+
         </div>
       </header>
+    
+
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
         <p>面试中被问到python的内存管理，只是说是python有自己的内存管理机制，有自己的垃圾回收机制，却不能详细作答，面试官表示很遗憾。建议我代码的业务逻辑需要想，但是学习需要深入底层，也有助于扩宽自己的知识面，对自己之后的学习路径有帮助，哈哈，感谢面试官帮我指出自己的不足。</p>
 <p>回家马上查资料，先解决这个问题。</p>
 <p>首先看看各种python常见面试题上的答案：</p>
@@ -223,54 +528,72 @@
 </blockquote>
 <p>如果仅仅问道这，上面的答案也足够了，但是面试官想要了解到更多，可能会衍生一些别的问题，那上面的答案就不够了。</p>
 <a id="more"></a>
+
 <p>以下内容： 作者：Vamei 出处：<span class="exturl" data-url="aHR0cDovL3d3dy5jbmJsb2dzLmNvbS92YW1laQ==" title="http://www.cnblogs.com/vamei">http://www.cnblogs.com/vamei<i class="fa fa-external-link"></i></span> 欢迎转载，也请保留这段声明。谢谢！</p>
 <p>语言的内存管理是语言设计的一个重要方面。他是决定语言性能的重要因素。无论是C的手动管理还是java的垃圾回收，都成为语言重要的特征。下面已python语言为例子，说明一门动态类型的面向对象的语言的内存管理方式。</p>
 <hr>
 <h3 id="对象的内存使用"><a href="#对象的内存使用" class="headerlink" title="对象的内存使用"></a>对象的内存使用</h3><p>赋值语句是语言最常见的功能了。但即使是最简单的赋值语句，也可以很有内涵. 首先看看python的赋值语句：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
 <p>整数“1”为一个对象，存储在内存空间中。a是一个引用。利用赋值语句，将引用a指向对象1。Python是动态类型的语言，对象与引用分离。文章作者比较形象的解释就是：Python像使用“筷子”那样，通过引用来接触和翻动真正的食物——对象。</p>
 <p><strong>下面就是一系列的实验了，建议亲自尝试</strong> 可以通过python的内置函数id()，来探索对象在内存的存储。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a = 1</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; id(a)</span></span><br><span class="line">140035503539424  # 内存地址的十进制表示</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; hex(id(a))</span></span><br><span class="line">'0x7f5c8e71c4e0'  # 内存地址的十六进制表示</span><br></pre></td></tr></table></figure>
+
 <p>在python中整数和短小的字符，python都会缓存这些对象，以便重复使用，当我们创建多个等于1的引用的时候，实际是让所有引用都指向同一个对象：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b = 1</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; id(b)</span></span><br><span class="line">140035503539424  # 等于上面id(a)的值</span><br></pre></td></tr></table></figure>
+
 <p>对比可以看出a和b实际是指向同一个对象的不同引用。 为了校验两个引用指向同一个对象，我们可以用“is”来判断。is用于判断两个引用所指的对象是否相同。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line">b = <span class="number">1</span></span><br><span class="line">print(a <span class="keyword">is</span> b)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">"good"</span></span><br><span class="line">b = <span class="string">"good"</span></span><br><span class="line">print(a <span class="keyword">is</span> b)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">"very good morning"</span></span><br><span class="line">b = <span class="string">"very good morning"</span></span><br><span class="line">print(a <span class="keyword">is</span> b)</span><br><span class="line"><span class="literal">True</span>   <span class="comment"># 原文在此处就是False，但是我的为True，通过查资料发现是python版本原因</span></span><br><span class="line"><span class="comment"># Python2.3简单整数缓存范围是(-1,100)，Python2.5.4以后简单整数缓存范围至少是(-5,256)。所有的短字符也都在缓存区。</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">"为了校验两个引用指向同一个对象，我们可以用“is”来判断。is用于判断两个引用所指的对象是否相同。"</span></span><br><span class="line">b = <span class="string">"为了校验两个引用指向同一个对象，我们可以用“is”来判断。is用于判断两个引用所指的对象是否相同。"</span></span><br><span class="line">print(a <span class="keyword">is</span> b)</span><br><span class="line"><span class="literal">False</span>  <span class="comment"># 增加了字符串的长度，结果也是False</span></span><br><span class="line"></span><br><span class="line">a = []</span><br><span class="line">b = []</span><br><span class="line">print(a <span class="keyword">is</span> b)</span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
 <p>根据上面的运行结果，可以看到由于python缓存了整数和短字符串，因此每个对象只存有一份。比如所有的1的引用都指向同一对象。即使使用赋值语句，也只是创造了新的引用，而不是对象本身，长的字符串和其他对象可以有多个相同对象，可以使用赋值语句创建出新的对象。</p>
 <p>在python中，每个对象都有存有指向该对象的应用总数，即<strong><em>引用计数(reference count)</em></strong> 呢 我们可以使用<code>sys</code>包中的<code>getrefcount()</code>，来查看某个对象的引用计数。需要注意的是，当使用某个引用作为参数，传递给<code>getrefcount()</code>时，会创建一个临时引用，所以结果会比预期多1。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sys <span class="keyword">import</span> getrefcount</span><br><span class="line"></span><br><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">print(getrefcount(a))</span><br><span class="line"><span class="comment"># 2</span></span><br><span class="line">b = a</span><br><span class="line">print(getrefcount(b))</span><br><span class="line"><span class="comment"># 3</span></span><br></pre></td></tr></table></figure>
+
 <p>由于上述原因，<code>getrefcount()</code>返回的结果分别是2,3，而不是期望的1。</p>
 <hr>
 <h3 id="对象引用对象"><a href="#对象引用对象" class="headerlink" title="对象引用对象"></a>对象引用对象</h3><p>python的一个容器对象（container），比如列表字典等，可以包含多个对象。实际上，容器对象中包含的并不是对象本身，而是指向各个元素对象的引用。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">from_obj</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, to_obj)</span>:</span></span><br><span class="line">        self.to_obj = to_obj</span><br><span class="line">b = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">a = from_obj(b)</span><br><span class="line">print(id(a.to_obj))</span><br><span class="line">print(id(b))</span><br><span class="line"><span class="comment"># 140035473779144</span></span><br><span class="line"><span class="comment"># 140035473779144</span></span><br></pre></td></tr></table></figure>
+
 <p>可以看到a引用了对象b。</p>
 <p>对象引用对象是python最基本的构成方式。即使是a = 1这一赋值方式，实际上是让词典的一个键值“a”的元素引用整数对象1。该词典对象用于记录所有的全局引用。该词典引用了整数对象1。我们可以通过内置函数<code>globals()</code>来查看该词典。 当一个对象a被另一个对象b引用时，a的引用计数将增加1。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sys <span class="keyword">import</span> getrefcount</span><br><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">print(getrefcount(a))</span><br><span class="line">b = [a, a]</span><br><span class="line">print(getrefcount(a))</span><br><span class="line"><span class="comment"># 2</span></span><br><span class="line"><span class="comment"># 4</span></span><br></pre></td></tr></table></figure>
+
 <p>由于对象b引用了a两次，所以a的引用计数加2。</p>
 <p>容器对象引用可能构成很复杂的拓扑结构。我们可以用objgraph包来绘制其引用关系。 objgraph是python的一个第三方包。<span class="exturl" data-url="aHR0cDovL21nLnBvdi5sdC9vYmpncmFwaC8=" title="http://mg.pov.lt/objgraph/">objgraph官网<i class="fa fa-external-link"></i></span>。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install objgraph</span><br></pre></td></tr></table></figure>
+
 <p> 使用objgraph需要安装xdot。根据自己的系统发行版本安装。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S xdot或者 sudo apt install xdot，sudo yun install xdot</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">y = [x, dict(key1=x)]</span><br><span class="line">z = [y, (x, y)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> objgraph</span><br><span class="line">objgraph.show_refs([z], filename=<span class="string">'ref_topo.png'</span>)</span><br></pre></td></tr></table></figure>
+
 <p><img src="https://upload-images.jianshu.io/upload_images/16621797-bedd4d280948d8a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="ref_topo.png"></p>
 <p>两个对象可能互相引用，从而构成所谓的引用环（reference cycle）</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = []</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = [a]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.append(b)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[[[...]]]</span><br></pre></td></tr></table></figure>
+
 <p>即使是一个对象，只需要自己引用自己，也能构成引用环。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = []</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.append(a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(getrefcount(a))</span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
+
 <p>引用环会给垃圾回收机制带来很大的麻烦，我将在后面详细叙述这一点。</p>
 <hr>
 <h3 id="引用减少"><a href="#引用减少" class="headerlink" title="引用减少"></a>引用减少</h3><p>某个引用对象的引用计数可能减少。比如使用del关键字删除某个引用</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(getrefcount(b))</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(getrefcount(b))</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+
 <p>del也可以删除容器中的元素，比如：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> a[<span class="number">0</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(a)</span><br><span class="line">[<span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = &#123;<span class="string">"q"</span>: <span class="number">1</span>, <span class="string">"w"</span>:<span class="number">2</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line">&#123;<span class="string">'q'</span>: <span class="number">1</span>, <span class="string">'w'</span>: <span class="number">2</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> b[<span class="string">"q"</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line">&#123;<span class="string">'w'</span>: <span class="number">2</span>&#125;</span><br></pre></td></tr></table></figure>
+
 <p>如果某个引用指向对象a，当这个引用被重新定向到其他对象b的时候，对象a的引用计数会减少</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> sys <span class="keyword">import</span> getrefcount</span><br><span class="line">...</span><br><span class="line"><span class="meta">... </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">... </span>b = a</span><br><span class="line"><span class="meta">... </span>print(getrefcount(b))</span><br><span class="line">...</span><br><span class="line"><span class="meta">... </span>a = <span class="number">1</span></span><br><span class="line"><span class="meta">... </span>print(getrefcount(b))</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+
 <hr>
 <h3 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h3><p>当python中的对象越来越多，他占据的内存也会越来越大。不过不需要担心太多，python会在适当的时候启动垃圾<code>回收机制(garbage collection)</code>，将没用的对象清除，在许多语言中都有垃圾回收机制，比如Java和Ruby。</p>
 <p>从基本原理来说，当一个对象的引用计数降为0的时候，说明没有任何引用指向对象，这时候该对象就成为需要被清除的垃圾了。比如某个新建对象，分配给某个引用，引用数为1,当引用被删除之后，引用数为0，那么该对象就可以被垃圾回收。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"><span class="keyword">del</span> a</span><br></pre></td></tr></table></figure>
+
 <p><code>del a</code>之后已经没有任何引用指向[1,2,3]了，用户不可能通过任何方式接触或者动用这个对象，这个对象如果继续待在内存里，就成了不健康的数据。当python的<strong><em>垃圾回收</em></strong>机制启动的时候，python扫描到这个引用为0的对象，就会将它所占据的内存清空。</p>
 <p>然而清理过程是个费力的过程。垃圾回收的时候，python不能进行其他的任务，频繁的垃圾回收，会大大降低python的工作效率。如果内存中的对象不多，就没必要总启动垃圾回收。所以python只会在特定的条件下，<strong><em>自动启动垃圾回收</em></strong>。当python运行的时候，会记录其中分配对象和取消分配对象的次数，两者的差值高于某个阈值的时候，垃圾回收才会启动。 我们可以通过gc模块的<code>get_threshold()</code>来查看该阈值。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> gc</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>gc.get_threshold()</span><br><span class="line">(<span class="number">700</span>, <span class="number">10</span>, <span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+
 <p>返回值中，后面的两个10,是与分代回收相关的阈值，分代回收在后面会讲到。700既是垃圾回收的启动阈值。可以通过gc中的<code>set_threshold()</code>来重新设定。 也可以手动使用<code>gc.collect()</code>启动垃圾回收机制。</p>
 <hr>
 <h3 id="分代回收"><a href="#分代回收" class="headerlink" title="分代回收"></a>分代回收</h3><p>python同时使用了分代（generation）回收的策略。这一策略的基本假设是，存活时间越久的对象，越不可能在后面的程序中变成垃圾。我们的程序往往会产生大量的对象，许多对象很快产生和消失，但也有长期存在被使用的对象，出于信任和效率，对于这样一些对象，我们相信他的用处，所以减少在垃圾回收中扫描他们的频率。</p>
@@ -278,40 +601,102 @@
 <p>上面<code>gc.get_threshold()</code>返回的（700,10,10）中后面的两个数，意义就是，每经过10次对0代的垃圾回收，就会配合启动一次对1代的扫描，没经过10次对1代的扫描，才会启动一次对2代的垃圾回收。</p>
 <p>同样可以用set_threshold()来调整，比如对2代对象进行更频繁的扫描。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gc</span><br><span class="line">gc.set_threshold(<span class="number">700</span>, <span class="number">10</span>, <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
 <hr>
 <h3 id="孤立的引用环"><a href="#孤立的引用环" class="headerlink" title="孤立的引用环"></a>孤立的引用环</h3><p>引用环的存在会给垃圾回收带来很大的困难，这些引用环可能构成无法使用，但是引用计数不为0的一些对象。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = []</span><br><span class="line">b = [a]</span><br><span class="line">a.append(b)</span><br><span class="line"><span class="keyword">del</span> a</span><br><span class="line"><span class="keyword">del</span> b</span><br></pre></td></tr></table></figure>
+
 <p>上面我们先创建了两个表对象，并引用对方，构成一个引用环。删除了a，b引用之后，这两个对象不可能再从程序中调用，就没有什么用处了。但是由于引用环的存在，这两个对象的引用计数都没有降到0，不会被垃圾回收。 <img src="https://upload-images.jianshu.io/upload_images/16621797-cafd7b75c96e3218.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="孤立的引用环"></p>
 <p>为了回收这样的引用环，Python复制每个对象的引用计数，可以记为gc_ref。假设，每个对象i，该计数为gc_ref_i。Python会遍历所有的对象i。对于每个对象i引用的对象j，将相应的gc_ref_j减1。 <img src="https://upload-images.jianshu.io/upload_images/16621797-a45e71a41b809baa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="遍历后的结果"> 在结束遍历后，gc_ref不为0的对象，和这些对象引用的对象，以及继续更下游引用的对象，需要被保留。而其它的对象则被垃圾回收。</p>
 <hr>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>python作为一种动态类型的语言，其对象和引用分离，这与面向过程的编程语言有很大的区别。为了有效的释放内存，python内置了垃圾回收的支持。python采用了一种相对简单的垃圾回收机制，即引用计数，并因此需要解决孤立引用环的问题。Python与其它语言既有共通性，又有特别的地方。对该内存管理机制的理解，是提高Python性能的重要一步。</p>
+
+      
     </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
     <footer class="post-footer">
+      
+        
+          
+        
         <div class="post-tags">
+          
             <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+          
             <a href="/tags/面试/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
+          
         </div>
+      
+
+      
+      
+      
+
+      
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
+            
               <a href="/hexo.html" rel="next" title="使用Hexo部署自己的博客">
                 <i class="fa fa-chevron-left"></i> 使用Hexo部署自己的博客
               </a>
+            
           </div>
+
           <span class="post-nav-divider"></span>
+
           <div class="post-nav-prev post-nav-item">
+            
               <a href="/single-num.html" rel="prev" title="leetcode-python-只出现一次的数字">
                 leetcode-python-只出现一次的数字 <i class="fa fa-chevron-right"></i>
               </a>
+            
           </div>
         </div>
+      
+
+      
+      
     </footer>
   </div>
+  
+  
+  
   </article>
+
+
   </div>
+
+
           </div>
+          
+
+  
     <div class="comments" id="comments">
     </div>
+
+  
+
+
+
         </div>
+        
+          
+  
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
       <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
@@ -319,8 +704,13 @@
       <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
+
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
+
+      
+
+      
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
@@ -329,54 +719,208 @@
             站点概览
           </li>
         </ul>
+      
+
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
               <img class="site-author-image" itemprop="image" src="/images/ava.gif" alt="张智">
+            
               <p class="site-author-name" itemprop="name">张智</p>
               <div class="site-description motion-element" itemprop="description">问题解决的那一刻的快乐是无法言表的。</div>
           </div>
+
+          
             <nav class="site-state motion-element">
+              
                 <div class="site-state-item site-state-posts">
+                
                   <a href="/archives/">
-                    <span class="site-state-item-count">23</span>
+                
+                    <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
+              
+
+              
+                
+                
                 <div class="site-state-item site-state-categories">
+                  
+                    
                       <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
                     <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
+              
+
+              
+                
+                
                 <div class="site-state-item site-state-tags">
+                  
+                    
                       <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
                     <span class="site-state-item-count">28</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
+              
             </nav>
+          
+
+          
+
+          
+
+          
             <div class="links-of-author motion-element">
+              
                 <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
                   <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1poYW5nemhpUw==" title="GitHub &rarr; https://github.com/ZhangzhiS"><i class="fa fa-fw fa-github"></i></span>
                 </span>
+              
                 <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
                   <span class="exturl" data-url="bWFpbHRvOnpoaTc4MTAyOTU4OEBnbWFpbC5jb20=" title="E-Mail &rarr; mailto:zhi781029588@gmail.com"><i class="fa fa-fw fa-envelope"></i></span>
                 </span>
+              
             </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
         </div>
       </div>
+
+      
       <!--noindex-->
         <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
           <div class="post-toc">
+
+            
+            
+            
+            
+
+            
               <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#对象的内存使用"><span class="nav-number">1.</span> <span class="nav-text">对象的内存使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象引用对象"><span class="nav-number">2.</span> <span class="nav-text">对象引用对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引用减少"><span class="nav-number">3.</span> <span class="nav-text">引用减少</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾回收"><span class="nav-number">4.</span> <span class="nav-text">垃圾回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分代回收"><span class="nav-number">5.</span> <span class="nav-text">分代回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#孤立的引用环"><span class="nav-number">6.</span> <span class="nav-text">孤立的引用环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
           </div>
         </div>
       <!--/noindex-->
+      
+
+      
+
     </div>
   </aside>
+  
+
+
+        
       </div>
     </main>
+
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <div class="copyright">  <span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">京ICP备19016512号 </span>&copy; <span itemprop="copyrightYear">2019</span>
@@ -384,31 +928,138 @@
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">张智</span>
+
+  
+
+  
 </div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
       </div>
     </footer>
+
+    
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
+        
       </div>
+    
+
+    
+
+    
+
+    
   </div>
+
+  
+
 <script>
   if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
     window.Promise = null;
   }
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
   <script src="/js/utils.js?v=7.1.2"></script>
+
   <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
   <script src="/js/affix.js?v=7.1.2"></script>
+
   <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+  
   <script src="/js/scrollspy.js?v=7.1.2"></script>
 <script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
   <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
   <script src="/js/exturl.js?v=7.1.2"></script>
+
+
+  
+
+  
+  
+
 <script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
 <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
 <script>
   var GUEST = ['nick', 'mail', 'link'];
   var guest = 'nick,mail';
@@ -429,6 +1080,14 @@
     lang: 'zh-cn' || 'zh-cn'
   });
 </script>
+
+
+
+
+  
+
+
+  
   <script>
     // Popup Window;
     var isfetched = false;
@@ -442,6 +1101,7 @@
     }
     var path = "/" + search_path;
     // monitor main search box;
+
     var onPopupClose = function (e) {
       $('.popup').hide();
       $('#local-search-input').val('');
@@ -450,6 +1110,7 @@
       $(".local-search-pop-overlay").remove();
       $('body').css('overflow', '');
     }
+
     function proceedsearch() {
       $("body")
         .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
@@ -461,9 +1122,11 @@
       $localSearchInput.attr("autocorrect", "off");
       $localSearchInput.focus();
     }
+
     // search function;
     var searchFunc = function(path, search_id, content_id) {
       'use strict';
+
       // start loading animation
       $("body")
         .append('<div class="search-popup-overlay local-search-pop-overlay">' +
@@ -473,6 +1136,9 @@
           '</div>')
         .css('overflow', 'hidden');
       $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
       $.ajax({
         url: path,
         dataType: isXml ? "xml" : "json",
@@ -506,6 +1172,7 @@
                 var title = data.title.trim();
                 var titleInLowerCase = title.toLowerCase();
                 var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
                 var contentInLowerCase = content.toLowerCase();
                 var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
                 var indexOfTitle = [];
@@ -529,6 +1196,7 @@
                       }
                       return index;
                     }
+
                     indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
                     indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
                   });
@@ -537,9 +1205,12 @@
                     hitCount = indexOfTitle.length + indexOfContent.length;
                   }
                 }
+
                 // show search results
+
                 if (isMatch) {
                   // sort index by position of keyword
+
                   [indexOfTitle, indexOfContent].forEach(function (index) {
                     index.sort(function (itemLeft, itemRight) {
                       if (itemRight.position !== itemLeft.position) {
@@ -549,7 +1220,9 @@
                       }
                     });
                   });
+
                   // merge hits into slices
+
                   function mergeIntoSlice(text, start, end, index) {
                     var item = index[index.length - 1];
                     var position = item.position;
@@ -562,7 +1235,9 @@
                       }
                       hits.push({position: position, length: word.length});
                       var wordEnd = position + word.length;
+
                       // move to next position of hit
+
                       index.pop();
                       while (index.length != 0) {
                         item = index[index.length - 1];
@@ -583,10 +1258,12 @@
                       searchTextCount: searchTextCountInSlice
                     };
                   }
+
                   var slicesOfTitle = [];
                   if (indexOfTitle.length != 0) {
                     slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
                   }
+
                   var slicesOfContent = [];
                   while (indexOfContent.length != 0) {
                     var item = indexOfContent[indexOfContent.length - 1];
@@ -606,7 +1283,9 @@
                     }
                     slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
                   }
+
                   // sort slices in content by search text's count and hits' count
+
                   slicesOfContent.sort(function (sliceLeft, sliceRight) {
                     if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
                       return sliceRight.searchTextCount - sliceLeft.searchTextCount;
@@ -616,12 +1295,16 @@
                       return sliceLeft.start - sliceRight.start;
                     }
                   });
+
                   // select top N slices in content
+
                   var upperBound = parseInt('1');
                   if (upperBound >= 0) {
                     slicesOfContent = slicesOfContent.slice(0, upperBound);
                   }
+
                   // highlight title and content
+
                   function highlightKeyword(text, slice) {
                     var result = '';
                     var prevEnd = slice.start;
@@ -634,17 +1317,21 @@
                     result += text.substring(prevEnd, slice.end);
                     return result;
                   }
+
                   var resultItem = '';
+
                   if (slicesOfTitle.length != 0) {
                     resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
                   } else {
                     resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
                   }
+
                   slicesOfContent.forEach(function (slice) {
                     resultItem += "<a href='" + articleUrl + "'>" +
                       "<p class=\"search-result\">" + highlightKeyword(content, slice) +
                       "...</p>" + "</a>";
                   });
+
                   resultItem += "</li>";
                   resultItems.push({
                     item: resultItem,
@@ -677,6 +1364,7 @@
               resultContent.innerHTML = searchResultList;
             }
           }
+
           if ('auto' === 'auto') {
             input.addEventListener('input', inputEventFunction);
           } else {
@@ -687,13 +1375,16 @@
               }
             });
           }
+
           // remove loading animation
           $(".local-search-pop-overlay").remove();
           $('body').css('overflow', '');
+
           proceedsearch();
         }
       });
     }
+
     // handle and trigger popup window;
     $('.popup-trigger').click(function(e) {
       e.stopPropagation();
@@ -703,6 +1394,7 @@
         proceedsearch();
       };
     });
+
     $('.popup-btn-close').click(onPopupClose);
     $('.popup').click(function(e){
       e.stopPropagation();
@@ -715,6 +1407,22 @@
       }
     });
   </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
   <script>
     (function(){
       var bp = document.createElement('script');
@@ -724,5 +1432,23 @@
       s.parentNode.insertBefore(bp, s);
     })();
   </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
 </body>
 </html>
