@@ -57,18 +57,18 @@
   };
 </script>
 
-  <meta name="description" content="前言最近工作过程中遇到了需要计算金钱的问题，由于有零有整，多次计算之后进行保留两位小数的时候，会发生计算不太准确的问题。比如：572.725需要保留两位小数，按照我们生活中来说，应该是572.73，但是在程序中最后保留的结果为572.72。 通过查资料，多数编程语言中，采用的不是我们生活中常用“四舍五入”，而是让统计数据更公平，降低舍入的误差的“奇进偶舍”的取舍方式，又称为“四舍六入五成双”。 奇">
+  <meta name="description" content="前言最近工作过程中遇到了需要计算金钱的问题，由于有零有整，多次计算之后进行保留两位小数的时候，会发生计算不太准确的问题。比如：572.725需要保留两位小数，按照我们生活中来说，应该是572.73，但是在程序中最后保留的结果为572.72。 通过查资料，多数编程语言中，采用的不是我们生活中常用“四舍五入”，而是让统计数据更公平，降低舍入的误差的“奇进偶舍”的取舍方式，又称为“四舍六入五成双”。">
 <meta name="keywords" content="python,Decimal,浮点数计算">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python中的四舍五入">
 <meta property="og:url" content="https://zz.zzs7.top/python-round.html">
 <meta property="og:site_name" content="SavingUnhappy">
-<meta property="og:description" content="前言最近工作过程中遇到了需要计算金钱的问题，由于有零有整，多次计算之后进行保留两位小数的时候，会发生计算不太准确的问题。比如：572.725需要保留两位小数，按照我们生活中来说，应该是572.73，但是在程序中最后保留的结果为572.72。 通过查资料，多数编程语言中，采用的不是我们生活中常用“四舍五入”，而是让统计数据更公平，降低舍入的误差的“奇进偶舍”的取舍方式，又称为“四舍六入五成双”。 奇">
+<meta property="og:description" content="前言最近工作过程中遇到了需要计算金钱的问题，由于有零有整，多次计算之后进行保留两位小数的时候，会发生计算不太准确的问题。比如：572.725需要保留两位小数，按照我们生活中来说，应该是572.73，但是在程序中最后保留的结果为572.72。 通过查资料，多数编程语言中，采用的不是我们生活中常用“四舍五入”，而是让统计数据更公平，降低舍入的误差的“奇进偶舍”的取舍方式，又称为“四舍六入五成双”。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-14T10:54:42.682Z">
+<meta property="og:updated_time" content="2019-08-14T15:18:48.298Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python中的四舍五入">
-<meta name="twitter:description" content="前言最近工作过程中遇到了需要计算金钱的问题，由于有零有整，多次计算之后进行保留两位小数的时候，会发生计算不太准确的问题。比如：572.725需要保留两位小数，按照我们生活中来说，应该是572.73，但是在程序中最后保留的结果为572.72。 通过查资料，多数编程语言中，采用的不是我们生活中常用“四舍五入”，而是让统计数据更公平，降低舍入的误差的“奇进偶舍”的取舍方式，又称为“四舍六入五成双”。 奇">
+<meta name="twitter:description" content="前言最近工作过程中遇到了需要计算金钱的问题，由于有零有整，多次计算之后进行保留两位小数的时候，会发生计算不太准确的问题。比如：572.725需要保留两位小数，按照我们生活中来说，应该是572.73，但是在程序中最后保留的结果为572.72。 通过查资料，多数编程语言中，采用的不是我们生活中常用“四舍五入”，而是让统计数据更公平，降低舍入的误差的“奇进偶舍”的取舍方式，又称为“四舍六入五成双”。">
   <link rel="canonical" href="https://zz.zzs7.top/python-round">
 
 
@@ -309,7 +309,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-08-14 18:54:42" itemprop="dateModified" datetime="2019-08-14T18:54:42+08:00">2019-08-14</time>
+                <time title="修改时间：2019-08-14 23:18:48" itemprop="dateModified" datetime="2019-08-14T23:18:48+08:00">2019-08-14</time>
               </span>
             
           
@@ -340,6 +340,8 @@
       
         <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近工作过程中遇到了需要计算金钱的问题，由于有零有整，多次计算之后进行保留两位小数的时候，会发生计算不太准确的问题。<br>比如：<br><code>572.725</code>需要保留两位小数，按照我们生活中来说，应该是<code>572.73</code>，但是在程序中最后保留的结果为<code>572.72</code>。</p>
 <p>通过查资料，多数编程语言中，采用的不是我们生活中常用“四舍五入”，而是让统计数据更公平，降低舍入的误差的“奇进偶舍”的取舍方式，又称为“四舍六入五成双”。</p>
+<a id="more"></a>
+
 <h2 id="奇进偶舍（四舍六入五成双）"><a href="#奇进偶舍（四舍六入五成双）" class="headerlink" title="奇进偶舍（四舍六入五成双）"></a>奇进偶舍（四舍六入五成双）</h2><p>“奇进偶舍”是一种比较精确比较科学的计数保留法，是一种数字修约规则。从另一种说法“四舍六入五成双”来看，就是遇到六才进一位，而遇到五需要进行别的操作。</p>
 <p>举个例子🌰：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">2.724</span></span><br><span class="line">b = <span class="number">2.725</span></span><br><span class="line">c = <span class="number">2.726</span></span><br><span class="line">d = <span class="number">2.735</span></span><br><span class="line"><span class="comment"># 上面四个数字，保留两位小数的结果</span></span><br><span class="line"><span class="comment"># a = 2.72 最后一位是4，舍掉</span></span><br><span class="line"><span class="comment"># b = 2.72 最后一位是5，但是上一位是2，偶数，则不进1</span></span><br><span class="line"><span class="comment"># c = 2.73 最后一位是6，进1</span></span><br><span class="line"><span class="comment"># d = 2.74 最后一位是5，上一位是3，奇数，进1</span></span><br></pre></td></tr></table></figure>

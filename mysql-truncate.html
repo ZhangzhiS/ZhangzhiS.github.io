@@ -57,18 +57,18 @@
   };
 </script>
 
-  <meta name="description" content="在公司项目的旧代码中看到有mysql的truncate操作。逻辑就是truncate操作之后，执行任务A，如果A出错，则进行rollback回滚。 应该是最近同事写需求，修改了A，然后某种条件A报错了，然后操作的那张表发现所有的数据都没了。 来了解一下truncate的操作。 TRUNCATEtruncate是对数据进行删除的操作，可能会想到delete以及drop，通过比较三者来说说他们的区别。">
+  <meta name="description" content="在公司项目的旧代码中看到有mysql的truncate操作。逻辑就是truncate操作之后，执行任务A，如果A出错，则进行rollback回滚。 应该是最近同事写需求，修改了A，然后某种条件A报错了，然后操作的那张表发现所有的数据都没了。 来了解一下truncate的操作。">
 <meta name="keywords" content="Mysql,删库">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于Mysql的truncate操作">
 <meta property="og:url" content="https://zz.zzs7.top/mysql-truncate.html">
 <meta property="og:site_name" content="SavingUnhappy">
-<meta property="og:description" content="在公司项目的旧代码中看到有mysql的truncate操作。逻辑就是truncate操作之后，执行任务A，如果A出错，则进行rollback回滚。 应该是最近同事写需求，修改了A，然后某种条件A报错了，然后操作的那张表发现所有的数据都没了。 来了解一下truncate的操作。 TRUNCATEtruncate是对数据进行删除的操作，可能会想到delete以及drop，通过比较三者来说说他们的区别。">
+<meta property="og:description" content="在公司项目的旧代码中看到有mysql的truncate操作。逻辑就是truncate操作之后，执行任务A，如果A出错，则进行rollback回滚。 应该是最近同事写需求，修改了A，然后某种条件A报错了，然后操作的那张表发现所有的数据都没了。 来了解一下truncate的操作。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-14T11:15:54.027Z">
+<meta property="og:updated_time" content="2019-08-14T15:18:16.868Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于Mysql的truncate操作">
-<meta name="twitter:description" content="在公司项目的旧代码中看到有mysql的truncate操作。逻辑就是truncate操作之后，执行任务A，如果A出错，则进行rollback回滚。 应该是最近同事写需求，修改了A，然后某种条件A报错了，然后操作的那张表发现所有的数据都没了。 来了解一下truncate的操作。 TRUNCATEtruncate是对数据进行删除的操作，可能会想到delete以及drop，通过比较三者来说说他们的区别。">
+<meta name="twitter:description" content="在公司项目的旧代码中看到有mysql的truncate操作。逻辑就是truncate操作之后，执行任务A，如果A出错，则进行rollback回滚。 应该是最近同事写需求，修改了A，然后某种条件A报错了，然后操作的那张表发现所有的数据都没了。 来了解一下truncate的操作。">
   <link rel="canonical" href="https://zz.zzs7.top/mysql-truncate">
 
 
@@ -298,7 +298,7 @@
                 
               
 
-              <time title="创建时间：2019-08-14 19:26:43 / 修改时间：19:15:54" itemprop="dateCreated datePublished" datetime="2019-08-14T19:26:43+08:00">2019-08-14</time>
+              <time title="创建时间：2019-08-14 19:26:43 / 修改时间：23:18:16" itemprop="dateCreated datePublished" datetime="2019-08-14T19:26:43+08:00">2019-08-14</time>
             </span>
           
             
@@ -333,6 +333,8 @@
         <p>在公司项目的旧代码中看到有mysql的truncate操作。<br>逻辑就是truncate操作之后，执行任务A，如果A出错，则进行rollback回滚。</p>
 <p>应该是最近同事写需求，修改了A，然后某种条件A报错了，然后操作的那张表发现所有的数据都没了。</p>
 <p>来了解一下truncate的操作。</p>
+<a id="more"></a>
+
 <h2 id="TRUNCATE"><a href="#TRUNCATE" class="headerlink" title="TRUNCATE"></a>TRUNCATE</h2><p><code>truncate</code>是对数据进行删除的操作，可能会想到delete以及drop，通过比较三者来说说他们的区别。</p>
 <p><code>delete</code>语句执行删除是每次从表中删除一行，并且将此次删除操作作为事物记录在日志中保存以便进行回滚操作。</p>
 <p><code>truncate</code>则是一次性的删除表中所有的数据，而且不会将操作记录计入日志保存，通过再<code>insert</code>数据比较与<code>delete</code>的区别就是：<code>delete</code>之后再插入数据，自增的id是以删除之前的id开始增长的，但是<code>truncate</code>之后，是从0开始的。当表被TRUNCATE 后，这个表和索引所占用的空间会恢复到初始大小。</p>
