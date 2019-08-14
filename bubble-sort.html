@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-
-
-
-
-
 <html class="theme-next pisces use-motion" lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -17,13 +12,8 @@
   <link rel="mask-icon" href="/images/favicon.png?v=7.3.0" color="#222">
   <meta name="google-site-verification" content="jfiTzJL4QReMSaJi0l8TDoVyg56AXdg6uPW8b4lVeaU">
   <meta name="baidu-site-verification" content="T51n5dxa3zuPzDcC">
-
 <link rel="stylesheet" href="/css/main.css?v=7.3.0">
-
-
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
-
-
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
@@ -56,7 +46,6 @@
     }
   };
 </script>
-
   <meta name="description" content="冒泡排序是一种比较简单的排序方法。通过比较两个相邻的元素，如果他们的顺序有误，就把他们交换顺序。 比如要将一个列表进行排序，就是对该列表进行遍历，将每次拿到的元素与其他元素进行比较交换位置，每一次遍历只排好一个数字。 下面看看图示：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="冒泡排序">
@@ -71,8 +60,6 @@
 <meta name="twitter:description" content="冒泡排序是一种比较简单的排序方法。通过比较两个相邻的元素，如果他们的顺序有误，就把他们交换顺序。 比如要将一个列表进行排序，就是对该列表进行遍历，将每次拿到的元素与其他元素进行比较交换位置，每一次遍历只排好一个数字。 下面看看图示：">
 <meta name="twitter:image" content="https://i.loli.net/2019/06/26/5d1328e72991010400.png">
   <link rel="canonical" href="https://zz.zzs7.top/bubble-sort">
-
-
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
@@ -83,9 +70,7 @@
     isArchive: false
   };
 </script>
-
   <title>冒泡排序 | SavingUnhappy</title>
-  
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139508983-1"></script>
   <script>
     var host = window.location.hostname;
@@ -96,14 +81,6 @@
       gtag('config', 'UA-139508983-1');
     }
   </script>
-
-
-
-
-
-
-
-
   <noscript>
   <style>
   .use-motion .motion-element,
@@ -116,30 +93,23 @@
   .use-motion .post-header,
   .use-motion .post-body,
   .use-motion .collection-title { opacity: initial; }
-
   .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
     top: initial;
   }
-
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
 </noscript>
-
 </head>
-
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
   <div class="container sidebar-position-left">
     <div class="headband"></div>
-
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta">
-
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
@@ -148,9 +118,7 @@
       </a>
     </div>
         <h1 class="site-subtitle" itemprop="description">If you give someone a program, you will frustrate them for a day.</h1>
-      
   </div>
-
   <div class="site-nav-toggle">
     <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
@@ -159,74 +127,27 @@
     </button>
   </div>
 </div>
-
-
 <nav class="site-nav">
-  
   <ul id="menu" class="menu">
-      
-      
-      
-        
         <li class="menu-item menu-item-home">
-      
-    
-      
-    
-
     <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
-
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-tags">
-      
-    
-      
-    
-
     <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">32</span></a>
-
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-categories">
-      
-    
-      
-    
-
     <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">8</span></a>
-
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-archives">
-      
-    
-      
-    
-
     <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">26</span></a>
-
   </li>
       <li class="menu-item menu-item-search">
         <a href="javascript:;" class="popup-trigger">
-        
           <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
       </li>
-    
   </ul>
-
 </nav>
   <div class="site-search">
-    
   <div class="popup search-popup">
   <div class="search-header">
     <span class="search-icon">
@@ -243,145 +164,72 @@
   </div>
   <div id="search-result"></div>
 </div>
-
-
   </div>
 </div>
     </header>
-
-    
-
-
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
-            
-
           <div id="content" class="content page-post-detail">
-            
-
   <div id="posts" class="posts-expand">
-    
-
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/bubble-sort.html">
-
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
       <meta itemprop="image" content="/images/ava.gif">
     </span>
-
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
       <header class="post-header">
-
-        
           <h2 class="post-title" itemprop="name headline">冒泡排序
-
-            
           </h2>
-        
-
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
               <time title="创建时间：2019-06-26 22:26:21 / 修改时间：22:31:47" itemprop="dateCreated datePublished" datetime="2019-06-26T22:26:21+08:00">2019-06-26</time>
             </span>
-          
-            
-
-            
-          
-
-          
-
         </div>
       </header>
-
-    
-    
-    
     <div class="post-body" itemprop="articleBody">
-
-      
         <p>冒泡排序是一种比较简单的排序方法。通过比较两个相邻的元素，如果他们的顺序有误，就把他们交换顺序。</p>
 <p>比如要将一个列表进行排序，就是对该列表进行遍历，将每次拿到的元素与其他元素进行比较交换位置，每一次遍历只排好一个数字。</p>
 <p>下面看看图示：</p>
 <a id="more"></a>
-
 <p>一次遍历：</p>
 <p><img src="https://i.loli.net/2019/06/26/5d1328e72991010400.png" alt="loop"></p>
 <p>后续的遍历也只是循环这样的操作，就不再用图解释了。</p>
 <p>看看python实现的<a href="https://github.com/ZhangzhiS/study_note/blob/master/bubble_sort/bubble_sort.py" target="_blank" rel="noopener">代码</a>:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubble_sort</span><span class="params">(array: list)</span> -&gt; list:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    冒泡排序</span></span><br><span class="line"><span class="string">    冒泡排序要排序n个数，由于每遍历一趟只排好一个数字，</span></span><br><span class="line"><span class="string">    则需要遍历n-1趟，所以最外层循环是要循环n-1次，</span></span><br><span class="line"><span class="string">    而每次趟遍历中需要比较每归位的数字，</span></span><br><span class="line"><span class="string">    则要在n-1次比较中减去已排好的i位数字，</span></span><br><span class="line"><span class="string">    则第二层循环要遍历是n-1-i次</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    array_len = len(array)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(array_len - <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(array_len - <span class="number">1</span> - i):</span><br><span class="line">            <span class="keyword">if</span> array[j] &gt; array[j+<span class="number">1</span>]:</span><br><span class="line">                array[j], array[j+<span class="number">1</span>] = array[j+<span class="number">1</span>], array[j]</span><br><span class="line">    print(array)</span><br><span class="line">    <span class="keyword">return</span> array</span><br></pre></td></tr></table></figure>
-
 <blockquote>
 <p>建议自己画图或者Debug调试看看排序过程中元素的变化，更好去理解。</p>
 </blockquote>
-
     </div>
-
-    
-    
-    
-        
-      
-
       <footer class="post-footer">
-
-        
-
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
-              
                 <a href="/binary-search.html" rel="next" title="python实现二分查找法">
                   <i class="fa fa-chevron-left"></i> python实现二分查找法
                 </a>
-              
             </div>
-
             <span class="post-nav-divider"></span>
-
             <div class="post-nav-prev post-nav-item">
-              
                 <a href="/python-round.html" rel="prev" title="python中的四舍五入">
                   python中的四舍五入 <i class="fa fa-chevron-right"></i>
                 </a>
-              
             </div>
           </div>
-        
       </footer>
-    
   </div>
-  
-  
-  
   </article>
-
   </div>
-
-
           </div>
-          
-
         </div>
-          
-  
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
       <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
@@ -389,13 +237,10 @@
       <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
-
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
-
       <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
-
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image"
       src="/images/ava.gif"
@@ -405,159 +250,39 @@
 </div>
   <nav class="site-state motion-element">
       <div class="site-state-item site-state-posts">
-        
           <a href="/archives/">
-        
           <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
-    
-      
-      
       <div class="site-state-item site-state-categories">
-        
-          
             <a href="/categories/">
-          
-        
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
         <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
-    
-      
-      
       <div class="site-state-item site-state-tags">
-        
-          
             <a href="/tags/">
-          
-        
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
         <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
-    
   </nav>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-      
-      
-      
-        
-      
         <a href="https://github.com/ZhangzhiS" title="GitHub &rarr; https://github.com/ZhangzhiS" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
       </span>
-    
       <span class="links-of-author-item">
-      
-      
-      
-        
-      
         <a href="mailto:zhi781029588@gmail.com" title="E-Mail &rarr; mailto:zhi781029588@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
       </span>
-    
   </div>
-
-
-
         </div>
       </div>
-
     </div>
   </aside>
   <div id="sidebar-dimmer"></div>
-
-
       </div>
     </main>
-
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <div class="copyright">  <a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">京ICP备19016512号 </a>&copy; <span itemprop="copyrightYear">2019</span>
@@ -569,87 +294,22 @@
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.3.0</div>
-
-        
-
-
-
-
-
-
-
-
-        
       </div>
     </footer>
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
       </div>
-
-    
-
   </div>
-
-  
   <script src="/lib/jquery/index.js?v=3.4.1"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
 <script src="/js/utils.js?v=7.3.0"></script>
   <script src="/js/motion.js?v=7.3.0"></script>
-
-
   <script src="/js/affix.js?v=7.3.0"></script>
   <script src="/js/schemes/pisces.js?v=7.3.0"></script>
-
-
 <script src="/js/next-boot.js?v=7.3.0"></script>
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   <script src="/js/local-search.js?v=7.3.0"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-
-  
-
-
-  
   <script src="/js/scrollspy.js?v=7.3.0"></script>
 <script src="/js/post-details.js?v=7.3.0"></script>
-
-
 </body>
 </html>
