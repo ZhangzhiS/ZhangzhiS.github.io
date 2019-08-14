@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+
+
+
+
+
 <html class="theme-next pisces use-motion" lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -12,8 +17,13 @@
   <link rel="mask-icon" href="/images/favicon.png?v=7.3.0" color="#222">
   <meta name="google-site-verification" content="jfiTzJL4QReMSaJi0l8TDoVyg56AXdg6uPW8b4lVeaU">
   <meta name="baidu-site-verification" content="T51n5dxa3zuPzDcC">
+
 <link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
@@ -46,6 +56,7 @@
     }
   };
 </script>
+
   <meta name="description" content="前言最近工作过程中遇到了需要计算金钱的问题，由于有零有整，多次计算之后进行保留两位小数的时候，会发生计算不太准确的问题。比如：572.725需要保留两位小数，按照我们生活中来说，应该是572.73，但是在程序中最后保留的结果为572.72。通过查资料，多数编程语言中，采用的不是我们生活中常用“四舍五入”，而是让统计数据更公平，降低舍入的误差的“奇进偶舍”的取舍方式，又称为“四舍六入五成双”。">
 <meta name="keywords" content="python,Decimal,浮点数计算">
 <meta property="og:type" content="article">
@@ -59,6 +70,8 @@
 <meta name="twitter:title" content="python中的四舍五入">
 <meta name="twitter:description" content="前言最近工作过程中遇到了需要计算金钱的问题，由于有零有整，多次计算之后进行保留两位小数的时候，会发生计算不太准确的问题。比如：572.725需要保留两位小数，按照我们生活中来说，应该是572.73，但是在程序中最后保留的结果为572.72。通过查资料，多数编程语言中，采用的不是我们生活中常用“四舍五入”，而是让统计数据更公平，降低舍入的误差的“奇进偶舍”的取舍方式，又称为“四舍六入五成双”。">
   <link rel="canonical" href="https://zz.zzs7.top/python-round">
+
+
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
@@ -69,7 +82,9 @@
     isArchive: false
   };
 </script>
+
   <title>python中的四舍五入 | SavingUnhappy</title>
+  
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139508983-1"></script>
   <script>
     var host = window.location.hostname;
@@ -80,6 +95,14 @@
       gtag('config', 'UA-139508983-1');
     }
   </script>
+
+
+
+
+
+
+
+
   <noscript>
   <style>
   .use-motion .motion-element,
@@ -92,23 +115,30 @@
   .use-motion .post-header,
   .use-motion .post-body,
   .use-motion .collection-title { opacity: initial; }
+
   .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
     top: initial;
   }
+
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
 </noscript>
+
 </head>
+
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
   <div class="container sidebar-position-left">
     <div class="headband"></div>
+
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta">
+
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
@@ -117,7 +147,9 @@
       </a>
     </div>
         <h1 class="site-subtitle" itemprop="description">If you give someone a program, you will frustrate them for a day.</h1>
+      
   </div>
+
   <div class="site-nav-toggle">
     <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
@@ -126,27 +158,74 @@
     </button>
   </div>
 </div>
+
+
 <nav class="site-nav">
+  
   <ul id="menu" class="menu">
+      
+      
+      
+        
         <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
     <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
   </li>
+      
+      
+      
+        
         <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
     <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">32</span></a>
+
   </li>
+      
+      
+      
+        
         <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
     <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">8</span></a>
+
   </li>
+      
+      
+      
+        
         <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
     <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">26</span></a>
+
   </li>
       <li class="menu-item menu-item-search">
         <a href="javascript:;" class="popup-trigger">
+        
           <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
       </li>
+    
   </ul>
+
 </nav>
   <div class="site-search">
+    
   <div class="popup search-popup">
   <div class="search-header">
     <span class="search-icon">
@@ -163,36 +242,68 @@
   </div>
   <div id="search-result"></div>
 </div>
+
+
   </div>
 </div>
     </header>
+
+    
+
+
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+            
+
           <div id="content" class="content page-post-detail">
+            
+
   <div id="posts" class="posts-expand">
+    
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/python-round.html">
+
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
       <meta itemprop="image" content="/images/ava.gif">
     </span>
+
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
       <header class="post-header">
+
+        
           <h2 class="post-title" itemprop="name headline">python中的四舍五入
+
+            
           </h2>
+        
+
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
               <time title="创建时间：2019-08-05 20:14:50" itemprop="dateCreated datePublished" datetime="2019-08-05T20:14:50+08:00">2019-08-05</time>
             </span>
+          
+            
+
+            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
@@ -200,13 +311,23 @@
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2019-08-14 18:54:42" itemprop="dateModified" datetime="2019-08-14T18:54:42+08:00">2019-08-14</time>
               </span>
+            
+          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
+              
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+
+                
+                
+              
             </span>
+          
+
+          
             <span id="/python-round.html" class="post-meta-item leancloud_visitors" data-flag-title="python中的四舍五入" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -214,22 +335,41 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="leancloud-visitors-count"></span>
             </span>
+          
+            
+  
   <span class="post-meta-item">
+    
       <span class="post-meta-item-icon">
         <i class="fa fa-comment-o"></i>
       </span>
+        
+      
       <span class="post-meta-item-text">Valine：</span>
+    
     <a title="valine" href="/python-round.html#comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/python-round.html" itemprop="commentCount"></span>
     </a>
   </span>
+  
+  
+          
+
         </div>
       </header>
+
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
+
+      
         <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近工作过程中遇到了需要计算金钱的问题，由于有零有整，多次计算之后进行保留两位小数的时候，会发生计算不太准确的问题。<br>比如：<br><code>572.725</code>需要保留两位小数，按照我们生活中来说，应该是<code>572.73</code>，但是在程序中最后保留的结果为<code>572.72</code>。</p><p>通过查资料，多数编程语言中，采用的不是我们生活中常用“四舍五入”，而是让统计数据更公平，降低舍入的误差的“奇进偶舍”的取舍方式，又称为“四舍六入五成双”。</p><a id="more"></a>
+
 <h2 id="奇进偶舍（四舍六入五成双）"><a href="#奇进偶舍（四舍六入五成双）" class="headerlink" title="奇进偶舍（四舍六入五成双）"></a>奇进偶舍（四舍六入五成双）</h2><p>“奇进偶舍”是一种比较精确比较科学的计数保留法，是一种数字修约规则。从另一种说法“四舍六入五成双”来看，就是遇到六才进一位，而遇到五需要进行别的操作。</p>
 <p>举个例子🌰：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">2.724</span></span><br><span class="line">b = <span class="number">2.725</span></span><br><span class="line">c = <span class="number">2.726</span></span><br><span class="line">d = <span class="number">2.735</span></span><br><span class="line"><span class="comment"># 上面四个数字，保留两位小数的结果</span></span><br><span class="line"><span class="comment"># a = 2.72 最后一位是4，舍掉</span></span><br><span class="line"><span class="comment"># b = 2.72 最后一位是5，但是上一位是2，偶数，则不进1</span></span><br><span class="line"><span class="comment"># c = 2.73 最后一位是6，进1</span></span><br><span class="line"><span class="comment"># d = 2.74 最后一位是5，上一位是3，奇数，进1</span></span><br></pre></td></tr></table></figure>
+
 <p><strong>四舍六入五成双，高位为单数则进1凑成双数，高位为双数则不进位。</strong></p>
 <p>至于为什么要这么算，看一个百度百科说的例子：</p>
 <p>1.15+1.25+1.35+1.45=5.2，若按四舍五入取一位小数计算：</p>
@@ -239,39 +379,82 @@
 <h2 id="Decimal"><a href="#Decimal" class="headerlink" title="Decimal"></a>Decimal</h2><p>工作中总会遇到需要进行浮点数计算的时候，但是我们直接写在程序里面的浮点数，计算机是无法精确的使用二进制小数来进行表示。可以看一篇大佬的文章<span class="exturl" data-url="aHR0cHM6Ly9tcC53ZWl4aW4ucXEuY29tL3M/X19iaXo9TXpBeE9UYzBOekV4Tmc9PSZtaWQ9MjY2NTUxMzE0MCZpZHg9MSZzbj01NjU1MTdlOTc3YWM1NjkwNDMwNWE0YTlmOWQ2NTAxMiZzY2VuZT0zOCN3ZWNoYXRfcmVkaXJlY3Q=" title="https://mp.weixin.qq.com/s?__biz=MzAxOTc0NzExNg==&mid=2665513140&idx=1&sn=565517e977ac56904305a4a9f9d65012&scene=38#wechat_redirect">浮点数为什么不精确？<i class="fa fa-external-link"></i></span>，受益良多。</p>
 <p>不知道在别的编程语言怎么处理，在python中通常是使用标准库<code>Decimal</code>来处理的。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> decimal <span class="keyword">import</span> Decimal</span><br><span class="line"></span><br><span class="line">a = <span class="number">1.23</span></span><br><span class="line">b = <span class="number">2.3434</span></span><br><span class="line"><span class="comment"># 先转换为str，不然还是会有计算不精确的情况发生。</span></span><br><span class="line"><span class="comment"># Decimal('3.573399999999999909761072558')</span></span><br><span class="line">c = Decimal(str(a)) + Decimal(str(b))  </span><br><span class="line">print(c)</span><br><span class="line"><span class="comment"># Decimal('3.5734')</span></span><br></pre></td></tr></table></figure>
+
 <p>需要进行小数位的保留的时候，使用<code>quantize()</code>方法。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> decimal</span><br><span class="line"><span class="keyword">from</span> decimal <span class="keyword">import</span> Decimal</span><br><span class="line">c = Decimal(<span class="string">'3.5734'</span>)</span><br><span class="line">d = c.quantize(Decimal(<span class="string">".00"</span>))  <span class="comment"># 这就是保留两位小数操作</span></span><br></pre></td></tr></table></figure>
+
 <p><code>quantize()</code>提供了一个rounding参数<code>rounding</code>来决定在保留两位小数的时候进行的操作。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这是源码中的内容</span></span><br><span class="line"><span class="comment"># Rounding</span></span><br><span class="line">ROUND_DOWN = <span class="string">'ROUND_DOWN'</span></span><br><span class="line">ROUND_HALF_UP = <span class="string">'ROUND_HALF_UP'</span></span><br><span class="line">ROUND_HALF_EVEN = <span class="string">'ROUND_HALF_EVEN'</span></span><br><span class="line">ROUND_CEILING = <span class="string">'ROUND_CEILING'</span></span><br><span class="line">ROUND_FLOOR = <span class="string">'ROUND_FLOOR'</span></span><br><span class="line">ROUND_UP = <span class="string">'ROUND_UP'</span></span><br><span class="line">ROUND_HALF_DOWN = <span class="string">'ROUND_HALF_DOWN'</span></span><br><span class="line">ROUND_05UP = <span class="string">'ROUND_05UP'</span></span><br></pre></td></tr></table></figure>
+
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> decimal <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    a = Decimal(<span class="string">'3.1415926535'</span>)</span><br><span class="line">    print(a)</span><br><span class="line">    print(a.quantize(Decimal(<span class="string">"1.000"</span>)))</span><br><span class="line">    print(a.quantize(Decimal(<span class="string">"1.000"</span>), rounding=ROUND_05UP))</span><br><span class="line">    print(a.quantize(Decimal(<span class="string">"1.000"</span>), rounding=ROUND_CEILING))</span><br><span class="line">    print(a.quantize(Decimal(<span class="string">"1.000"</span>), rounding=ROUND_DOWN))</span><br><span class="line">    print(a.quantize(Decimal(<span class="string">"1.000"</span>), rounding=ROUND_UP))</span><br><span class="line">    print(a.quantize(Decimal(<span class="string">"1.000"</span>), rounding=ROUND_FLOOR))</span><br><span class="line">    print(a.quantize(Decimal(<span class="string">"1.000"</span>), rounding=ROUND_HALF_DOWN))</span><br><span class="line">    print(a.quantize(Decimal(<span class="string">"1.000"</span>), rounding=ROUND_HALF_UP))</span><br><span class="line">    print(a.quantize(Decimal(<span class="string">"1.000"</span>), rounding=ROUND_HALF_EVEN))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出如下：</span></span><br><span class="line"><span class="comment"># 3.1415926535</span></span><br><span class="line"><span class="comment"># 3.142</span></span><br><span class="line"><span class="comment"># ROUND_05UP： 3.141 不进位</span></span><br><span class="line"><span class="comment"># ROUND_CEILING： 3.142  CEILING正数始终进位</span></span><br><span class="line"><span class="comment"># ROUND_DOWN： 3.141  不进位</span></span><br><span class="line"><span class="comment"># ROUND_UP： 3.142  进位</span></span><br><span class="line"><span class="comment"># ROUND_FLOOR： 3.141  FLOOR正数始终不进位</span></span><br><span class="line"><span class="comment"># ROUND_HALF_DOWN： 3.142  不进位</span></span><br><span class="line"><span class="comment"># ROUND_HALF_UP： 3.142  进位</span></span><br><span class="line"><span class="comment"># ROUND_HALF_EVEN： 3.142  四舍五入</span></span><br></pre></td></tr></table></figure>
+
 <p>所以在使用的时候可以根据自己的需求来选择rounding的值。</p>
+
     </div>
+
+    
+    
+    
+        
+      
+
       <footer class="post-footer">
+          
+            
+          
           <div class="post-tags">
+            
               <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+            
               <a href="/tags/Decimal/" rel="tag"><i class="fa fa-tag"></i> Decimal</a>
+            
               <a href="/tags/浮点数计算/" rel="tag"><i class="fa fa-tag"></i> 浮点数计算</a>
+            
           </div>
+        
+
+        
+
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
+              
                 <a href="/bubble-sort.html" rel="next" title="冒泡排序">
                   <i class="fa fa-chevron-left"></i> 冒泡排序
                 </a>
+              
             </div>
+
             <span class="post-nav-divider"></span>
+
             <div class="post-nav-prev post-nav-item">
+              
                 <a href="/mysql-truncate.html" rel="prev" title="关于Mysql的truncate操作">
                   关于Mysql的truncate操作 <i class="fa fa-chevron-right"></i>
                 </a>
+              
             </div>
           </div>
+        
       </footer>
+    
   </div>
+  
+  
+  
   </article>
+
   </div>
+
+
           </div>
+          
+    
     <div class="comments" id="comments"></div>
+  
+
         </div>
+          
+  
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
       <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
@@ -279,6 +462,7 @@
       <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
+
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
         <ul class="sidebar-nav motion-element">
@@ -289,8 +473,11 @@
             站点概览
           </li>
         </ul>
+      
+
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
+
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image"
       src="/images/ava.gif"
@@ -300,46 +487,176 @@
 </div>
   <nav class="site-state motion-element">
       <div class="site-state-item site-state-posts">
+        
           <a href="/archives/">
+        
           <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
+    
+      
+      
       <div class="site-state-item site-state-categories">
+        
+          
             <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
         <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
+    
+      
+      
       <div class="site-state-item site-state-tags">
+        
+          
             <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
         <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
+    
   </nav>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
+      
+      
+      
+        
+      
         <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1poYW5nemhpUw==" title="GitHub &rarr; https://github.com/ZhangzhiS"><i class="fa fa-fw fa-github"></i></span>
       </span>
+    
       <span class="links-of-author-item">
+      
+      
+      
+        
+      
         <span class="exturl" data-url="bWFpbHRvOnpoaTc4MTAyOTU4OEBnbWFpbC5jb20=" title="E-Mail &rarr; mailto:zhi781029588@gmail.com"><i class="fa fa-fw fa-envelope"></i></span>
       </span>
+    
   </div>
+
+
+
         </div>
       </div>
       <!--noindex-->
         <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
           <div class="post-toc">
+
+            
+            
+            
+            
+
+            
               <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#奇进偶舍（四舍六入五成双）"><span class="nav-number"></span> <span class="nav-text">奇进偶舍（四舍六入五成双）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Decimal"><span class="nav-number"></span> <span class="nav-text">Decimal</span></a></div>
+            
+
           </div>
         </div>
       <!--/noindex-->
+      
+
     </div>
   </aside>
   <div id="sidebar-dimmer"></div>
+
+
       </div>
     </main>
+
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <div class="copyright">  <span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">京ICP备19016512号 </span>&copy; <span itemprop="copyrightYear">2019</span>
@@ -348,20 +665,46 @@
   </span>
   <span class="author" itemprop="copyrightHolder">张智</span>
 </div>
+
+        
+
+
+
+
+
+
+
+
+        
       </div>
     </footer>
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
       </div>
+
+    
+
   </div>
+
+  
   <script src="/lib/jquery/index.js?v=3.4.1"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
 <script src="/js/utils.js?v=7.3.0"></script>
   <script src="/js/motion.js?v=7.3.0"></script>
+
+
   <script src="/js/affix.js?v=7.3.0"></script>
   <script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
 <script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
   <script>
     (function(){
       var bp = document.createElement('script');
@@ -371,9 +714,50 @@
       s.parentNode.insertBefore(bp, s);
     })();
   </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
   <script src="/js/scrollspy.js?v=7.3.0"></script>
 <script src="/js/post-details.js?v=7.3.0"></script>
+
+
+    
+
 <script>
 NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
   var GUEST = ['nick', 'mail', 'link'];
@@ -397,5 +781,6 @@ NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () =>
   });
 }, window.Valine);
 </script>
+
 </body>
 </html>
