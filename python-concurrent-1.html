@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+
+
+
+
+
 <html class="theme-next pisces use-motion" lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -12,8 +17,13 @@
   <link rel="mask-icon" href="/images/favicon.png?v=7.3.0" color="#222">
   <meta name="google-site-verification" content="jfiTzJL4QReMSaJi0l8TDoVyg56AXdg6uPW8b4lVeaU">
   <meta name="baidu-site-verification" content="T51n5dxa3zuPzDcC">
+
 <link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
@@ -46,6 +56,7 @@
     }
   };
 </script>
+
   <meta name="description" content="求职过程中，好多公司的招聘信息都会写一条：有构建大型互联网服务及高并发等经验 那什么是高并发呢？ 对于服务端接口来说，就是我们的接口可以同时并行处理大量的请求。 理解并发与并行先了解一下并发和并行的区别。百度百科对并发和并行的解释如下：">
 <meta name="keywords" content="python,多线程,并发">
 <meta property="og:type" content="article">
@@ -61,6 +72,8 @@
 <meta name="twitter:description" content="求职过程中，好多公司的招聘信息都会写一条：有构建大型互联网服务及高并发等经验 那什么是高并发呢？ 对于服务端接口来说，就是我们的接口可以同时并行处理大量的请求。 理解并发与并行先了解一下并发和并行的区别。百度百科对并发和并行的解释如下：">
 <meta name="twitter:image" content="https://i.loli.net/2019/05/08/5cd2711d34fca.jpg">
   <link rel="canonical" href="https://zz.zzs7.top/python-concurrent-1">
+
+
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
@@ -71,7 +84,9 @@
     isArchive: false
   };
 </script>
+
   <title>Python的并发编程（一）-了解并发以及简单的多线程实例 | SavingUnhappy</title>
+  
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139508983-1"></script>
   <script>
     var host = window.location.hostname;
@@ -82,6 +97,14 @@
       gtag('config', 'UA-139508983-1');
     }
   </script>
+
+
+
+
+
+
+
+
   <noscript>
   <style>
   .use-motion .motion-element,
@@ -94,23 +117,30 @@
   .use-motion .post-header,
   .use-motion .post-body,
   .use-motion .collection-title { opacity: initial; }
+
   .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
     top: initial;
   }
+
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
 </noscript>
+
 </head>
+
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
   <div class="container sidebar-position-left">
     <div class="headband"></div>
+
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta">
+
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
@@ -119,7 +149,9 @@
       </a>
     </div>
         <h1 class="site-subtitle" itemprop="description">If you give someone a program, you will frustrate them for a day.</h1>
+      
   </div>
+
   <div class="site-nav-toggle">
     <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
@@ -128,26 +160,73 @@
     </button>
   </div>
 </div>
+
+
 <nav class="site-nav">
+  
   <ul id="menu" class="menu">
+      
+      
+      
+        
         <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
     <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
   </li>
+      
+      
+      
+        
         <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
     <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">32</span></a>
+
   </li>
+      
+      
+      
+        
         <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
     <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">8</span></a>
+
   </li>
+      
+      
+      
+        
         <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
     <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">26</span></a>
+
   </li>
       <li class="menu-item menu-item-search">
         <a href="javascript:;" class="popup-trigger">
+        
           <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
       </li>
+    
   </ul>
+
     <div class="site-search">
+      
   <div class="popup search-popup local-search-popup">
   <div class="local-search-header clearfix">
     <span class="search-icon">
@@ -162,37 +241,69 @@
   </div>
   <div id="local-search-result"></div>
 </div>
+
+
     </div>
 </nav>
 </div>
     </header>
+
+    
+
+
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+            
+
           <div id="content" class="content page-post-detail">
+            
+
   <div id="posts" class="posts-expand">
+    
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/python-concurrent-1.html">
+
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
       <meta itemprop="image" content="/images/ava.gif">
     </span>
+
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
       <header class="post-header">
+
+        
           <h2 class="post-title" itemprop="name headline">Python的并发编程（一）-了解并发以及简单的多线程实例
+
+            
           </h2>
+        
+
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
               <time title="创建时间：2019-05-05 16:20:25" itemprop="dateCreated datePublished" datetime="2019-05-05T16:20:25+08:00">2019-05-05</time>
             </span>
+          
+            
+
+            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
@@ -200,13 +311,23 @@
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2019-06-18 19:27:13" itemprop="dateModified" datetime="2019-06-18T19:27:13+08:00">2019-06-18</time>
               </span>
+            
+          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
+              
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+
+                
+                
+              
             </span>
+          
+
+          
             <span id="/python-concurrent-1.html" class="post-meta-item leancloud_visitors" data-flag-title="Python的并发编程（一）-了解并发以及简单的多线程实例" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -214,23 +335,39 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="leancloud-visitors-count"></span>
             </span>
+          
+            
+  
   <span class="post-meta-item">
+    
     <span class="post-meta-item-icon">
       <i class="fa fa-comment-o"></i>
     </span>
     <span class="post-meta-item-text">评论数：</span>
+  
     <a href="/python-concurrent-1.html#comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/python-concurrent-1.html" itemprop="commentCount"></span>
     </a>
   </span>
+  
+  
+          
+
         </div>
       </header>
+
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
+
+      
         <p>求职过程中，好多公司的招聘信息都会写一条：<strong>有构建大型互联网服务及高并发等经验</strong></p>
 <p>那什么是高并发呢？</p>
 <p><strong>对于服务端接口来说，就是我们的接口可以同时并行处理大量的请求。</strong></p>
 <h3 id="理解并发与并行"><a href="#理解并发与并行" class="headerlink" title="理解并发与并行"></a>理解并发与并行</h3><p>先了解一下并发和并行的区别。百度百科对并发和并行的解释如下：</p>
 <a id="more"></a>
+
 <blockquote>
 <p><strong>并发</strong>当有多个线程在操作时,如果系统只有一个CPU,则它根本不可能真正同时进行一个以上的线程，它只能把CPU运行时间划分成若干个时间段,再将时间 段分配给各个线程执行，在一个时间段的线程代码运行时，其它线程处于挂起状。.这种方式我们称之为并发(Concurrent)。</p>
 <p><strong>并行：</strong>当系统有一个以上CPU时,则线程的操作有可能非并发。当一个CPU执行一个线程时，另一个CPU可以执行另一个线程，两个线程互不抢占CPU资源，可以同时进行，这种方式我们称之为并行(Parallel)。</p>
@@ -247,50 +384,85 @@
 <h4 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h4><p>Python3提供了threading库来实现多线程，可用来在单独的线程中执行任意的Python可调用对象。</p>
 <h5 id="启动和停止"><a href="#启动和停止" class="headerlink" title="启动和停止"></a>启动和停止</h5><p>先写一个简单的函数：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">countdown</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> n &gt; <span class="number">0</span>:</span><br><span class="line">        print(<span class="string">"n="</span>, n)</span><br><span class="line">        n-=<span class="number">1</span></span><br><span class="line">        time.sleep(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
 <p>使用多线程来执行上面的函数：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"></span><br><span class="line">t = Thread(target=countdown, args=(<span class="number">10</span>,))</span><br><span class="line">t.start()</span><br></pre></td></tr></table></figure>
+
 <p>注意：当创建一个线程实例时，在调用它的<code>start()</code>方法之前，线程不会立即开始执行。<strong>args需要的参数为元组。</strong></p>
 <p>线程实例会在他们所属的系统级线程（POSIX线程或Windows线程）中执行，这些线程完全由操作系统来管理，一旦启动之后，县城就开始独立运行，直到目标函数返回，可以使用<code>t.is_alive()</code>来判断线程是否还在运行。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">if</span> t.is_alive():</span><br><span class="line">        print(<span class="string">"执行中"</span>)</span><br><span class="line">        time.sleep(<span class="number">10</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">"完成"</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
 <p>也可以使用：<code>t.join()</code>来连接到该线程，等待该线程执行结束。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t.join()</span><br><span class="line">print(<span class="string">"完成"</span>)</span><br></pre></td></tr></table></figure>
+
 <p>在线程执行的过程中，Python的解释器会一直保持运行，直到所有的线程都终结。对于需要长时间运行的线程或者一直不断运行的后台任务，应该考虑将这些线程设置为daemon（守护线程）,daemon是无法被连接的，但是在主线程结束之后他们会自动销毁。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t = Thread(target=countdown, args=(<span class="number">10</span>,), daemon=<span class="literal">True</span>)</span><br><span class="line">t.start()</span><br></pre></td></tr></table></figure>
+
 <p>除了以上展示的两种操作外，对于线程没有太多的操作可做了。比如终止线程，给线程发信号，调整线程调度属性以及执行任何其他的高级操作，如果需要，就得自己构建。</p>
 <p>如果想要终止线程，这个线程必须要能够在某个点上轮询退出状态。我们可以试着实现一下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CountdownTask</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.__running = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">terminate</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.__running = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="keyword">while</span> self.__running <span class="keyword">and</span> n &gt; <span class="number">0</span>:</span><br><span class="line">            print(<span class="string">"n="</span>, n)</span><br><span class="line">            n -= <span class="number">1</span></span><br><span class="line">            time.sleep(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">c = CountdownTask()</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"></span><br><span class="line">t = Thread(target=c.run, args=(<span class="number">10</span>,))</span><br><span class="line">t.start()</span><br></pre></td></tr></table></figure>
+
 <p>可以通过<code>c.terminate()</code>来终止线程。</p>
 <h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><p>由于Python存在大名鼎鼎的全局解释器锁（GIL），所以Python的多线程其实只是伪多线程，解释器限制在任意时刻只允许运行一个线程。由于这个原因，不应该使用Python县城来处理计算密集型的任务，因为在这种任务中我们希望在多个CPU和行上实现<strong>并行</strong>处理。Python线程更适合I/O处理以及设计阻塞操作的并发执行任务（即，等待I/O，等待从数据库中取出结果等）。</p>
 <p>有时候我们会发现从Thread类中继承而来的线程类。比如：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CountdownThread</span><span class="params">(Thread)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.n = n</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">while</span> self.n &gt; <span class="number">0</span>:</span><br><span class="line">            print(<span class="string">"n="</span>, n)</span><br><span class="line">            n -= <span class="number">1</span></span><br><span class="line">            time.sleep(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">c = CountdownThread(<span class="number">5</span>)</span><br><span class="line">c.start()</span><br></pre></td></tr></table></figure>
+
 <p>尽管这样也可以完成任务，但这个在代码和threading库之间引入了一层额外的依赖关系。意思就是说，上面的代码只能用在有关线程的上下文中，而我们之前展示的技术中编写的代码并不会依赖于threading库。</p>
+
     </div>
+
+    
+    
+    
+
     <footer class="post-footer">
+          
+        
         <div class="post-tags">
             <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+          
             <a href="/tags/多线程/" rel="tag"><i class="fa fa-tag"></i> 多线程</a>
+          
             <a href="/tags/并发/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
+          
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
               <a href="/structure-1.html" rel="next" title="一起学习数据结构（一）-认识数据结构">
                 <i class="fa fa-chevron-left"></i> 一起学习数据结构（一）-认识数据结构
               </a>
+            
           </div>
+
           <span class="post-nav-divider"></span>
+
           <div class="post-nav-prev post-nav-item">
               <a href="/python-concurrent-2.html" rel="prev" title="Python的并发编程（二）-多线程的执行状态">
                 Python的并发编程（二）-多线程的执行状态 <i class="fa fa-chevron-right"></i>
               </a>
+            
           </div>
         </div>
     </footer>
   </div>
+  
+  
+  
   </article>
+
   </div>
+
+
           </div>
+          
+    
     <div class="comments" id="comments"></div>
+  
+
+
         </div>
+          
+  
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
       <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
@@ -298,6 +470,7 @@
       <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
+
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
         <ul class="sidebar-nav motion-element">
@@ -308,8 +481,11 @@
             站点概览
           </li>
         </ul>
+      
+
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
+
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" src="/images/ava.gif" alt="张智">
   <p class="site-author-name" itemprop="name">张智</p>
@@ -317,46 +493,176 @@
 </div>
   <nav class="site-state motion-element">
       <div class="site-state-item site-state-posts">
+        
           <a href="/archives/">
+        
           <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
+    
+      
+      
       <div class="site-state-item site-state-categories">
+        
+          
             <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
         <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
+    
+      
+      
       <div class="site-state-item site-state-tags">
+        
+          
             <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
         <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
+    
   </nav>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
+      
+      
+      
+        
+      
         <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1poYW5nemhpUw==" title="GitHub &rarr; https://github.com/ZhangzhiS"><i class="fa fa-fw fa-github"></i></span>
       </span>
+    
       <span class="links-of-author-item">
+      
+      
+      
+        
+      
         <span class="exturl" data-url="bWFpbHRvOnpoaTc4MTAyOTU4OEBnbWFpbC5jb20=" title="E-Mail &rarr; mailto:zhi781029588@gmail.com"><i class="fa fa-fw fa-envelope"></i></span>
       </span>
+    
   </div>
+
+
+
         </div>
       </div>
       <!--noindex-->
         <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
           <div class="post-toc">
+
+            
+            
+            
+            
+
+            
               <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#理解并发与并行"><span class="nav-number">1.</span> <span class="nav-text">理解并发与并行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python中的并发"><span class="nav-number">2.</span> <span class="nav-text">Python中的并发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多线程"><span class="nav-number">2.1.</span> <span class="nav-text">多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#启动和停止"><span class="nav-number">2.1.1.</span> <span class="nav-text">启动和停止</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注意事项"><span class="nav-number">2.2.</span> <span class="nav-text">注意事项</span></a></li></ol></li></ol></div>
+            
+
           </div>
         </div>
       <!--/noindex-->
+      
+
     </div>
   </aside>
   <div id="sidebar-dimmer"></div>
+
+
       </div>
     </main>
+
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <div class="copyright">  <span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">京ICP备19016512号 </span>&copy; <span itemprop="copyrightYear">2019</span>
@@ -365,22 +671,50 @@
   </span>
   <span class="author" itemprop="copyrightHolder">张智</span>
 </div>
+
+        
+
+
+
+
+
+
+
+
+        
       </div>
     </footer>
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
       </div>
+
+    
+
   </div>
+
+  
   <script src="/lib/jquery/index.js?v=3.4.1"></script>
   <script src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
 <script src="/js/utils.js?v=7.3.0"></script>
   <script src="/js/motion.js?v=7.3.0"></script>
+
+
   <script src="/js/affix.js?v=7.3.0"></script>
   <script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
 <script src="/js/next-boot.js?v=7.3.0"></script>
+
+
   <script src="/js/exturl.js?v=7.3.0"></script>
+
+
+
+
+  
   <script>
     (function(){
       var bp = document.createElement('script');
@@ -390,9 +724,48 @@
       s.parentNode.insertBefore(bp, s);
     })();
   </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
   <script src="/js/scrollspy.js?v=7.3.0"></script>
 <script src="/js/post-details.js?v=7.3.0"></script>
+
+
     <script>
   var GUEST = ['nick', 'mail', 'link'];
   var guest = 'nick,mail';
@@ -414,5 +787,6 @@
     path: location.pathname
   });
 </script>
+
 </body>
 </html>

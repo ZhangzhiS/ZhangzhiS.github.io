@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+
+
+
+
+
 <html class="theme-next pisces use-motion" lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -12,8 +17,13 @@
   <link rel="mask-icon" href="/images/favicon.png?v=7.3.0" color="#222">
   <meta name="google-site-verification" content="jfiTzJL4QReMSaJi0l8TDoVyg56AXdg6uPW8b4lVeaU">
   <meta name="baidu-site-verification" content="T51n5dxa3zuPzDcC">
+
 <link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
@@ -46,6 +56,7 @@
     }
   };
 </script>
+
   <meta name="description" content="由于工作需要在本地安装mongodb用作调试，在安装过程中遇到了问题，记录一下。 首先看看安装成功的mongodb吧： 12345678[zhi@zhi-pc bin]$ mongod --versiondb version v4.0.9git version: fc525e2d9b0e4bceff5c2201457e564362909765allocator: tcmallocmodules:">
 <meta name="keywords" content="mongodb,Linux,数据库,Manjaro">
 <meta property="og:type" content="article">
@@ -59,6 +70,8 @@
 <meta name="twitter:title" content="如何在ArchLinux系统中安装MongoDB">
 <meta name="twitter:description" content="由于工作需要在本地安装mongodb用作调试，在安装过程中遇到了问题，记录一下。 首先看看安装成功的mongodb吧： 12345678[zhi@zhi-pc bin]$ mongod --versiondb version v4.0.9git version: fc525e2d9b0e4bceff5c2201457e564362909765allocator: tcmallocmodules:">
   <link rel="canonical" href="https://zz.zzs7.top/archlinux-install-mongodb">
+
+
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
@@ -69,7 +82,9 @@
     isArchive: false
   };
 </script>
+
   <title>如何在ArchLinux系统中安装MongoDB | SavingUnhappy</title>
+  
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139508983-1"></script>
   <script>
     var host = window.location.hostname;
@@ -80,6 +95,14 @@
       gtag('config', 'UA-139508983-1');
     }
   </script>
+
+
+
+
+
+
+
+
   <noscript>
   <style>
   .use-motion .motion-element,
@@ -92,23 +115,30 @@
   .use-motion .post-header,
   .use-motion .post-body,
   .use-motion .collection-title { opacity: initial; }
+
   .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
     top: initial;
   }
+
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
 </noscript>
+
 </head>
+
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
   <div class="container sidebar-position-left">
     <div class="headband"></div>
+
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta">
+
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
@@ -117,7 +147,9 @@
       </a>
     </div>
         <h1 class="site-subtitle" itemprop="description">If you give someone a program, you will frustrate them for a day.</h1>
+      
   </div>
+
   <div class="site-nav-toggle">
     <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
@@ -126,26 +158,73 @@
     </button>
   </div>
 </div>
+
+
 <nav class="site-nav">
+  
   <ul id="menu" class="menu">
+      
+      
+      
+        
         <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
     <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
   </li>
+      
+      
+      
+        
         <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
     <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">32</span></a>
+
   </li>
+      
+      
+      
+        
         <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
     <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">8</span></a>
+
   </li>
+      
+      
+      
+        
         <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
     <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">26</span></a>
+
   </li>
       <li class="menu-item menu-item-search">
         <a href="javascript:;" class="popup-trigger">
+        
           <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
       </li>
+    
   </ul>
+
     <div class="site-search">
+      
   <div class="popup search-popup local-search-popup">
   <div class="local-search-header clearfix">
     <span class="search-icon">
@@ -160,37 +239,69 @@
   </div>
   <div id="local-search-result"></div>
 </div>
+
+
     </div>
 </nav>
 </div>
     </header>
+
+    
+
+
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+            
+
           <div id="content" class="content page-post-detail">
+            
+
   <div id="posts" class="posts-expand">
+    
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/archlinux-install-mongodb.html">
+
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
       <meta itemprop="image" content="/images/ava.gif">
     </span>
+
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
       <header class="post-header">
+
+        
           <h2 class="post-title" itemprop="name headline">如何在ArchLinux系统中安装MongoDB
+
+            
           </h2>
+        
+
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
               <time title="创建时间：2019-05-15 13:09:06" itemprop="dateCreated datePublished" datetime="2019-05-15T13:09:06+08:00">2019-05-15</time>
             </span>
+          
+            
+
+            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
@@ -198,13 +309,23 @@
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2019-06-18 19:18:43" itemprop="dateModified" datetime="2019-06-18T19:18:43+08:00">2019-06-18</time>
               </span>
+            
+          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
+              
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a></span>
+
+                
+                
+              
             </span>
+          
+
+          
             <span id="/archlinux-install-mongodb.html" class="post-meta-item leancloud_visitors" data-flag-title="如何在ArchLinux系统中安装MongoDB" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -212,24 +333,41 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="leancloud-visitors-count"></span>
             </span>
+          
+            
+  
   <span class="post-meta-item">
+    
     <span class="post-meta-item-icon">
       <i class="fa fa-comment-o"></i>
     </span>
     <span class="post-meta-item-text">评论数：</span>
+  
     <a href="/archlinux-install-mongodb.html#comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/archlinux-install-mongodb.html" itemprop="commentCount"></span>
     </a>
   </span>
+  
+  
+          
+
         </div>
       </header>
+
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
+
+      
         <p>由于工作需要在本地安装mongodb用作调试，在安装过程中遇到了问题，记录一下。</p>
 <p>首先看看安装成功的mongodb吧：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[zhi@zhi-pc bin]$ mongod --version</span><br><span class="line">db version v4.0.9</span><br><span class="line">git version: fc525e2d9b0e4bceff5c2201457e564362909765</span><br><span class="line">allocator: tcmalloc</span><br><span class="line">modules: none</span><br><span class="line">build environment:</span><br><span class="line">    distarch: x86_64</span><br><span class="line">    target_arch: x86_64</span><br></pre></td></tr></table></figure>
+
 <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>我的系统是Manjaro，基于archlinux的系统。由于MongoDB修改了软件授权协议，所以在archlinux的官方源中已经删除了MongoDB，在archlinux的wiki中建议安装AUR中的mongodb-bin，或者自己编译（需要180G的空余的磁盘空间）。脑阔疼，我没有配置AUR的源，自己编译的话，我这老爷机谁知道要编译多久，所以最后我选择了使用<span class="exturl" data-url="aHR0cHM6Ly93d3cubW9uZ29kYi5jb20vZG93bmxvYWQtY2VudGVyL2NvbW11bml0eQ==" title="https://www.mongodb.com/download-center/community">MongoDB官网<i class="fa fa-external-link"></i></span>提供的软件包。</p>
 <p>下面是安装过程：</p>
 <a id="more"></a>
+
 <ul>
 <li><p>下载：在官网下载，我下载的是<span class="exturl" data-url="aHR0cHM6Ly93d3cubW9uZ29kYi5jb20vZHIvZmFzdGRsLm1vbmdvZGIub3JnL2xpbnV4L21vbmdvZGItbGludXgteDg2XzY0LTQuMC45LnRnei9kb3dubG9hZA==" title="https://www.mongodb.com/dr/fastdl.mongodb.org/linux/mongodb-linux-x86_64-4.0.9.tgz/download">4.0.9的版本<i class="fa fa-external-link"></i></span>。</p>
 </li>
@@ -241,41 +379,73 @@
 </li>
 <li><p>此时执行<code>mongod</code>是不能正常启动的，查看控制台输出</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2019-05-15T12:59:30.324+0800 I STORAGE  [initandlisten] exception <span class="keyword">in</span> initAndListen: NonExistentPath: Data directory /data/db not found., terminating</span><br></pre></td></tr></table></figure>
+
 <p>发现是因为默认的数据目录是不存在的，默认位置为/data。可以选择新建/data目录，然后启动，或者自定义data的位置，启动mongod的时候指定data路径。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用默认位置，可能需要管理员权限去新建，然后记得修改目录权限</span></span><br><span class="line">mkdir /data</span><br><span class="line">mongod <span class="comment"># 启动</span></span><br><span class="line"><span class="comment"># 与下面的二选一就好了</span></span><br><span class="line"><span class="comment"># 或者自定义data的位置</span></span><br><span class="line">mkdir /home/zhi/tools/mongodb/data</span><br><span class="line">mongod --dbpath /home/zhi/tools/mongodb/data <span class="comment"># 指定dbpath的启动</span></span><br></pre></td></tr></table></figure>
+
 </li>
 </ul>
 <p>当然也可以选择配置AUR源来安装，但是我懒得配置，而且自己一般也不会用到AUR，所以就只介绍这一种方法了。</p>
 <p>启动的话可以选择使用下面的命令来后台执行</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup mongod --dbpath /home/zhi/tools/mongodb/data &amp;</span><br></pre></td></tr></table></figure>
+
+
     </div>
+
+    
+    
+    
+
     <footer class="post-footer">
+          
+        
         <div class="post-tags">
             <a href="/tags/mongodb/" rel="tag"><i class="fa fa-tag"></i> mongodb</a>
+          
             <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          
             <a href="/tags/数据库/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+          
             <a href="/tags/Manjaro/" rel="tag"><i class="fa fa-tag"></i> Manjaro</a>
+          
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
               <a href="/leetcode-merge-nums.html" rel="next" title="leetcode-python-合并两个有序数组">
                 <i class="fa fa-chevron-left"></i> leetcode-python-合并两个有序数组
               </a>
+            
           </div>
+
           <span class="post-nav-divider"></span>
+
           <div class="post-nav-prev post-nav-item">
               <a href="/mysql-optimization.html" rel="prev" title="MySQL优化整理">
                 MySQL优化整理 <i class="fa fa-chevron-right"></i>
               </a>
+            
           </div>
         </div>
     </footer>
   </div>
+  
+  
+  
   </article>
+
   </div>
+
+
           </div>
+          
+    
     <div class="comments" id="comments"></div>
+  
+
+
         </div>
+          
+  
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
       <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
@@ -283,6 +453,7 @@
       <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
+
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
         <ul class="sidebar-nav motion-element">
@@ -293,8 +464,11 @@
             站点概览
           </li>
         </ul>
+      
+
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
+
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" src="/images/ava.gif" alt="张智">
   <p class="site-author-name" itemprop="name">张智</p>
@@ -302,46 +476,176 @@
 </div>
   <nav class="site-state motion-element">
       <div class="site-state-item site-state-posts">
+        
           <a href="/archives/">
+        
           <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
+    
+      
+      
       <div class="site-state-item site-state-categories">
+        
+          
             <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
         <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
+    
+      
+      
       <div class="site-state-item site-state-tags">
+        
+          
             <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
         <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
+    
   </nav>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
+      
+      
+      
+        
+      
         <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1poYW5nemhpUw==" title="GitHub &rarr; https://github.com/ZhangzhiS"><i class="fa fa-fw fa-github"></i></span>
       </span>
+    
       <span class="links-of-author-item">
+      
+      
+      
+        
+      
         <span class="exturl" data-url="bWFpbHRvOnpoaTc4MTAyOTU4OEBnbWFpbC5jb20=" title="E-Mail &rarr; mailto:zhi781029588@gmail.com"><i class="fa fa-fw fa-envelope"></i></span>
       </span>
+    
   </div>
+
+
+
         </div>
       </div>
       <!--noindex-->
         <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
           <div class="post-toc">
+
+            
+            
+            
+            
+
+            
               <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li></ol></div>
+            
+
           </div>
         </div>
       <!--/noindex-->
+      
+
     </div>
   </aside>
   <div id="sidebar-dimmer"></div>
+
+
       </div>
     </main>
+
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <div class="copyright">  <span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">京ICP备19016512号 </span>&copy; <span itemprop="copyrightYear">2019</span>
@@ -350,22 +654,50 @@
   </span>
   <span class="author" itemprop="copyrightHolder">张智</span>
 </div>
+
+        
+
+
+
+
+
+
+
+
+        
       </div>
     </footer>
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
       </div>
+
+    
+
   </div>
+
+  
   <script src="/lib/jquery/index.js?v=3.4.1"></script>
   <script src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
 <script src="/js/utils.js?v=7.3.0"></script>
   <script src="/js/motion.js?v=7.3.0"></script>
+
+
   <script src="/js/affix.js?v=7.3.0"></script>
   <script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
 <script src="/js/next-boot.js?v=7.3.0"></script>
+
+
   <script src="/js/exturl.js?v=7.3.0"></script>
+
+
+
+
+  
   <script>
     (function(){
       var bp = document.createElement('script');
@@ -375,9 +707,48 @@
       s.parentNode.insertBefore(bp, s);
     })();
   </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
   <script src="/js/scrollspy.js?v=7.3.0"></script>
 <script src="/js/post-details.js?v=7.3.0"></script>
+
+
     <script>
   var GUEST = ['nick', 'mail', 'link'];
   var guest = 'nick,mail';
@@ -399,5 +770,6 @@
     path: location.pathname
   });
 </script>
+
 </body>
 </html>
