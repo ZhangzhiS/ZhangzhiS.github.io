@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+
+
+
+
+
 <html class="theme-next pisces use-motion" lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -12,15 +17,20 @@
   <link rel="mask-icon" href="/images/favicon.png?v=7.3.0" color="#222">
   <meta name="google-site-verification" content="jfiTzJL4QReMSaJi0l8TDoVyg56AXdg6uPW8b4lVeaU">
   <meta name="baidu-site-verification" content="T51n5dxa3zuPzDcC">
+
 <link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
     scheme: 'Pisces',
     version: '7.3.0',
-    exturl: true,
+    exturl: false,
     sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
     back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
     save_scroll: false,
@@ -38,7 +48,7 @@
     },
     localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
     path: 'search.xml',
-    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     translation: {
       copy_button: '复制',
       copy_success: '复制成功',
@@ -46,6 +56,7 @@
     }
   };
 </script>
+
   <meta name="description" content="前言Pull-Request是GitHub上对开源项目贡献代码的工作流程。 1. Fork原项目 如上图，在项目的右上角，可以看到Watch、Star、Fork，三个按钮，点击Fork就可以了，成功之后在个人的仓库列表中可以看到你Fork的项目。 2. 将项目clone到本地在克隆项目的时候，克隆的是自己仓库的代码，而不是源项目的。比如你fork了user-A的项目project-a，源项目地址为">
 <meta name="keywords" content="Git">
 <meta property="og:type" content="article">
@@ -61,6 +72,8 @@
 <meta name="twitter:description" content="前言Pull-Request是GitHub上对开源项目贡献代码的工作流程。 1. Fork原项目 如上图，在项目的右上角，可以看到Watch、Star、Fork，三个按钮，点击Fork就可以了，成功之后在个人的仓库列表中可以看到你Fork的项目。 2. 将项目clone到本地在克隆项目的时候，克隆的是自己仓库的代码，而不是源项目的。比如你fork了user-A的项目project-a，源项目地址为">
 <meta name="twitter:image" content="https://help.github.com/assets/images/help/repository/fork_button.jpg">
   <link rel="canonical" href="https://zz.zzs7.top/git-pull-request">
+
+
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
@@ -71,7 +84,9 @@
     isArchive: false
   };
 </script>
+
   <title>GitHub的Pull-Request流程 | SavingUnhappy</title>
+  
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139508983-1"></script>
   <script>
     var host = window.location.hostname;
@@ -82,6 +97,14 @@
       gtag('config', 'UA-139508983-1');
     }
   </script>
+
+
+
+
+
+
+
+
   <noscript>
   <style>
   .use-motion .motion-element,
@@ -94,23 +117,30 @@
   .use-motion .post-header,
   .use-motion .post-body,
   .use-motion .collection-title { opacity: initial; }
+
   .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
     top: initial;
   }
+
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
 </noscript>
+
 </head>
+
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
   <div class="container sidebar-position-left">
     <div class="headband"></div>
+
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta">
+
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
@@ -119,7 +149,9 @@
       </a>
     </div>
         <h1 class="site-subtitle" itemprop="description">If you give someone a program, you will frustrate them for a day.</h1>
+      
   </div>
+
   <div class="site-nav-toggle">
     <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
@@ -128,27 +160,74 @@
     </button>
   </div>
 </div>
+
+
 <nav class="site-nav">
+  
   <ul id="menu" class="menu">
+      
+      
+      
+        
         <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
     <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
   </li>
+      
+      
+      
+        
         <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
     <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">32</span></a>
+
   </li>
+      
+      
+      
+        
         <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
     <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">8</span></a>
+
   </li>
+      
+      
+      
+        
         <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
     <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">26</span></a>
+
   </li>
       <li class="menu-item menu-item-search">
         <a href="javascript:;" class="popup-trigger">
+        
           <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
       </li>
+    
   </ul>
+
 </nav>
   <div class="site-search">
+    
   <div class="popup search-popup">
   <div class="search-header">
     <span class="search-icon">
@@ -165,36 +244,68 @@
   </div>
   <div id="search-result"></div>
 </div>
+
+
   </div>
 </div>
     </header>
+
+    
+
+
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+            
+
           <div id="content" class="content page-post-detail">
+            
+
   <div id="posts" class="posts-expand">
+    
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/git-pull-request.html">
+
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
       <meta itemprop="image" content="/images/ava.gif">
     </span>
+
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
       <header class="post-header">
+
+        
           <h2 class="post-title" itemprop="name headline">GitHub的Pull-Request流程
+
+            
           </h2>
+        
+
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
               <time title="创建时间：2019-06-04 22:43:42" itemprop="dateCreated datePublished" datetime="2019-06-04T22:43:42+08:00">2019-06-04</time>
             </span>
+          
+            
+
+            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
@@ -202,69 +313,107 @@
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2019-06-18 19:19:17" itemprop="dateModified" datetime="2019-06-18T19:19:17+08:00">2019-06-18</time>
               </span>
+            
+          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
+              
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/杂项/" itemprop="url" rel="index"><span itemprop="name">杂项</span></a></span>
+
+                
+                
+              
             </span>
-            <span id="/git-pull-request.html" class="post-meta-item leancloud_visitors" data-flag-title="GitHub的Pull-Request流程" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    <a title="valine" href="/git-pull-request.html#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/git-pull-request.html" itemprop="commentCount"></span>
-    </a>
-  </span>
+          
+
+          
+
         </div>
       </header>
+
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Pull-Request是<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29t" title="https://github.com">GitHub<i class="fa fa-external-link"></i></span>上对开源项目贡献代码的工作流程。</p>
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Pull-Request是<a href="https://github.com" target="_blank" rel="noopener">GitHub</a>上对开源项目贡献代码的工作流程。</p>
 <h2 id="1-Fork原项目"><a href="#1-Fork原项目" class="headerlink" title="1. Fork原项目"></a>1. Fork原项目</h2><p><img src="https://help.github.com/assets/images/help/repository/fork_button.jpg" alt="Fork"></p>
 <p>如上图，在项目的右上角，可以看到<code>Watch</code>、<code>Star</code>、<code>Fork</code>，三个按钮，点击<code>Fork</code>就可以了，成功之后在个人的仓库列表中可以看到你Fork的项目。</p>
 <h2 id="2-将项目clone到本地"><a href="#2-将项目clone到本地" class="headerlink" title="2. 将项目clone到本地"></a>2. 将项目clone到本地</h2><p>在克隆项目的时候，克隆的是自己仓库的代码，而不是源项目的。比如你fork了user-A的项目<code>project-a</code>，源项目地址为<code>https://github.com/user-A/project-a</code>，在你仓库中的项目地址为<code>https://github.com/your-username/project-a</code>。</p>
 <a id="more"></a>
+
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/your-username/project<span class="_">-a</span></span><br></pre></td></tr></table></figure>
+
 <h2 id="3-创建自己的分支"><a href="#3-创建自己的分支" class="headerlink" title="3. 创建自己的分支"></a>3. 创建自己的分支</h2><p>新建一个自己的分支，后续开发在自己分支中开发，创建分支的时候，在分支名字中表达出这个分支是进行BUG修复，或者是开发新功能。具体参考源项目的命名规范。注意创建分支的时候选择的上游分支，看项目发布规则，是在dev分支开发或者是master分支进行开发。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch fixbug_dosomethings [上游分支]</span><br></pre></td></tr></table></figure>
+
 <h2 id="4-在自己的分支上进行开发"><a href="#4-在自己的分支上进行开发" class="headerlink" title="4. 在自己的分支上进行开发"></a>4. 在自己的分支上进行开发</h2><p>开发过程中的话，需要注意的就是代码规范了，最好是延续源项目的风格，当然，规范的开发风格都一样。经常提交代码是一个好习惯，避免异常状况发生之后造成损失。有权限的人可以看到你每次的提交</p>
 <h2 id="5-发送一个Pull-Request"><a href="#5-发送一个Pull-Request" class="headerlink" title="5. 发送一个Pull-Request"></a>5. 发送一个Pull-Request</h2><p>在源项目新建一个Pull-Request，就在选择分支按钮的旁边，<code>new pull request</code>，base repository，选择源项目，head repository选择你自己的仓库，选择好对应的分支就可以提交。</p>
 <h2 id="6-后续"><a href="#6-后续" class="headerlink" title="6. 后续"></a>6. 后续</h2><p>有权限的项目参与者能够看到你创建的合并，进行code review，或者进行测试，当他们认为可以合并，那么接受本次提交并合并到源项目的目标分支中。</p>
 <p><strong>注意：本次提交没有关闭，你后续所有在这个分支上进行的修改，commit，都会进入此次pull-request中</strong>。</p>
+
     </div>
+
+    
+    
+    
+        
+      
+
       <footer class="post-footer">
+          
+            
+          
           <div class="post-tags">
+            
               <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i> Git</a>
+            
           </div>
+        
+
+        
+
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
+              
                 <a href="/use-git-1.html" rel="next" title="Git的简单使用">
                   <i class="fa fa-chevron-left"></i> Git的简单使用
                 </a>
+              
             </div>
+
             <span class="post-nav-divider"></span>
+
             <div class="post-nav-prev post-nav-item">
+              
                 <a href="/tox.html" rel="prev" title="了解TOX以及简单使用">
                   了解TOX以及简单使用 <i class="fa fa-chevron-right"></i>
                 </a>
+              
             </div>
           </div>
+        
       </footer>
+    
   </div>
+  
+  
+  
   </article>
+
   </div>
+
+
           </div>
-    <div class="comments" id="comments"></div>
+          
+
         </div>
+          
+  
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
       <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
@@ -272,6 +421,7 @@
       <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
+
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
         <ul class="sidebar-nav motion-element">
@@ -282,8 +432,11 @@
             站点概览
           </li>
         </ul>
+      
+
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
+
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image"
       src="/images/ava.gif"
@@ -293,102 +446,268 @@
 </div>
   <nav class="site-state motion-element">
       <div class="site-state-item site-state-posts">
+        
           <a href="/archives/">
+        
           <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
+    
+      
+      
       <div class="site-state-item site-state-categories">
+        
+          
             <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
         <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
+    
+      
+      
       <div class="site-state-item site-state-tags">
+        
+          
             <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
         <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
+    
   </nav>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1poYW5nemhpUw==" title="GitHub &rarr; https://github.com/ZhangzhiS"><i class="fa fa-fw fa-github"></i></span>
+      
+      
+      
+        
+      
+        <a href="https://github.com/ZhangzhiS" title="GitHub &rarr; https://github.com/ZhangzhiS" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
       </span>
+    
       <span class="links-of-author-item">
-        <span class="exturl" data-url="bWFpbHRvOnpoaTc4MTAyOTU4OEBnbWFpbC5jb20=" title="E-Mail &rarr; mailto:zhi781029588@gmail.com"><i class="fa fa-fw fa-envelope"></i></span>
+      
+      
+      
+        
+      
+        <a href="mailto:zhi781029588@gmail.com" title="E-Mail &rarr; mailto:zhi781029588@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
       </span>
+    
   </div>
+
+
+
         </div>
       </div>
       <!--noindex-->
         <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
           <div class="post-toc">
+
+            
+            
+            
+            
+
+            
               <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Fork原项目"><span class="nav-number">2.</span> <span class="nav-text">1. Fork原项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-将项目clone到本地"><span class="nav-number">3.</span> <span class="nav-text">2. 将项目clone到本地</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-创建自己的分支"><span class="nav-number">4.</span> <span class="nav-text">3. 创建自己的分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-在自己的分支上进行开发"><span class="nav-number">5.</span> <span class="nav-text">4. 在自己的分支上进行开发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-发送一个Pull-Request"><span class="nav-number">6.</span> <span class="nav-text">5. 发送一个Pull-Request</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-后续"><span class="nav-number">7.</span> <span class="nav-text">6. 后续</span></a></li></ol></div>
+            
+
           </div>
         </div>
       <!--/noindex-->
+      
+
     </div>
   </aside>
   <div id="sidebar-dimmer"></div>
+
+
       </div>
     </main>
+
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">  <span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">京ICP备19016512号 </span>&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">  <a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">京ICP备19016512号 </a>&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">张智</span>
 </div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+        
       </div>
     </footer>
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
       </div>
+
+    
+
   </div>
+
+  
   <script src="/lib/jquery/index.js?v=3.4.1"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
 <script src="/js/utils.js?v=7.3.0"></script>
   <script src="/js/motion.js?v=7.3.0"></script>
+
+
   <script src="/js/affix.js?v=7.3.0"></script>
   <script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
 <script src="/js/next-boot.js?v=7.3.0"></script>
-  <script>
-    (function(){
-      var bp = document.createElement('script');
-      var curProtocol = window.location.protocol.split(':')[0];
-      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(bp, s);
-    })();
-  </script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
   <script src="/js/scrollspy.js?v=7.3.0"></script>
 <script src="/js/post-details.js?v=7.3.0"></script>
-<script>
-NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
-  var GUEST = ['nick', 'mail', 'link'];
-  var guest = 'nick,mail';
-  guest = guest.split(',').filter(item => {
-    return GUEST.indexOf(item) > -1;
-  });
-  new Valine({
-    el: '#comments',
-    verify: false,
-    notify: false,
-    appId: 'sIl9NjoQGCLyOJgBgHgNcWpo-gzGzoHsz',
-    appKey: 'arzs1til8eEtvBPsdfJCiLei',
-    placeholder: '请留下你的看法或者疑问',
-    avatar: 'mm',
-    meta: guest,
-    pageSize: '10' || 10,
-    visitor: true,
-    lang: 'zh-cn' || 'zh-cn',
-    path: location.pathname
-  });
-}, window.Valine);
-</script>
+
+
 </body>
 </html>
