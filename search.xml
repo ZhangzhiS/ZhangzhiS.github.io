@@ -67,6 +67,22 @@
         <content type="html"><![CDATA[<p>冒泡排序是一种比较简单的排序方法。通过比较两个相邻的元素，如果他们的顺序有误，就把他们交换顺序。</p><p>比如要将一个列表进行排序，就是对该列表进行遍历，将每次拿到的元素与其他元素进行比较交换位置，每一次遍历只排好一个数字。</p><p>下面看看图示：</p><a id="more"></a><p>一次遍历：</p><p><img src="https://i.loli.net/2019/06/26/5d1328e72991010400.png" alt="loop"></p><p>后续的遍历也只是循环这样的操作，就不再用图解释了。</p><p>看看python实现的<a href="https://github.com/ZhangzhiS/study_note/blob/master/bubble_sort/bubble_sort.py" target="_blank" rel="noopener">代码</a>:</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubble_sort</span><span class="params">(array: list)</span> -&gt; list:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    冒泡排序</span></span><br><span class="line"><span class="string">    冒泡排序要排序n个数，由于每遍历一趟只排好一个数字，</span></span><br><span class="line"><span class="string">    则需要遍历n-1趟，所以最外层循环是要循环n-1次，</span></span><br><span class="line"><span class="string">    而每次趟遍历中需要比较每归位的数字，</span></span><br><span class="line"><span class="string">    则要在n-1次比较中减去已排好的i位数字，</span></span><br><span class="line"><span class="string">    则第二层循环要遍历是n-1-i次</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    array_len = len(array)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(array_len - <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(array_len - <span class="number">1</span> - i):</span><br><span class="line">            <span class="keyword">if</span> array[j] &gt; array[j+<span class="number">1</span>]:</span><br><span class="line">                array[j], array[j+<span class="number">1</span>] = array[j+<span class="number">1</span>], array[j]</span><br><span class="line">    print(array)</span><br><span class="line">    <span class="keyword">return</span> array</span><br></pre></td></tr></table></figure><blockquote><p>建议自己画图或者Debug调试看看排序过程中元素的变化，更好去理解。</p></blockquote>]]></content>
       
       
+      <categories>
+          
+          <category> 算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+            <tag> python </tag>
+            
+            <tag> 排序 </tag>
+            
+        </tags>
       
     </entry>
     
