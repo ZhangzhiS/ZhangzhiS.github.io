@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+
+
+
+
+
 <html class="theme-next pisces use-motion" lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -12,8 +17,13 @@
   <link rel="mask-icon" href="/images/favicon.png?v=7.3.0" color="#222">
   <meta name="google-site-verification" content="jfiTzJL4QReMSaJi0l8TDoVyg56AXdg6uPW8b4lVeaU">
   <meta name="baidu-site-verification" content="T51n5dxa3zuPzDcC">
+
 <link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
@@ -36,7 +46,7 @@
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     },
-    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":true},
     path: 'search.xml',
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     translation: {
@@ -46,6 +56,7 @@
     }
   };
 </script>
+
   <meta name="description" content="同源策略 同源策略是一种约定，是由Netscape提出的著名安全策略。他是浏览器最核心、最基本的安全功能。  同源的定义如果两个页面的协议、端口、主机都相同，则两个页面具有相同的源。">
 <meta name="keywords" content="面试,前端,知识点">
 <meta property="og:type" content="article">
@@ -59,6 +70,8 @@
 <meta name="twitter:title" content="关于同源策略">
 <meta name="twitter:description" content="同源策略 同源策略是一种约定，是由Netscape提出的著名安全策略。他是浏览器最核心、最基本的安全功能。  同源的定义如果两个页面的协议、端口、主机都相同，则两个页面具有相同的源。">
   <link rel="canonical" href="https://zz.zzs7.top/same-origin-policy">
+
+
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
@@ -69,7 +82,9 @@
     isArchive: false
   };
 </script>
+
   <title>关于同源策略 | SavingUnhappy</title>
+  
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139508983-1"></script>
   <script>
     var host = window.location.hostname;
@@ -80,6 +95,14 @@
       gtag('config', 'UA-139508983-1');
     }
   </script>
+
+
+
+
+
+
+
+
   <noscript>
   <style>
   .use-motion .motion-element,
@@ -92,23 +115,30 @@
   .use-motion .post-header,
   .use-motion .post-body,
   .use-motion .collection-title { opacity: initial; }
+
   .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
     top: initial;
   }
+
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
 </noscript>
+
 </head>
+
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
   <div class="container sidebar-position-left">
     <div class="headband"></div>
+
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta">
+
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
@@ -117,7 +147,9 @@
       </a>
     </div>
         <h1 class="site-subtitle" itemprop="description">If you give someone a program, you will frustrate them for a day.</h1>
+      
   </div>
+
   <div class="site-nav-toggle">
     <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
@@ -126,27 +158,74 @@
     </button>
   </div>
 </div>
+
+
 <nav class="site-nav">
+  
   <ul id="menu" class="menu">
+      
+      
+      
+        
         <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
     <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
   </li>
+      
+      
+      
+        
         <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
     <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">32</span></a>
+
   </li>
+      
+      
+      
+        
         <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
     <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">8</span></a>
+
   </li>
+      
+      
+      
+        
         <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
     <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">26</span></a>
+
   </li>
       <li class="menu-item menu-item-search">
         <a href="javascript:;" class="popup-trigger">
+        
           <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
       </li>
+    
   </ul>
+
 </nav>
   <div class="site-search">
+    
   <div class="popup search-popup">
   <div class="search-header">
     <span class="search-icon">
@@ -163,36 +242,68 @@
   </div>
   <div id="search-result"></div>
 </div>
+
+
   </div>
 </div>
     </header>
+
+    
+
+
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+            
+
           <div id="content" class="content page-post-detail">
+            
+
   <div id="posts" class="posts-expand">
+    
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/same-origin-policy.html">
+
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
       <meta itemprop="image" content="/images/ava.gif">
     </span>
+
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
       <header class="post-header">
+
+        
           <h2 class="post-title" itemprop="name headline">关于同源策略
+
+            
           </h2>
+        
+
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
               <time title="创建时间：2019-05-26 20:35:52" itemprop="dateCreated datePublished" datetime="2019-05-26T20:35:52+08:00">2019-05-26</time>
             </span>
+          
+            
+
+            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
@@ -200,21 +311,39 @@
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2019-06-18 19:31:09" itemprop="dateModified" datetime="2019-06-18T19:31:09+08:00">2019-06-18</time>
               </span>
+            
+          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
+              
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/杂项/" itemprop="url" rel="index"><span itemprop="name">杂项</span></a></span>
+
+                
+                
+              
             </span>
+          
+
+          
+
         </div>
       </header>
+
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
+
+      
         <h2 id="同源策略"><a href="#同源策略" class="headerlink" title="同源策略"></a>同源策略</h2><blockquote>
 <p>同源策略是一种约定，是由<a href="https://baike.baidu.com/item/Netscape/2778944" target="_blank" rel="noopener">Netscape</a>提出的著名安全策略。他是浏览器最核心、最基本的安全功能。</p>
 </blockquote>
 <h3 id="同源的定义"><a href="#同源的定义" class="headerlink" title="同源的定义"></a>同源的定义</h3><p>如果两个页面的协议、端口、主机都相同，则两个页面具有相同的源。</p>
 <a id="more"></a>
+
 <p>下面做一些说明：</p>
 <ol>
 <li><a href="https://zz.zzs7.top/mysql-optimization.html">https://zz.zzs7.top/mysql-optimization.html</a></li>
@@ -240,6 +369,7 @@
 <p>比如<a href="https://zz.zzs7.top和https://s7.zzs7.top" target="_blank" rel="noopener">https://zz.zzs7.top和https://s7.zzs7.top</a>。虽然都属于zzs7.top域名的子域名，但是他们属于不同域。</p>
 <p>想让上述两个网页之间通信，可以通过设置 <code>document.damain=&#39;zzs7.top&#39;</code>，来让浏览器认为他们在同样的域。两个页面都需设置。</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line">    document.domain = 'zzs7.top';</span><br><span class="line">    // 获取父窗口中变量</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
 <p><strong>注：可以进行降域，不能升域。</strong></p>
 </li>
 <li><p><strong>通过jsonp跨域</strong>：不同源虽然不能读写，但可以引用js。我们可以让引用的js附带数据来调用我们预先定义的函数，而数据当作参数传入。</p>
@@ -262,32 +392,69 @@
 </li>
 </ul>
 <p>还有一些比的，比如可以通过nginx代理实现跨域等，就不在文章中细说了，后续有机会详细实践一下每种方式。</p>
+
     </div>
+
+    
+    
+    
+        
+      
+
       <footer class="post-footer">
+          
+            
+          
           <div class="post-tags">
+            
               <a href="/tags/面试/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
+            
               <a href="/tags/前端/" rel="tag"><i class="fa fa-tag"></i> 前端</a>
+            
               <a href="/tags/知识点/" rel="tag"><i class="fa fa-tag"></i> 知识点</a>
+            
           </div>
+        
+
+        
+
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
+              
                 <a href="/mysql-optimization.html" rel="next" title="MySQL优化整理">
                   <i class="fa fa-chevron-left"></i> MySQL优化整理
                 </a>
+              
             </div>
+
             <span class="post-nav-divider"></span>
+
             <div class="post-nav-prev post-nav-item">
+              
                 <a href="/use-git-1.html" rel="prev" title="Git的简单使用">
                   Git的简单使用 <i class="fa fa-chevron-right"></i>
                 </a>
+              
             </div>
           </div>
+        
       </footer>
+    
   </div>
+  
+  
+  
   </article>
+
   </div>
+
+
           </div>
+          
+
         </div>
+          
+  
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
       <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
@@ -295,6 +462,7 @@
       <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
+
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
         <ul class="sidebar-nav motion-element">
@@ -305,8 +473,11 @@
             站点概览
           </li>
         </ul>
+      
+
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
+
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image"
       src="/images/ava.gif"
@@ -316,46 +487,176 @@
 </div>
   <nav class="site-state motion-element">
       <div class="site-state-item site-state-posts">
+        
           <a href="/archives/">
+        
           <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
+    
+      
+      
       <div class="site-state-item site-state-categories">
+        
+          
             <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
         <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
+    
+      
+      
       <div class="site-state-item site-state-tags">
+        
+          
             <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
         <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
+    
   </nav>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
+      
+      
+      
+        
+      
         <a href="https://github.com/ZhangzhiS" title="GitHub &rarr; https://github.com/ZhangzhiS" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
       </span>
+    
       <span class="links-of-author-item">
+      
+      
+      
+        
+      
         <a href="mailto:zhi781029588@gmail.com" title="E-Mail &rarr; mailto:zhi781029588@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
       </span>
+    
   </div>
+
+
+
         </div>
       </div>
       <!--noindex-->
         <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
           <div class="post-toc">
+
+            
+            
+            
+            
+
+            
               <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#同源策略"><span class="nav-number">1.</span> <span class="nav-text">同源策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#同源的定义"><span class="nav-number">1.1.</span> <span class="nav-text">同源的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跨域"><span class="nav-number">1.2.</span> <span class="nav-text">跨域</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么要跨域"><span class="nav-number">1.2.1.</span> <span class="nav-text">为什么要跨域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#跨域的实现"><span class="nav-number">1.2.2.</span> <span class="nav-text">跨域的实现</span></a></li></ol></li></ol></li></ol></div>
+            
+
           </div>
         </div>
       <!--/noindex-->
+      
+
     </div>
   </aside>
   <div id="sidebar-dimmer"></div>
+
+
       </div>
     </main>
+
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <div class="copyright">  <a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">京ICP备19016512号 </a>&copy; <span itemprop="copyrightYear">2019</span>
@@ -367,22 +668,87 @@
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+        
       </div>
     </footer>
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
       </div>
+
+    
+
   </div>
+
+  
   <script src="/lib/jquery/index.js?v=3.4.1"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
 <script src="/js/utils.js?v=7.3.0"></script>
   <script src="/js/motion.js?v=7.3.0"></script>
+
+
   <script src="/js/affix.js?v=7.3.0"></script>
   <script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
 <script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
   <script src="/js/scrollspy.js?v=7.3.0"></script>
 <script src="/js/post-details.js?v=7.3.0"></script>
+
+
 </body>
 </html>
