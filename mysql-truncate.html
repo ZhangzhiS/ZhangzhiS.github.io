@@ -65,7 +65,7 @@
 <meta property="og:site_name" content="SavingUnhappy">
 <meta property="og:description" content="在公司项目的旧代码中看到有mysql的truncate操作。逻辑就是truncate操作之后，执行任务A，如果A出错，则进行rollback回滚。 应该是最近同事写需求，修改了A，然后某种条件A报错了，然后操作的那张表发现所有的数据都没了。 来了解一下truncate的操作。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-14T15:18:16.868Z">
+<meta property="og:updated_time" content="2019-08-14T15:22:13.360Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于Mysql的truncate操作">
 <meta name="twitter:description" content="在公司项目的旧代码中看到有mysql的truncate操作。逻辑就是truncate操作之后，执行任务A，如果A出错，则进行rollback回滚。 应该是最近同事写需求，修改了A，然后某种条件A报错了，然后操作的那张表发现所有的数据都没了。 来了解一下truncate的操作。">
@@ -298,7 +298,7 @@
                 
               
 
-              <time title="创建时间：2019-08-14 19:26:43 / 修改时间：23:18:16" itemprop="dateCreated datePublished" datetime="2019-08-14T19:26:43+08:00">2019-08-14</time>
+              <time title="创建时间：2019-08-14 19:26:43 / 修改时间：23:22:13" itemprop="dateCreated datePublished" datetime="2019-08-14T19:26:43+08:00">2019-08-14</time>
             </span>
           
             
@@ -319,6 +319,32 @@
             </span>
           
 
+          
+            <span id="/mysql-truncate.html" class="post-meta-item leancloud_visitors" data-flag-title="关于Mysql的truncate操作" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+            
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/mysql-truncate.html#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/mysql-truncate.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
           
 
         </div>
@@ -396,6 +422,9 @@
 
           </div>
           
+    
+    <div class="comments" id="comments"></div>
+  
 
         </div>
           
@@ -696,6 +725,32 @@
   <script src="/js/scrollspy.js?v=7.3.0"></script>
 <script src="/js/post-details.js?v=7.3.0"></script>
 
+
+    
+
+<script>
+NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'sIl9NjoQGCLyOJgBgHgNcWpo-gzGzoHsz',
+    appKey: 'arzs1til8eEtvBPsdfJCiLei',
+    placeholder: '请留下你的看法或者疑问',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: true,
+    lang: 'zh-cn' || 'zh-cn',
+    path: location.pathname
+  });
+}, window.Valine);
+</script>
 
 </body>
 </html>

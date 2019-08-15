@@ -66,7 +66,7 @@
 <meta property="og:description" content="给博客增加评论以及阅读统计的功能next主题支持挺多的评论系统的，我选择使用valine，无后端以及集成了文章阅读量统计。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://i.loli.net/2019/06/08/5cfbd4a85d79f98056.png">
-<meta property="og:updated_time" content="2019-06-08T15:37:07.878Z">
+<meta property="og:updated_time" content="2019-08-14T15:22:08.544Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hexo配置评论功能">
 <meta name="twitter:description" content="给博客增加评论以及阅读统计的功能next主题支持挺多的评论系统的，我选择使用valine，无后端以及集成了文章阅读量统计。">
@@ -311,7 +311,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-06-08 23:37:07" itemprop="dateModified" datetime="2019-06-08T23:37:07+08:00">2019-06-08</time>
+                <time title="修改时间：2019-08-14 23:22:08" itemprop="dateModified" datetime="2019-08-14T23:22:08+08:00">2019-08-14</time>
               </span>
             
           
@@ -329,6 +329,32 @@
             </span>
           
 
+          
+            <span id="/hexo-con.html" class="post-meta-item leancloud_visitors" data-flag-title="hexo配置评论功能" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+            
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/hexo-con.html#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/hexo-con.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
           
 
         </div>
@@ -421,6 +447,9 @@
 
           </div>
           
+    
+    <div class="comments" id="comments"></div>
+  
 
         </div>
           
@@ -721,6 +750,32 @@
   <script src="/js/scrollspy.js?v=7.3.0"></script>
 <script src="/js/post-details.js?v=7.3.0"></script>
 
+
+    
+
+<script>
+NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'sIl9NjoQGCLyOJgBgHgNcWpo-gzGzoHsz',
+    appKey: 'arzs1til8eEtvBPsdfJCiLei',
+    placeholder: '请留下你的看法或者疑问',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: true,
+    lang: 'zh-cn' || 'zh-cn',
+    path: location.pathname
+  });
+}, window.Valine);
+</script>
 
 </body>
 </html>

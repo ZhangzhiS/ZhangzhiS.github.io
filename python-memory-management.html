@@ -332,6 +332,32 @@
           
 
           
+            <span id="/python-memory-management.html" class="post-meta-item leancloud_visitors" data-flag-title="深入python内存管理" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+            
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/python-memory-management.html#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/python-memory-management.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+          
 
         </div>
       </header>
@@ -359,10 +385,10 @@
 
 <p>整数“1”为一个对象，存储在内存空间中。a是一个引用。利用赋值语句，将引用a指向对象1。Python是动态类型的语言，对象与引用分离。文章作者比较形象的解释就是：Python像使用“筷子”那样，通过引用来接触和翻动真正的食物——对象。</p>
 <p><strong>下面就是一系列的实验了，建议亲自尝试</strong> 可以通过python的内置函数id()，来探索对象在内存的存储。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span>&gt;&gt; a = 1</span><br><span class="line"><span class="meta">&gt;</span>&gt;&gt; id(a)</span><br><span class="line">140035503539424  # 内存地址的十进制表示</span><br><span class="line"><span class="meta">&gt;</span>&gt;&gt; hex(id(a))</span><br><span class="line">'0x7f5c8e71c4e0'  # 内存地址的十六进制表示</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a = 1</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; id(a)</span></span><br><span class="line">140035503539424  # 内存地址的十进制表示</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; hex(id(a))</span></span><br><span class="line">'0x7f5c8e71c4e0'  # 内存地址的十六进制表示</span><br></pre></td></tr></table></figure>
 
 <p>在python中整数和短小的字符，python都会缓存这些对象，以便重复使用，当我们创建多个等于1的引用的时候，实际是让所有引用都指向同一个对象：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span>&gt;&gt; b = 1</span><br><span class="line"><span class="meta">&gt;</span>&gt;&gt; id(b)</span><br><span class="line">140035503539424  # 等于上面id(a)的值</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b = 1</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; id(b)</span></span><br><span class="line">140035503539424  # 等于上面id(a)的值</span><br></pre></td></tr></table></figure>
 
 <p>对比可以看出a和b实际是指向同一个对象的不同引用。 为了校验两个引用指向同一个对象，我们可以用“is”来判断。is用于判断两个引用所指的对象是否相同。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line">b = <span class="number">1</span></span><br><span class="line">print(a <span class="keyword">is</span> b)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">"good"</span></span><br><span class="line">b = <span class="string">"good"</span></span><br><span class="line">print(a <span class="keyword">is</span> b)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">"very good morning"</span></span><br><span class="line">b = <span class="string">"very good morning"</span></span><br><span class="line">print(a <span class="keyword">is</span> b)</span><br><span class="line"><span class="literal">True</span>   <span class="comment"># 原文在此处就是False，但是我的为True，通过查资料发现是python版本原因</span></span><br><span class="line"><span class="comment"># Python2.3简单整数缓存范围是(-1,100)，Python2.5.4以后简单整数缓存范围至少是(-5,256)。所有的短字符也都在缓存区。</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">"为了校验两个引用指向同一个对象，我们可以用“is”来判断。is用于判断两个引用所指的对象是否相同。"</span></span><br><span class="line">b = <span class="string">"为了校验两个引用指向同一个对象，我们可以用“is”来判断。is用于判断两个引用所指的对象是否相同。"</span></span><br><span class="line">print(a <span class="keyword">is</span> b)</span><br><span class="line"><span class="literal">False</span>  <span class="comment"># 增加了字符串的长度，结果也是False</span></span><br><span class="line"></span><br><span class="line">a = []</span><br><span class="line">b = []</span><br><span class="line">print(a <span class="keyword">is</span> b)</span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
@@ -489,6 +515,9 @@
 
           </div>
           
+    
+    <div class="comments" id="comments"></div>
+  
 
         </div>
           
@@ -789,6 +818,32 @@
   <script src="/js/scrollspy.js?v=7.3.0"></script>
 <script src="/js/post-details.js?v=7.3.0"></script>
 
+
+    
+
+<script>
+NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'sIl9NjoQGCLyOJgBgHgNcWpo-gzGzoHsz',
+    appKey: 'arzs1til8eEtvBPsdfJCiLei',
+    placeholder: '请留下你的看法或者疑问',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: true,
+    lang: 'zh-cn' || 'zh-cn',
+    path: location.pathname
+  });
+}, window.Valine);
+</script>
 
 </body>
 </html>
