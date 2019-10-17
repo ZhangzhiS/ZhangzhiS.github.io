@@ -65,7 +65,7 @@
 <meta property="og:site_name" content="SavingUnhappy">
 <meta property="og:description" content="购买的服务器是阿里的，系统为centos 7.4，所以下面的操作都是在centos 7.4下完成。 安装12345678# 将需要下载的包统一放在`/usr/local/src/`中，方便管理cd /usr/local/src/# 下载源wget http://repo.mysql.com/mysql57-community-release-el7-8.noarch.rpm# 添加源：这里添加的是">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-15T07:16:57.095Z">
+<meta property="og:updated_time" content="2019-10-17T09:07:08.845Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL配置主从表">
 <meta name="twitter:description" content="购买的服务器是阿里的，系统为centos 7.4，所以下面的操作都是在centos 7.4下完成。 安装12345678# 将需要下载的包统一放在`/usr/local/src/`中，方便管理cd /usr/local/src/# 下载源wget http://repo.mysql.com/mysql57-community-release-el7-8.noarch.rpm# 添加源：这里添加的是">
@@ -298,11 +298,19 @@
                 
               
 
-              <time title="创建时间：2019-10-15 15:14:45 / 修改时间：15:16:57" itemprop="dateCreated datePublished" datetime="2019-10-15T15:14:45+08:00">2019-10-15</time>
+              <time title="创建时间：2019-10-15 15:14:45" itemprop="dateCreated datePublished" datetime="2019-10-15T15:14:45+08:00">2019-10-15</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-17 17:07:08" itemprop="dateModified" datetime="2019-10-17T17:07:08+08:00">2019-10-17</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -358,6 +366,8 @@
       
         <p>购买的服务器是阿里的，系统为centos 7.4，所以下面的操作都是在centos 7.4下完成。</p>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将需要下载的包统一放在`/usr/local/src/`中，方便管理</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src/</span><br><span class="line"><span class="comment"># 下载源</span></span><br><span class="line">wget http://repo.mysql.com/mysql57-community-release-el7-8.noarch.rpm</span><br><span class="line"><span class="comment"># 添加源：这里添加的是5.7的源</span></span><br><span class="line">rpm -ivh mysql57-community-release-el7-8.noarch.rpm</span><br><span class="line"><span class="comment"># 安装mysql（5.7）</span></span><br><span class="line">yum install mysql-server</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
 
 <h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mysqld.service</span><br></pre></td></tr></table></figure>
 
