@@ -296,7 +296,7 @@
                 
               
 
-              <time title="创建时间：2020-03-03 14:21:11 / 修改时间：18:59:46" itemprop="dateCreated datePublished" datetime="2020-03-03T14:21:11+08:00">2020-03-03</time>
+              <time title="创建时间：2020-03-03 14:21:11 / 修改时间：19:01:27" itemprop="dateCreated datePublished" datetime="2020-03-03T14:21:11+08:00">2020-03-03</time>
             </span>
           
             
@@ -354,55 +354,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
-            <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><a href="https://fastapi.tiangolo.com" target="_blank" rel="noopener">FastAPI</a> is a modern, fast (high-performance), web framework for building APIs with Python 3.6+ based on standard Python type hints.</p>
+          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><a href="https://fastapi.tiangolo.com" target="_blank" rel="noopener">FastAPI</a> is a modern, fast (high-performance), web framework for building APIs with Python 3.6+ based on standard Python type hints.</p>
 <blockquote>
 <p>基于Python3.6+的一款异步的高性能的后端框架。</p>
 </blockquote>
 <p>听同事说起这个新的Python异步框架，抽时间看了一下，查了一下相关的资料，记录一下学习过程。</p>
 <h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><p>介绍一下文档中说到的一些特性吧，掺杂一些自己的理解，可能比较片面。</p>
 <ul>
-<li><p>Fast（高性能）：前文也说了是基于Python3.6+的一款异步的web api框架，性能是向着Nodejs和Go语言看齐的。文档中特别感谢了<a href="https://www.starlette.io/" target="_blank" rel="noopener">Starlette</a>和<a href="https://pydantic-docs.helpmanual.io/" target="_blank" rel="noopener">Pydantic</a>（后面我简单介绍一下这两）。贴出了在Uvicorn下运行的FastAPI的<a href="https://www.techempower.com/benchmarks/#section=test&runid=7464e520-0dc2-473d-bd34-dbdfd7e85911&hw=ph&test=query&l=zijzen-7" target="_blank" rel="noopener">TechEmpower</a>的性能测试的结果，结果喜人。</p>
-</li>
-<li><p>Fast to code（快速编码）：文档完善，而且接口写法类似Flask，简单轻量。</p>
-</li>
-<li><p>Fewer bugs（bug较少）：通过看大概的入门教程，只要按照规范，至少关于字段类型转换的bug就会少很多甚至没有（感谢<a href="https://pydantic-docs.helpmanual.io/" target="_blank" rel="noopener">Pydantic</a>）。</p>
-</li>
-<li><p>Intuitive（直观的）：编辑器支持，接口或者函数的所需要的参数pycharm和vs code等编辑器都会有明确的提示，这同样会减少不少bug（感谢<a href="https://pydantic-docs.helpmanual.io/" target="_blank" rel="noopener">Pydantic</a>）。</p>
-</li>
-<li><p>Easy（简单）：官方文档完善，使用起来也是简单易用。</p>
-</li>
-<li><p>Short（简短）：数据类型模型进行复用（目前简单的了解，后面有别的理解再进行补充）。</p>
-</li>
-<li><p>Robust（健壮）：性能以及稳定性可用于生产环境（不知道什么公司有在用），会自动生成接口文档，还可以进行接口测试。</p>
-</li>
-<li><p>Standard-based（基于标准）：符合<a href="https://github.com/OAI/OpenAPI-Specification" target="_blank" rel="noopener">OpenAPI</a>和<a href="http://json-schema.org/" target="_blank" rel="noopener">JSON Schema</a>规范。</p>
-</li>
+<li>Fast（高性能）：前文也说了是基于Python3.6+的一款异步的web api框架，性能是向着Nodejs和Go语言看齐的。文档中特别感谢了<a href="https://www.starlette.io/" target="_blank" rel="noopener">Starlette</a>和<a href="https://pydantic-docs.helpmanual.io/" target="_blank" rel="noopener">Pydantic</a>（后面我简单介绍一下这两）。贴出了在Uvicorn下运行的FastAPI的<a href="https://www.techempower.com/benchmarks/#section=test&runid=7464e520-0dc2-473d-bd34-dbdfd7e85911&hw=ph&test=query&l=zijzen-7" target="_blank" rel="noopener">TechEmpower</a>的性能测试的结果，结果喜人。</li>
 </ul>
-<h3 id="Pydantic"><a href="#Pydantic" class="headerlink" title="Pydantic"></a>Pydantic</h3><p>上面感谢了好多次Pydantic，来简单说说他吧。</p>
-<p>通过类的方法来定义数据结构，看看下面的例子（这是官方文档的一个例子<a href="https://pydantic-docs.helpmanual.io/" target="_blank" rel="noopener">Pydantic</a>）。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> List</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    id: int</span><br><span class="line">    name = <span class="string">'John Doe'</span></span><br><span class="line">    signup_ts: datetime = <span class="literal">None</span></span><br><span class="line">    friends: List[int] = []</span><br><span class="line"></span><br><span class="line">external_data = &#123;</span><br><span class="line">    <span class="string">'id'</span>: <span class="string">'123'</span>,</span><br><span class="line">    <span class="string">'signup_ts'</span>: <span class="string">'2019-06-01 12:22'</span>,</span><br><span class="line">    <span class="string">'friends'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="string">'3'</span>]</span><br><span class="line">&#125;</span><br><span class="line">user = User(**external_data)  <span class="comment"># 实例化的时候会自己找到对应的属性</span></span><br><span class="line">print(user.id)  <span class="comment"># 通过 ”.“ 语法来访问对应的值</span></span><br><span class="line">print(repr(user.signup_ts))</span><br><span class="line">print(user.friends)</span><br><span class="line">print(user.dict())  <span class="comment"># 将User对象转换为字典</span></span><br></pre></td></tr></table></figure>
-
-<p>在定义User的时候，限制了用户的id为int类型，name给了一个默认值，为字符串，注册时间的字段为datetime类型。在FastAPI中，可以将接口需要的参数以及返回的结果定义好，在接受参数的时候会进行相应的转换，比如datetime字段，他会自己将符合规则的字符串转为datetime类型。如果无法转换，则会给前端返回对应的错误信息。</p>
-<p>在使用Pydantic定义的对象的时候，编辑器也会有字段类型字段名称等相应的提示。</p>
-<p>使用他能够有一套标准化的接口字段限制。在后面整理一份自己的使用文档的时候介绍他的使用方法。</p>
-<h3 id="Starlette"><a href="#Starlette" class="headerlink" title="Starlette"></a>Starlette</h3><p>Starlette是一种轻量级的ASGI框架/工具包，是构建高性能异步服务的理想选择。</p>
-<p>由于我对他也了解不是很多，就在这里先不说了。</p>
-<h3 id="接口文档"><a href="#接口文档" class="headerlink" title="接口文档"></a>接口文档</h3><p>FastAPI在写好接口之后会自动生成接口文档，包括接口所需的参数、返回的结果的数据结构。可以再定义的时候添加接口的描述。</p>
-<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p>代码如下，一个简单的hello world示例。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get("/")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_root</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">"Hello"</span>: <span class="string">"World"</span>&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get("/items/&#123;item_id&#125;")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_item</span><span class="params">(item_id: int, q: str = None)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">"item_id"</span>: item_id, <span class="string">"q"</span>: q&#125;</span><br></pre></td></tr></table></figure>
-
-<p>启动是通过uvicorn来启动的（轻量级的异步服务器框架）。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uvicorn main:app --reload</span><br></pre></td></tr></table></figure>
-
-<p><code>main:app</code>中，main代表的是app所在的文件名，app是实例化FastAPI()的名称，当然也可以根据你的喜好来起名字。（图片是官方文档中的，不贴图片也不合适，懒得去截图了。）</p>
-<p>启动之后可以访问<a href="http://127.0.0.1:8000/docs" target="_blank" rel="noopener">http://127.0.0.1:8000/docs</a>访问交互式api文档。</p>
-<p><img src="https://fastapi.tiangolo.com/img/index/index-01-swagger-ui-simple.png" alt="docs"></p>
-<p>Redoc风格的文档<a href="http://127.0.0.1:8000/redoc" target="_blank" rel="noopener">http://127.0.0.1:8000/redoc</a></p>
-<p><img src="https://fastapi.tiangolo.com/img/index/index-02-redoc-simple.png" alt="redoc"></p>
-<p>就到这吧，后面我会根据我的习惯整理一份查询的文档出来。</p>
-
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/fastapi-demo.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
