@@ -1,61 +1,26 @@
 <!DOCTYPE html>
-
-
-
-
-
-<html class="theme-next pisces use-motion" lang="zh-CN">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="generator" content="Hexo 3.9.0">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=7.3.0">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.3.0">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.3.0">
-  <link rel="mask-icon" href="/images/favicon.png?v=7.3.0" color="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.png" color="#222">
   <meta name="google-site-verification" content="jfiTzJL4QReMSaJi0l8TDoVyg56AXdg6uPW8b4lVeaU">
   <meta name="baidu-site-verification" content="T51n5dxa3zuPzDcC">
 
-<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+<link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
-
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
 <script id="hexo-configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '7.3.0',
-    exturl: false,
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
-    save_scroll: false,
-    copycode: {"enable":true,"show_result":true,"style":"mac"},
-    fancybox: false,
-    mediumzoom: false,
-    lazyload: false,
-    pangu: false,
-    algolia: {
-      appID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    },
-    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":true},
-    path: 'search.xml',
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    translation: {
-      copy_button: '复制',
-      copy_success: '复制成功',
-      copy_failure: '复制失败'
-    }
-  };
-</script>
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zz.zzs7.top","root":"/","scheme":"Pisces","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
   <meta name="description" content="问题解决的那一刻的快乐是无法言表的。">
 <meta property="og:type" content="website">
@@ -67,34 +32,30 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SavingUnhappy">
 <meta name="twitter:description" content="问题解决的那一刻的快乐是无法言表的。">
-  <link rel="canonical" href="https://zz.zzs7.top/">
+
+<link rel="canonical" href="https://zz.zzs7.top/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: true,
-    isPost: false,
-    isPage: false,
-    isArchive: false
+    isHome : true,
+    isPost : false
   };
 </script>
 
   <title>SavingUnhappy</title>
   
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139508983-1"></script>
-  <script>
-    var host = window.location.hostname;
-    if (host !== "localhost" || !true) {
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-139508983-1');
-    }
-  </script>
-
-
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139508983-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-139508983-1');
+      }
+    </script>
 
 
 
@@ -103,7 +64,6 @@
 
   <noscript>
   <style>
-  .use-motion .motion-element,
   .use-motion .brand,
   .use-motion .menu-item,
   .sidebar-inner,
@@ -112,9 +72,8 @@
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
+  .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -128,16 +87,23 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  <div class="container sidebar-position-left">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
   <div class="site-meta">
 
-    <div class="custom-logo-site-title">
+    <div>
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">SavingUnhappy</span>
@@ -148,12 +114,10 @@
       
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
   </div>
 </div>
 
@@ -161,129 +125,93 @@
 <nav class="site-nav">
   
   <ul id="menu" class="menu">
-      
-      
-      
-        
         <li class="menu-item menu-item-home">
-      
-    
-      
-    
 
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-tags">
-      
-    
-      
-    
 
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">38</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">38</span></a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-categories">
-      
-    
-      
-    
 
-    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">8</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">8</span></a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-archives">
-      
-    
-      
-    
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">29</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">29</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
-        <a href="javascript:;" class="popup-trigger">
-        
-          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
       </li>
-    
   </ul>
 
 </nav>
   <div class="site-search">
-    
-  <div class="popup search-popup">
-  <div class="search-header">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <div class="search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="搜索..." spellcheck="false"
-             type="text" id="search-input">
-    </div>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
   </div>
-  <div id="search-result"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
 </div>
+<div id="search-result"></div>
 
+</div>
+<div class="search-pop-overlay"></div>
 
   </div>
 </div>
     </header>
 
     
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
+
+          <div class="content">
             
 
-          <div id="content" class="content page-home">
-            
-  <section id="posts" class="posts-expand">
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  <div class="posts-expand">
+        
   
   
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/fastapi-demo.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ava.gif">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
-      <meta itemprop="image" content="/images/ava.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
       <header class="post-header">
-
-        
-          <h2 class="post-title" itemprop="name headline">
-              
-              <a href="/fastapi-demo.html" class="post-title-link" itemprop="url">FastAPI简单使用</a>
-            
-          </h2>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/fastapi-demo.html" class="post-title-link" itemprop="url">FastAPI简单使用</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -291,31 +219,19 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-
-              
-                
               
 
               <time title="创建时间：2020-03-03 14:21:11 / 修改时间：19:01:27" itemprop="dateCreated datePublished" datetime="2020-03-03T14:21:11+08:00">2020-03-03</time>
             </span>
-          
-            
-
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
             </span>
-          
 
           
             <span id="/fastapi-demo.html" class="post-meta-item leancloud_visitors" data-flag-title="FastAPI简单使用" title="阅读次数">
@@ -325,25 +241,20 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="leancloud-visitors-count"></span>
             </span>
-          
-            
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
         <i class="fa fa-comment-o"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/fastapi-demo.html#comments" itemprop="discussionUrl">
+    <a title="valine" href="/fastapi-demo.html#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/fastapi-demo.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-          
 
         </div>
       </header>
@@ -364,13 +275,11 @@
 <li>Fast（高性能）：前文也说了是基于Python3.6+的一款异步的web api框架，性能是向着Nodejs和Go语言看齐的。文档中特别感谢了<a href="https://www.starlette.io/" target="_blank" rel="noopener">Starlette</a>和<a href="https://pydantic-docs.helpmanual.io/" target="_blank" rel="noopener">Pydantic</a>（后面我简单介绍一下这两）。贴出了在Uvicorn下运行的FastAPI的<a href="https://www.techempower.com/benchmarks/#section=test&runid=7464e520-0dc2-473d-bd34-dbdfd7e85911&hw=ph&test=query&l=zijzen-7" target="_blank" rel="noopener">TechEmpower</a>的性能测试的结果，结果喜人。</li>
 </ul>
           <!--noindex-->
-          
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/fastapi-demo.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -380,43 +289,33 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+        
   
   
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/flask-vue.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ava.gif">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
-      <meta itemprop="image" content="/images/ava.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
       <header class="post-header">
-
-        
-          <h2 class="post-title" itemprop="name headline">
-              
-              <a href="/flask-vue.html" class="post-title-link" itemprop="url">一步一步带你使用Flask+Vue搭建一个前后端分离的项目</a>
-            
-          </h2>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/flask-vue.html" class="post-title-link" itemprop="url">一步一步带你使用Flask+Vue搭建一个前后端分离的项目</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -424,31 +323,19 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-
-              
-                
               
 
               <time title="创建时间：2019-10-17 10:20:44 / 修改时间：17:06:42" itemprop="dateCreated datePublished" datetime="2019-10-17T10:20:44+08:00">2019-10-17</time>
             </span>
-          
-            
-
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
             </span>
-          
 
           
             <span id="/flask-vue.html" class="post-meta-item leancloud_visitors" data-flag-title="一步一步带你使用Flask+Vue搭建一个前后端分离的项目" title="阅读次数">
@@ -458,25 +345,20 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="leancloud-visitors-count"></span>
             </span>
-          
-            
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
         <i class="fa fa-comment-o"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/flask-vue.html#comments" itemprop="discussionUrl">
+    <a title="valine" href="/flask-vue.html#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/flask-vue.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-          
 
         </div>
       </header>
@@ -491,13 +373,11 @@
 <h2 id="使用的框架"><a href="#使用的框架" class="headerlink" title="使用的框架"></a>使用的框架</h2><p>前端Vue+后端Flask</p>
 <h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><p>首先说明我写这个文章的状态，就是我会后端，想要学习前端，通过查资料搭建一个前后端分离的架子的过程，我参考的是Django+Vue的，flask没找到比较详细的文章。所以这篇文章也适合我这种情况的读者。</p>
           <!--noindex-->
-          
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/flask-vue.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -507,43 +387,33 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+        
   
   
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/mysql-slave.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ava.gif">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
-      <meta itemprop="image" content="/images/ava.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
       <header class="post-header">
-
-        
-          <h2 class="post-title" itemprop="name headline">
-              
-              <a href="/mysql-slave.html" class="post-title-link" itemprop="url">MySQL配置主从表</a>
-            
-          </h2>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/mysql-slave.html" class="post-title-link" itemprop="url">MySQL配置主从表</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -552,16 +422,8 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              
-                
-              
-
               <time title="创建时间：2019-10-15 15:14:45" itemprop="dateCreated datePublished" datetime="2019-10-15T15:14:45+08:00">2019-10-15</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
@@ -569,21 +431,15 @@
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2019-10-17 17:07:08" itemprop="dateModified" datetime="2019-10-17T17:07:08+08:00">2019-10-17</time>
               </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a>
+                </span>
             </span>
-          
 
           
             <span id="/mysql-slave.html" class="post-meta-item leancloud_visitors" data-flag-title="MySQL配置主从表" title="阅读次数">
@@ -593,25 +449,20 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="leancloud-visitors-count"></span>
             </span>
-          
-            
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
         <i class="fa fa-comment-o"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/mysql-slave.html#comments" itemprop="discussionUrl">
+    <a title="valine" href="/mysql-slave.html#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/mysql-slave.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-          
 
         </div>
       </header>
@@ -625,13 +476,11 @@
           <p>购买的服务器是阿里的，系统为centos 7.4，所以下面的操作都是在centos 7.4下完成。</p>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将需要下载的包统一放在`/usr/local/src/`中，方便管理</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src/</span><br><span class="line"><span class="comment"># 下载源</span></span><br><span class="line">wget http://repo.mysql.com/mysql57-community-release-el7-8.noarch.rpm</span><br><span class="line"><span class="comment"># 添加源：这里添加的是5.7的源</span></span><br><span class="line">rpm -ivh mysql57-community-release-el7-8.noarch.rpm</span><br><span class="line"><span class="comment"># 安装mysql（5.7）</span></span><br><span class="line">yum install mysql-server</span><br></pre></td></tr></table></figure>
           <!--noindex-->
-          
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/mysql-slave.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -641,43 +490,33 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+        
   
   
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/mysql-truncate.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ava.gif">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
-      <meta itemprop="image" content="/images/ava.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
       <header class="post-header">
-
-        
-          <h2 class="post-title" itemprop="name headline">
-              
-              <a href="/mysql-truncate.html" class="post-title-link" itemprop="url">关于Mysql的truncate操作</a>
-            
-          </h2>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/mysql-truncate.html" class="post-title-link" itemprop="url">关于Mysql的truncate操作</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -685,31 +524,19 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-
-              
-                
               
 
               <time title="创建时间：2019-08-14 19:26:43 / 修改时间：23:22:13" itemprop="dateCreated datePublished" datetime="2019-08-14T19:26:43+08:00">2019-08-14</time>
             </span>
-          
-            
-
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a>
+                </span>
             </span>
-          
 
           
             <span id="/mysql-truncate.html" class="post-meta-item leancloud_visitors" data-flag-title="关于Mysql的truncate操作" title="阅读次数">
@@ -719,25 +546,20 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="leancloud-visitors-count"></span>
             </span>
-          
-            
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
         <i class="fa fa-comment-o"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/mysql-truncate.html#comments" itemprop="discussionUrl">
+    <a title="valine" href="/mysql-truncate.html#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/mysql-truncate.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-          
 
         </div>
       </header>
@@ -752,13 +574,11 @@
 <p>应该是最近同事写需求，修改了A，然后某种条件A报错了，然后操作的那张表发现所有的数据都没了。</p>
 <p>来了解一下truncate的操作。</p>
           <!--noindex-->
-          
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/mysql-truncate.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -768,43 +588,33 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+        
   
   
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/python-round.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ava.gif">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
-      <meta itemprop="image" content="/images/ava.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
       <header class="post-header">
-
-        
-          <h2 class="post-title" itemprop="name headline">
-              
-              <a href="/python-round.html" class="post-title-link" itemprop="url">python中的四舍五入</a>
-            
-          </h2>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-round.html" class="post-title-link" itemprop="url">python中的四舍五入</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -813,16 +623,8 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              
-                
-              
-
               <time title="创建时间：2019-08-05 20:14:50" itemprop="dateCreated datePublished" datetime="2019-08-05T20:14:50+08:00">2019-08-05</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
@@ -830,21 +632,15 @@
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2019-08-14 23:22:12" itemprop="dateModified" datetime="2019-08-14T23:22:12+08:00">2019-08-14</time>
               </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
             </span>
-          
 
           
             <span id="/python-round.html" class="post-meta-item leancloud_visitors" data-flag-title="python中的四舍五入" title="阅读次数">
@@ -854,25 +650,20 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="leancloud-visitors-count"></span>
             </span>
-          
-            
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
         <i class="fa fa-comment-o"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/python-round.html#comments" itemprop="discussionUrl">
+    <a title="valine" href="/python-round.html#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/python-round.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-          
 
         </div>
       </header>
@@ -886,13 +677,11 @@
           <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近工作过程中遇到了需要计算金钱的问题，由于有零有整，多次计算之后进行保留两位小数的时候，会发生计算不太准确的问题。<br>比如：<br><code>572.725</code>需要保留两位小数，按照我们生活中来说，应该是<code>572.73</code>，但是在程序中最后保留的结果为<code>572.72</code>。</p>
 <p>通过查资料，多数编程语言中，采用的不是我们生活中常用“四舍五入”，而是让统计数据更公平，降低舍入的误差的“奇进偶舍”的取舍方式，又称为“四舍六入五成双”。</p>
           <!--noindex-->
-          
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/python-round.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -902,43 +691,33 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+        
   
   
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/bubble-sort.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ava.gif">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
-      <meta itemprop="image" content="/images/ava.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
       <header class="post-header">
-
-        
-          <h2 class="post-title" itemprop="name headline">
-              
-              <a href="/bubble-sort.html" class="post-title-link" itemprop="url">冒泡排序</a>
-            
-          </h2>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/bubble-sort.html" class="post-title-link" itemprop="url">冒泡排序</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -947,16 +726,8 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              
-                
-              
-
               <time title="创建时间：2019-06-26 22:26:21" itemprop="dateCreated datePublished" datetime="2019-06-26T22:26:21+08:00">2019-06-26</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
@@ -964,21 +735,15 @@
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2019-08-14 23:22:10" itemprop="dateModified" datetime="2019-08-14T23:22:10+08:00">2019-08-14</time>
               </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/算法/" itemprop="url" rel="index"><span itemprop="name">算法</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
             </span>
-          
 
           
             <span id="/bubble-sort.html" class="post-meta-item leancloud_visitors" data-flag-title="冒泡排序" title="阅读次数">
@@ -988,25 +753,20 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="leancloud-visitors-count"></span>
             </span>
-          
-            
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
         <i class="fa fa-comment-o"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/bubble-sort.html#comments" itemprop="discussionUrl">
+    <a title="valine" href="/bubble-sort.html#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/bubble-sort.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-          
 
         </div>
       </header>
@@ -1021,13 +781,11 @@
 <p>比如要将一个列表进行排序，就是对该列表进行遍历，将每次拿到的元素与其他元素进行比较交换位置，每一次遍历只排好一个数字。</p>
 <p>下面看看图示：</p>
           <!--noindex-->
-          
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/bubble-sort.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -1037,43 +795,33 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+        
   
   
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/binary-search.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ava.gif">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
-      <meta itemprop="image" content="/images/ava.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
       <header class="post-header">
-
-        
-          <h2 class="post-title" itemprop="name headline">
-              
-              <a href="/binary-search.html" class="post-title-link" itemprop="url">python实现二分查找法</a>
-            
-          </h2>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/binary-search.html" class="post-title-link" itemprop="url">python实现二分查找法</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -1081,31 +829,19 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-
-              
-                
               
 
               <time title="创建时间：2019-06-26 14:09:44 / 修改时间：22:30:48" itemprop="dateCreated datePublished" datetime="2019-06-26T14:09:44+08:00">2019-06-26</time>
             </span>
-          
-            
-
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/算法/" itemprop="url" rel="index"><span itemprop="name">算法</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
             </span>
-          
 
           
             <span id="/binary-search.html" class="post-meta-item leancloud_visitors" data-flag-title="python实现二分查找法" title="阅读次数">
@@ -1115,25 +851,20 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="leancloud-visitors-count"></span>
             </span>
-          
-            
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
         <i class="fa fa-comment-o"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/binary-search.html#comments" itemprop="discussionUrl">
+    <a title="valine" href="/binary-search.html#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/binary-search.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-          
 
         </div>
       </header>
@@ -1150,13 +881,11 @@
 <p>使用二分查找法找到数字”2”的过程图解</p>
 <p><img src="https://i.loli.net/2019/06/26/5d12e34ab9cc871563.png" alt="二分查找"></p>
           <!--noindex-->
-          
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/binary-search.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -1166,43 +895,33 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+        
   
   
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/add-two-numbers.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ava.gif">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
-      <meta itemprop="image" content="/images/ava.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
       <header class="post-header">
-
-        
-          <h2 class="post-title" itemprop="name headline">
-              
-              <a href="/add-two-numbers.html" class="post-title-link" itemprop="url">leetcode-python-合并两个有序数组</a>
-            
-          </h2>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/add-two-numbers.html" class="post-title-link" itemprop="url">leetcode-python-合并两个有序数组</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -1210,31 +929,19 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-
-              
-                
               
 
               <time title="创建时间：2019-06-20 21:38:50 / 修改时间：21:46:18" itemprop="dateCreated datePublished" datetime="2019-06-20T21:38:50+08:00">2019-06-20</time>
             </span>
-          
-            
-
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/算法/" itemprop="url" rel="index"><span itemprop="name">算法</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
             </span>
-          
 
           
             <span id="/add-two-numbers.html" class="post-meta-item leancloud_visitors" data-flag-title="leetcode-python-合并两个有序数组" title="阅读次数">
@@ -1244,25 +951,20 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="leancloud-visitors-count"></span>
             </span>
-          
-            
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
         <i class="fa fa-comment-o"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/add-two-numbers.html#comments" itemprop="discussionUrl">
+    <a title="valine" href="/add-two-numbers.html#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/add-two-numbers.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-          
 
         </div>
       </header>
@@ -1276,13 +978,11 @@
           <h2 id="两数相加"><a href="#两数相加" class="headerlink" title="两数相加"></a><a href="https://leetcode.com/problems/add-two-numbers/" target="_blank" rel="noopener">两数相加</a></h2><p>题目的中文地址：<a href="https://leetcode-cn.com/problems/add-two-numbers/" target="_blank" rel="noopener">两数相加</a></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 给出两个*非空*的链表用来表示两个*非负*的整数。</span></span><br><span class="line"><span class="comment"># 其中，它们各自的位数是按照**逆序**的方式存储的，并且它们的每个节点只能存储一位数字。</span></span><br><span class="line"><span class="comment"># 如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。</span></span><br><span class="line"><span class="comment"># 您可以假设除了数字 0 之外，这两个数都不会以 0 开头。</span></span><br><span class="line"><span class="comment"># 示例：</span></span><br><span class="line"><span class="comment"># 输入：(2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)</span></span><br><span class="line"><span class="comment"># 输出：7 -&gt; 0 -&gt; 8</span></span><br><span class="line"><span class="comment"># 原因：342 + 465 = 807</span></span><br></pre></td></tr></table></figure>
           <!--noindex-->
-          
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/add-two-numbers.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -1292,43 +992,33 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+        
   
   
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/share-cookies.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ava.gif">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
-      <meta itemprop="image" content="/images/ava.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
       <header class="post-header">
-
-        
-          <h2 class="post-title" itemprop="name headline">
-              
-              <a href="/share-cookies.html" class="post-title-link" itemprop="url">将selenium获得的cookies传递给requests.session().cookies</a>
-            
-          </h2>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/share-cookies.html" class="post-title-link" itemprop="url">将selenium获得的cookies传递给requests.session().cookies</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -1336,31 +1026,19 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-
-              
-                
               
 
               <time title="创建时间：2019-06-18 19:13:39 / 修改时间：19:17:46" itemprop="dateCreated datePublished" datetime="2019-06-18T19:13:39+08:00">2019-06-18</time>
             </span>
-          
-            
-
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
             </span>
-          
 
           
             <span id="/share-cookies.html" class="post-meta-item leancloud_visitors" data-flag-title="将selenium获得的cookies传递给requests.session().cookies" title="阅读次数">
@@ -1370,25 +1048,20 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="leancloud-visitors-count"></span>
             </span>
-          
-            
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
         <i class="fa fa-comment-o"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/share-cookies.html#comments" itemprop="discussionUrl">
+    <a title="valine" href="/share-cookies.html#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/share-cookies.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-          
 
         </div>
       </header>
@@ -1405,13 +1078,11 @@
 
 <p>但是通过阅读源码，发现session中的cookies是<code>RequestsCookieJar()</code>类，然后该类提供了<code>set()</code>方法进行插入。</p>
           <!--noindex-->
-          
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/share-cookies.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -1421,43 +1092,33 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+        
   
   
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/tox.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ava.gif">
       <meta itemprop="name" content="张智">
       <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
-      <meta itemprop="image" content="/images/ava.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="SavingUnhappy">
     </span>
       <header class="post-header">
-
-        
-          <h2 class="post-title" itemprop="name headline">
-              
-              <a href="/tox.html" class="post-title-link" itemprop="url">了解TOX以及简单使用</a>
-            
-          </h2>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/tox.html" class="post-title-link" itemprop="url">了解TOX以及简单使用</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -1466,16 +1127,8 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              
-                
-              
-
               <time title="创建时间：2019-06-05 22:45:08" itemprop="dateCreated datePublished" datetime="2019-06-05T22:45:08+08:00">2019-06-05</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
@@ -1483,21 +1136,15 @@
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2019-06-18 19:32:41" itemprop="dateModified" datetime="2019-06-18T19:32:41+08:00">2019-06-18</time>
               </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/知识点/" itemprop="url" rel="index"><span itemprop="name">知识点</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/知识点/" itemprop="url" rel="index"><span itemprop="name">知识点</span></a>
+                </span>
             </span>
-          
 
           
             <span id="/tox.html" class="post-meta-item leancloud_visitors" data-flag-title="了解TOX以及简单使用" title="阅读次数">
@@ -1507,25 +1154,20 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="leancloud-visitors-count"></span>
             </span>
-          
-            
   
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
         <i class="fa fa-comment-o"></i>
       </span>
-        
-      
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/tox.html#comments" itemprop="discussionUrl">
+    <a title="valine" href="/tox.html#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/tox.html" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-          
 
         </div>
       </header>
@@ -1547,13 +1189,11 @@
 </li>
 </ul>
           <!--noindex-->
-          
-            <div class="post-button text-center">
+            <div class="post-button">
               <a class="btn" href="/tox.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
-          
           <!--/noindex-->
         
       
@@ -1563,17 +1203,14 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-  </section>
+  </div>
 
   
   <nav class="pagination">
@@ -1581,190 +1218,99 @@
   </nav>
 
 
+
           </div>
           
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
 
         </div>
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
-  <aside id="sidebar" class="sidebar">
+  <aside class="sidebar">
     <div class="sidebar-inner">
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
-        <div class="site-overview">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image"
-      src="/images/ava.gif"
-      alt="张智">
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="张智"
+      src="/images/ava.gif">
   <p class="site-author-name" itemprop="name">张智</p>
-  <div class="site-description motion-element" itemprop="description">问题解决的那一刻的快乐是无法言表的。</div>
+  <div class="site-description" itemprop="description">问题解决的那一刻的快乐是无法言表的。</div>
 </div>
-  <nav class="site-state motion-element">
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
       <div class="site-state-item site-state-posts">
-        
           <a href="/archives/">
         
           <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
-    
-      
-      
       <div class="site-state-item site-state-categories">
-        
-          
             <a href="/categories/">
           
-        
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
         <span class="site-state-item-count">8</span>
-        <span class="site-state-item-name">分类</span>
-        </a>
+        <span class="site-state-item-name">分类</span></a>
       </div>
-    
-      
-      
       <div class="site-state-item site-state-tags">
-        
-          
             <a href="/tags/">
           
-        
-        
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
         <span class="site-state-item-count">38</span>
-        <span class="site-state-item-name">标签</span>
-        </a>
+        <span class="site-state-item-name">标签</span></a>
       </div>
-    
   </nav>
+</div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-      
-      
-      
-        
-      
-        <a href="https://github.com/ZhangzhiS" title="GitHub &rarr; https://github.com/ZhangzhiS" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+        <a href="https://github.com/ZhangzhiS" title="GitHub → https://github.com/ZhangzhiS" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
       </span>
-    
       <span class="links-of-author-item">
-      
-      
-      
-        
-      
-        <a href="mailto:zhi781029588@gmail.com" title="E-Mail &rarr; mailto:zhi781029588@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+        <a href="mailto:zhi781029588@gmail.com" title="E-Mail → mailto:zhi781029588@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
       </span>
-    
   </div>
 
 
 
-        </div>
       </div>
 
     </div>
@@ -1775,17 +1321,26 @@
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright">  <a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">京ICP备19016512号 </a>&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">京ICP备19016512号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">张智</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
   <span class="post-meta-divider">|</span>
-  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.3.0</div>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.2
+  </div>
 
         
 
@@ -1796,32 +1351,17 @@
 
 
 
-        
       </div>
     </footer>
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-      </div>
-
-    
-
   </div>
 
   
-  <script src="/lib/jquery/index.js?v=3.4.1"></script>
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-<script src="/js/utils.js?v=7.3.0"></script>
-  <script src="/js/motion.js?v=7.3.0"></script>
-
-
-  <script src="/js/affix.js?v=7.3.0"></script>
-  <script src="/js/schemes/pisces.js?v=7.3.0"></script>
-
-
-<script src="/js/next-boot.js?v=7.3.0"></script>
-
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
 
 
 
@@ -1830,20 +1370,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-  <script src="/js/local-search.js?v=7.3.0"></script>
-
-
+  <script src="/js/local-search.js"></script>
 
 
 
@@ -1859,35 +1386,44 @@
   
 
   
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri == 'https://zz.zzs7.top/',]
+      });
+      });
+  </script>
 
-  
-
-
-  
-    
 
 <script>
-NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
-  var GUEST = ['nick', 'mail', 'link'];
-  var guest = 'nick,mail';
-  guest = guest.split(',').filter(item => {
-    return GUEST.indexOf(item) > -1;
-  });
-  new Valine({
-    el: '#comments',
-    verify: false,
-    notify: false,
-    appId: 'sIl9NjoQGCLyOJgBgHgNcWpo-gzGzoHsz',
-    appKey: 'arzs1til8eEtvBPsdfJCiLei',
-    placeholder: '请留下你的看法或者疑问',
-    avatar: 'mm',
-    meta: guest,
-    pageSize: '10' || 10,
-    visitor: true,
-    lang: 'zh-cn' || 'zh-cn',
-    path: location.pathname
-  });
-}, window.Valine);
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'sIl9NjoQGCLyOJgBgHgNcWpo-gzGzoHsz',
+      appKey     : 'arzs1til8eEtvBPsdfJCiLei',
+      placeholder: "请留下你的看法或者疑问",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : ,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
 </script>
 
 </body>
