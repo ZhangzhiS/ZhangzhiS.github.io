@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://zz.zzs7.top/hexo.html</loc>
+    <lastmod>2020-06-27</lastmod>
+  </url>  <url>
     <loc>https://zz.zzs7.top/fastapi-demo.html</loc>
     <lastmod>2020-03-03</lastmod>
   </url>  <url>
@@ -65,9 +68,6 @@
     <lastmod>2019-06-18</lastmod>
   </url>  <url>
     <loc>https://zz.zzs7.top/leetcode-merge-nums.html</loc>
-    <lastmod>2019-06-18</lastmod>
-  </url>  <url>
-    <loc>https://zz.zzs7.top/hexo.html</loc>
     <lastmod>2019-06-18</lastmod>
   </url>  <url>
     <loc>https://zz.zzs7.top/git-pull-request.html</loc>

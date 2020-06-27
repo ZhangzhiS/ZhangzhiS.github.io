@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://zz.zzs7.top/hexo.html</loc>
+    
+    <lastmod>2020-06-27T09:28:15.356Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://zz.zzs7.top/fastapi-demo.html</loc>
     
     <lastmod>2020-03-03T11:01:27.933Z</lastmod>
@@ -152,13 +159,6 @@
     <loc>https://zz.zzs7.top/leetcode-merge-nums.html</loc>
     
     <lastmod>2019-06-18T11:23:37.182Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://zz.zzs7.top/hexo.html</loc>
-    
-    <lastmod>2019-06-18T11:23:15.986Z</lastmod>
     
   </url>
   
