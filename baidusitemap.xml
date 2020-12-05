@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://zz.zzs7.top/interview-logs.html</loc>
+    <lastmod>2020-12-05</lastmod>
+  </url>  <url>
+    <loc>https://zz.zzs7.top/insert-sort.html</loc>
+    <lastmod>2020-12-05</lastmod>
+  </url>  <url>
+    <loc>https://zz.zzs7.top/roama-to-int.html</loc>
+    <lastmod>2020-12-05</lastmod>
+  </url>  <url>
+    <loc>https://zz.zzs7.top/valid-parentheses.html</loc>
+    <lastmod>2020-12-05</lastmod>
+  </url>  <url>
+    <loc>https://zz.zzs7.top/tox.html</loc>
+    <lastmod>2020-12-05</lastmod>
+  </url>  <url>
     <loc>https://zz.zzs7.top/hexo.html</loc>
     <lastmod>2020-12-05</lastmod>
   </url>  <url>
@@ -41,9 +56,6 @@
     <lastmod>2019-06-18</lastmod>
   </url>  <url>
     <loc>https://zz.zzs7.top/use-git-1.html</loc>
-    <lastmod>2019-06-18</lastmod>
-  </url>  <url>
-    <loc>https://zz.zzs7.top/tox.html</loc>
     <lastmod>2019-06-18</lastmod>
   </url>  <url>
     <loc>https://zz.zzs7.top/structure-1.html</loc>

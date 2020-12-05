@@ -23,7 +23,7 @@
   </script>
 
   <meta name="description" content="同源策略 同源策略是一种约定，是由Netscape提出的著名安全策略。他是浏览器最核心、最基本的安全功能。  同源的定义如果两个页面的协议、端口、主机都相同，则两个页面具有相同的源。">
-<meta name="keywords" content="面试,前端,知识点">
+<meta name="keywords" content="面试,知识点,前端">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于同源策略">
 <meta property="og:url" content="https://zz.zzs7.top/same-origin-policy.html">
@@ -143,7 +143,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">29</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">33</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -305,12 +305,12 @@
 <li><p><strong>降域（document.domain）</strong>：同源策略认为域和子域属于不同的域。</p>
 <p>比如<a href="https://zz.zzs7.top和https://s7.zzs7.top" target="_blank" rel="noopener">https://zz.zzs7.top和https://s7.zzs7.top</a>。虽然都属于zzs7.top域名的子域名，但是他们属于不同域。</p>
 <p>想让上述两个网页之间通信，可以通过设置 <code>document.damain=&#39;zzs7.top&#39;</code>，来让浏览器认为他们在同样的域。两个页面都需设置。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line">    document.domain = 'zzs7.top';</span><br><span class="line">    // 获取父窗口中变量</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.domain = <span class="string">'zzs7.top'</span>;</span></span><br><span class="line"><span class="javascript">    <span class="comment">// 获取父窗口中变量</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>注：可以进行降域，不能升域。</strong></p>
 </li>
 <li><p><strong>通过jsonp跨域</strong>：不同源虽然不能读写，但可以引用js。我们可以让引用的js附带数据来调用我们预先定义的函数，而数据当作参数传入。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line">   var script = document.createElement('script');</span><br><span class="line">   script.type = 'text/javascript';</span><br><span class="line">  </span><br><span class="line">   // 传参一个回调函数名给后端，方便后端返回时执行这个在前端定义的回调函数</span><br><span class="line">   script.src = 'http://zz.zzs7.top/login?user=admin&amp;callback=handleCallback';</span><br><span class="line">   document.head.appendChild(script);</span><br><span class="line">  </span><br><span class="line">   // 回调执行函数</span><br><span class="line">   function handleCallback(res) &#123;</span><br><span class="line">       alert(JSON.stringify(res));</span><br><span class="line">   &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">   <span class="keyword">var</span> script = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>);</span></span><br><span class="line"><span class="javascript">   script.type = <span class="string">'text/javascript'</span>;</span></span><br><span class="line">  </span><br><span class="line"><span class="javascript">   <span class="comment">// 传参一个回调函数名给后端，方便后端返回时执行这个在前端定义的回调函数</span></span></span><br><span class="line"><span class="javascript">   script.src = <span class="string">'http://zz.zzs7.top/login?user=admin&amp;callback=handleCallback'</span>;</span></span><br><span class="line"><span class="javascript">   <span class="built_in">document</span>.head.appendChild(script);</span></span><br><span class="line">  </span><br><span class="line"><span class="javascript">   <span class="comment">// 回调执行函数</span></span></span><br><span class="line"><span class="javascript">   <span class="function"><span class="keyword">function</span> <span class="title">handleCallback</span>(<span class="params">res</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">       alert(<span class="built_in">JSON</span>.stringify(res));</span></span><br><span class="line">   &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>CORS：跨域资源共享</strong>：一个W3C标准，它允许浏览器向跨源服务器发起<code>XMLHttpRequest请求</code>，和ajax同源的使用方法一致（区别在于对于跨域请求浏览器的请求会有附加的相关设置，用户看不到），分简单请求和非简单请求。</p>
 </li>
@@ -340,8 +340,8 @@
           
           <div class="post-tags">
               <a href="/tags/面试/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
-              <a href="/tags/前端/" rel="tag"><i class="fa fa-tag"></i> 前端</a>
               <a href="/tags/知识点/" rel="tag"><i class="fa fa-tag"></i> 知识点</a>
+              <a href="/tags/前端/" rel="tag"><i class="fa fa-tag"></i> 前端</a>
           </div>
 
         
@@ -432,7 +432,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
