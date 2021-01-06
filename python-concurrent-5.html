@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.png" color="#222">
+  <meta name="google-site-verification" content="jfiTzJL4QReMSaJi0l8TDoVyg56AXdg6uPW8b4lVeaU">
+  <meta name="baidu-site-verification" content="T51n5dxa3zuPzDcC">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zz.zzs7.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Python的并发编程（五）- 线程池之前的文章学习了一些多线程的用法，在I/O密集型的程序中，多线程带来了显著的性能提升，那我们可以无限制的，大量的创建多线程任务吗？ 一个线程创建、销毁都是需要消耗系统资源的，如果线程数大于一定的数量，线程的创建销毁就会占用大量的系统性能，就不能充分利用到系统资源了。这时候，可以选择使用线程池了，">
+<meta name="keywords" content="python,多线程,并发,线程池">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python的并发编程（五）- 线程池">
+<meta property="og:url" content="https://zz.zzs7.top/python-concurrent-5.html">
+<meta property="og:site_name" content="SavingUnhappy">
+<meta property="og:description" content="Python的并发编程（五）- 线程池之前的文章学习了一些多线程的用法，在I/O密集型的程序中，多线程带来了显著的性能提升，那我们可以无限制的，大量的创建多线程任务吗？ 一个线程创建、销毁都是需要消耗系统资源的，如果线程数大于一定的数量，线程的创建销毁就会占用大量的系统性能，就不能充分利用到系统资源了。这时候，可以选择使用线程池了，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-18T11:28:41.316Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python的并发编程（五）- 线程池">
+<meta name="twitter:description" content="Python的并发编程（五）- 线程池之前的文章学习了一些多线程的用法，在I/O密集型的程序中，多线程带来了显著的性能提升，那我们可以无限制的，大量的创建多线程任务吗？ 一个线程创建、销毁都是需要消耗系统资源的，如果线程数大于一定的数量，线程的创建销毁就会占用大量的系统性能，就不能充分利用到系统资源了。这时候，可以选择使用线程池了，">
+
+<link rel="canonical" href="https://zz.zzs7.top/python-concurrent-5.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Python的并发编程（五）- 线程池 | SavingUnhappy</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139508983-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-139508983-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">SavingUnhappy</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">If you give someone a program, you will frustrate them for a day.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">38</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">33</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zz.zzs7.top/python-concurrent-5.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ava.gif">
+      <meta itemprop="name" content="张智">
+      <meta itemprop="description" content="问题解决的那一刻的快乐是无法言表的。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SavingUnhappy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python的并发编程（五）- 线程池
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-11 21:04:43" itemprop="dateCreated datePublished" datetime="2019-05-11T21:04:43+08:00">2019-05-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-18 19:28:41" itemprop="dateModified" datetime="2019-06-18T19:28:41+08:00">2019-06-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/python-concurrent-5.html" class="post-meta-item leancloud_visitors" data-flag-title="Python的并发编程（五）- 线程池" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/python-concurrent-5.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/python-concurrent-5.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Python的并发编程（五）-线程池"><a href="#Python的并发编程（五）-线程池" class="headerlink" title="Python的并发编程（五）- 线程池"></a>Python的并发编程（五）- 线程池</h2><p>之前的文章学习了一些多线程的用法，在I/O密集型的程序中，多线程带来了显著的性能提升，那我们可以无限制的，大量的创建多线程任务吗？</p>
+<p>一个线程创建、销毁都是需要消耗系统资源的，如果线程数大于一定的数量，线程的创建销毁就会占用大量的系统性能，就不能充分利用到系统资源了。这时候，可以选择使用线程池了，</p>
+<a id="more"></a>
+
+<h3 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h3><p>创建一定数量的线程来执行任务，任务结束之后，该线程不进行销毁，而是继续从任务队列中获取新任务来执行，直到所有任务都执行结束之后，关闭所有线程。</p>
+<p><code>concurrent.futures</code>库中包含有一个<code>ThreadPoolExecutor</code>类可用来实现这个目的。下面来实现一个简单的TCP服务器，使用线程池来服务客户端：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> socket <span class="keyword">import</span> AF_INET, socket, SOCK_STREAM</span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">echo_client</span><span class="params">(sock, client_addr)</span>:</span></span><br><span class="line">    print(<span class="string">"&#123;addr&#125;已连接"</span>.format(addr=client_addr))</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        msg = sock.recv(<span class="number">40960</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> msg:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        sock.sendall(msg)</span><br><span class="line">    sock.close()</span><br><span class="line">    print(<span class="string">"关闭连接"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">echo_server</span><span class="params">(addr)</span>:</span></span><br><span class="line">    pool = ThreadPoolExecutor(<span class="number">128</span>)</span><br><span class="line">    sock = socket(AF_INET, SOCK_STREAM)</span><br><span class="line">    sock.bind(addr)</span><br><span class="line">    sock.listen(<span class="number">5</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        client_sock, client_addr = sock.accept()</span><br><span class="line">        pool.submit(echo_client, client_sock, client_addr)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    echo_server((<span class="string">""</span>, <span class="number">5000</span>))</span><br></pre></td></tr></table></figure>
+
+<p>当然，我们也可以手动创建线程池，使用<code>Queue</code>来作为任务队列。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> socket <span class="keyword">import</span> AF_INET, socket, SOCK_STREAM</span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> Queue</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">echo_client</span><span class="params">(q)</span>:</span></span><br><span class="line">    sock, client_addr = q.get()</span><br><span class="line">    print(<span class="string">"&#123;addr&#125;已连接"</span>.format(addr=client_addr))</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        msg = sock.recv(<span class="number">40960</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> msg:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        sock.sendall(msg)</span><br><span class="line">    sock.close()</span><br><span class="line">    print(<span class="string">"关闭连接"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">echo_server</span><span class="params">(addr, nworkers)</span>:</span></span><br><span class="line">    q = Queue()</span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> range(nworkers):</span><br><span class="line">        <span class="comment"># 启动nworkers个线程</span></span><br><span class="line">        t = Thread(target=echo_client, args=(q, ))</span><br><span class="line">        t.daemon = <span class="literal">True</span></span><br><span class="line">        t.start()</span><br><span class="line">    sock = socket(AF_INET, SOCK_STREAM)</span><br><span class="line">    sock.bind(addr)</span><br><span class="line">    sock.listen(<span class="number">5</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        client_sock, client_addr = sock.accept()</span><br><span class="line">        q.put(client_sock, client_addr)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    echo_server((<span class="string">""</span>, <span class="number">5000</span>), <span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+
+<p>尽量使用<code>ThreadPoolExecutor</code>而不是手动实现线程池。这么做的优势在于使得任务的提交者能够更容易从调用函数中取得结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch_url</span><span class="params">(url)</span>:</span></span><br><span class="line">    u = urllib.request.urlopen(url)</span><br><span class="line">    data = u.read()</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line">pool = ThreadPoolExecutor(<span class="number">10</span>)</span><br><span class="line">a = pool.submit(fetch_url, <span class="string">"http://www.python.org"</span>)</span><br><span class="line">b = pool.submit(fetch_url, <span class="string">"http://www.pypy.org"</span>)</span><br><span class="line"></span><br><span class="line">x = a.result()</span><br><span class="line">y = b.result()</span><br></pre></td></tr></table></figure>
+
+<p>示例中的结果对象（即a和b）负责处理所有需要完成的阻塞和同步任务，从工作者线程中取回数据。特别是，<code>a.result()</code>操作会阻塞，直到对应的函数已经由线程执行完幷返回了结果为止。</p>
+<p><strong>注意</strong>：避免写允许线程无限增长的程序。如果在web服务中这么做了，无法阻止恶意用户对服务器发起拒绝服务攻击，从而导致服务器上创建了大量的线程，耗尽了系统资源而崩溃。通过预先初始化好的线程池，就可以小心的为所有能支持的并发总数设定一个上限。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的微信公众号，会分享一些平时的日常。</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <img src="/images/wechat_qrcode.jpg" style="width: 70%">
+            <br>
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+            <span class="label">微信公众号</span>
+          </img>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/多线程/" rel="tag"><i class="fa fa-tag"></i> 多线程</a>
+              <a href="/tags/并发/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
+              <a href="/tags/线程池/" rel="tag"><i class="fa fa-tag"></i> 线程池</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/python-concurrent-4.html" rel="prev" title="Python的并发编程（四）- 多线程中的锁">
+      <i class="fa fa-chevron-left"></i> Python的并发编程（四）- 多线程中的锁
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/python-concurrent-6.html" rel="next" title="Python的并发编程（六）- 多进程">
+      Python的并发编程（六）- 多进程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python的并发编程（五）-线程池"><span class="nav-number">1.</span> <span class="nav-text">Python的并发编程（五）- 线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程池"><span class="nav-number">1.1.</span> <span class="nav-text">线程池</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="张智"
+      src="/images/ava.gif">
+  <p class="site-author-name" itemprop="name">张智</p>
+  <div class="site-description" itemprop="description">问题解决的那一刻的快乐是无法言表的。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZhangzhiS" title="GitHub → https://github.com/ZhangzhiS" rel="noopener" target="_blank"><i class="github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhi781029588@gmail.com" title="E-Mail → mailto:zhi781029588@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn" rel="noopener" target="_blank">京ICP备19016512号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张智</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'sIl9NjoQGCLyOJgBgHgNcWpo-gzGzoHsz',
+      appKey     : 'arzs1til8eEtvBPsdfJCiLei',
+      placeholder: "请留下你的看法或者疑问",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
