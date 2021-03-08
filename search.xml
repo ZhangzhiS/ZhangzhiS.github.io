@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>PostgreSQL创建只读账户</title>
+      <link href="/postgres-role-md.html"/>
+      <url>/postgres-role-md.html</url>
+      
+        <content type="html"><![CDATA[<p>PostgreSQL其实没有只读用户的语法，那么PostgreSQL提供了用户／角色属性来达到只读用户的效果，步骤如下：</p><ol><li>创建一个用户名为<readonlyuser>，密码为<your_own_password>的用户</your_own_password></readonlyuser></li></ol><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> &lt;readonlyuser&gt; <span class="keyword">WITH</span> ENCRYPTED <span class="keyword">PASSWORD</span> <span class="string">'&lt;your_own_password&gt;'</span>;</span><br></pre></td></tr></table></figure><a id="more"></a><ol start="2"><li>修改用户只读事务属性</li></ol><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> &lt;readonlyuser&gt; <span class="keyword">SET</span> default_transaction_read_only=<span class="keyword">on</span>;</span><br></pre></td></tr></table></figure><ol start="3"><li>设置USAGE权限给到<readonlyuser></readonlyuser></li></ol><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">USAGE</span> <span class="keyword">ON</span> <span class="keyword">SCHEMA</span> <span class="keyword">public</span> <span class="keyword">to</span> &lt;readonlyuser&gt;;</span><br></pre></td></tr></table></figure><ol start="4"><li>在对应的数据库中，授予权限，如select。</li></ol><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span> <span class="keyword">ON</span> <span class="keyword">ALL</span> <span class="keyword">TABLES</span> <span class="keyword">IN</span> <span class="keyword">SCHEMA</span> <span class="keyword">public</span> <span class="keyword">TO</span> &lt;readonlyuser&gt;;</span><br></pre></td></tr></table></figure><p>注意：这个语句有可能在使用云数据库RDS PostgreSQL版和HybirdDB for PostgreSQL会遇到ha_health_check（系统表，超级用户权限）授权失败，也可以用下面存储过程进行grant：</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> <span class="keyword">REPLACE</span> <span class="keyword">FUNCTION</span> grant_tables()</span><br><span class="line"><span class="keyword">RETURNS</span> <span class="built_in">int</span> <span class="keyword">AS</span></span><br><span class="line">$$</span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  r <span class="built_in">RECORD</span>;</span><br><span class="line">  count int;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">count</span> := <span class="number">0</span>;</span><br><span class="line">FOR r IN <span class="keyword">SELECT</span> tablename <span class="keyword">FROM</span> pg_tables <span class="keyword">where</span> tablename <span class="keyword">not</span> <span class="keyword">like</span> <span class="string">'ha_health_check'</span> <span class="keyword">LOOP</span></span><br><span class="line">  <span class="keyword">RAISE</span> <span class="keyword">NOTICE</span> <span class="string">'tablename: %'</span>, r.tablename;</span><br><span class="line">  <span class="keyword">EXECUTE</span> <span class="string">'grant  SELECT on '</span> || r.tablename || <span class="string">' to &lt;readonlyuser&gt; '</span>;</span><br><span class="line">  count := count + 1;</span><br><span class="line"><span class="keyword">END</span> <span class="keyword">LOOP</span>;</span><br><span class="line">RETURN count;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line">$$</span><br><span class="line">LANGUAGE 'plpgsql' VOLATILE;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> grant_tables()</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据库 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库 </tag>
+            
+            <tag> PostgreSQL </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>面试问题记录</title>
       <link href="/interview-logs.html"/>
       <url>/interview-logs.html</url>
@@ -489,11 +516,11 @@
             
             <tag> 数据库 </tag>
             
+            <tag> 面试 </tag>
+            
             <tag> MySQL </tag>
             
             <tag> 优化 </tag>
-            
-            <tag> 面试 </tag>
             
         </tags>
       

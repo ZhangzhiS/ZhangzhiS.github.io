@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://zz.zzs7.top/mysql-optimization.html</loc>
+    <lastmod>2021-03-05</lastmod>
+  </url>  <url>
+    <loc>https://zz.zzs7.top/postgres-role-md.html</loc>
+    <lastmod>2021-03-05</lastmod>
+  </url>  <url>
     <loc>https://zz.zzs7.top/interview-logs.html</loc>
     <lastmod>2020-12-07</lastmod>
   </url>  <url>
@@ -86,9 +92,6 @@
     <lastmod>2019-06-18</lastmod>
   </url>  <url>
     <loc>https://zz.zzs7.top/archlinux-install-mongodb.html</loc>
-    <lastmod>2019-06-18</lastmod>
-  </url>  <url>
-    <loc>https://zz.zzs7.top/mysql-optimization.html</loc>
     <lastmod>2019-06-18</lastmod>
   </url>  <url>
     <loc>https://zz.zzs7.top/share-cookies.html</loc>
