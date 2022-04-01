@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
+    <meta charset="UTF-8" />
+
+    <meta name="generator" content="Hugo 0.92.0" /><meta name="theme-color" content="#fff" />
+    <meta name="color-scheme" content="light dark">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+    
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <title>Python的并发编程（五）- 线程池 | SavingUnhappy</title>
+
+    <link rel="stylesheet" href="/css/meme.min.18f62570f87b670f5232fdedc5fbea31998696261ee3627869f368eaa630860d.css"/>
+
+    
+    
+        <script src="/js/meme.min.11765d8c8c6bd488937967fc890426034ec392ecc1771aff624fcd39897168bf.js"></script>
+
+    
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB&#43;Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&amp;family=Noto&#43;Serif&#43;SC:wght@400;500;700&amp;family=Source&#43;Code&#43;Pro:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" media="print" onload="this.media='all'" />
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB&#43;Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&amp;family=Noto&#43;Serif&#43;SC:wght@400;500;700&amp;family=Source&#43;Code&#43;Pro:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" /></noscript>
+
+    <meta name="author" content="张智" /><meta name="description" content="Python的并发编程（五）- 线程池 之前的文章学习了一些多线程的用法，在I/O密集型…" />
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#2a6df4" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="SavingUnhappy" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="SavingUnhappy" />
+    <meta name="msapplication-starturl" content="../../" />
+    <meta name="msapplication-TileColor" content="#fff" />
+    <meta name="msapplication-TileImage" content="../../icons/mstile-150x150.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    
+    
+
+    
+    <link rel="canonical" href="http://zz.zzs7.top/posts/python-concurrent-5/" />
+    
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "datePublished": "2020-01-25T16:17:59+08:00",
+        "dateModified": "2022-01-25T16:23:08+08:00",
+        "url": "http://zz.zzs7.top/posts/python-concurrent-5/",
+        "headline": "Python的并发编程（五）- 线程池",
+        "description": "Python的并发编程（五）- 线程池 之前的文章学习了一些多线程的用法，在I/O密集型…",
+        "inLanguage" : "en",
+        "articleSection": "posts",
+        "wordCount":  945 ,
+        "image": "http://zz.zzs7.top/icons/apple-touch-icon.png",
+        "author": {
+            "@type": "Person",
+            "description": "Viva La Vida",
+            "email": "781029588@qq.com",
+            "image": "http://zz.zzs7.top/icons/apple-touch-icon.png",
+            "url": "https://io-oi.me/",
+            "name": "张智"
+        },
+        "license": "[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)",
+        "publisher": {
+            "@type": "Organization",
+            "name": "SavingUnhappy",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "http://zz.zzs7.top/icons/apple-touch-icon.png"
+            },
+            "url": "http://zz.zzs7.top/"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebSite",
+            "@id": "http://zz.zzs7.top/"
+        }
+    }
+</script>
+
+    
+
+<meta name="twitter:card" content="summary" />
+
+
+    
+
+
+
+<meta property="og:title" content="Python的并发编程（五）- 线程池" />
+<meta property="og:description" content="Python的并发编程（五）- 线程池 之前的文章学习了一些多线程的用法，在I/O密集型…" />
+<meta property="og:url" content="http://zz.zzs7.top/posts/python-concurrent-5/" />
+<meta property="og:site_name" content="SavingUnhappy" />
+<meta property="og:locale" content="en" /><meta property="og:image" content="http://zz.zzs7.top/icons/apple-touch-icon.png" />
+    <meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2020-01-25T16:17:59&#43;08:00" />
+    <meta property="article:modified_time" content="2022-01-25T16:23:08&#43;08:00" />
+    
+    <meta property="article:section" content="posts" />
+
+
+
+    
+    
+
+    
+</head>
+
+    <body>
+        <div class="container">
+            
+    <header class="header">
+        
+            <div class="header-wrapper">
+                <div class="header-inner single">
+                    
+    <div class="site-brand">
+        
+            <a href="/" class="brand">SavingUnhappy</a>
+        
+    </div>
+
+                    <nav class="nav">
+    <ul class="menu" id="menu">
+        
+            
+        
+        
+        
+        
+            
+                <li class="menu-item active"><a href="/posts/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon archive"><path d="M32 448c0 17.7 14.3 32 32 32h384c17.7 0 32-14.3 32-32V160H32v288zm160-212c0-6.6 5.4-12 12-12h104c6.6 0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H204c-6.6 0-12-5.4-12-12v-8zM480 32H32C14.3 32 0 46.3 0 64v48c0 8.8 7.2 16 16 16h480c8.8 0 16-7.2 16-16V64c0-17.7-14.3-32-32-32z"/></svg><span class="menu-item-name">文章</span></a>
+                </li>
+            
+        
+            
+                <li class="menu-item"><a href="/categories/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon th"><path d="M149.333 56v80c0 13.255-10.745 24-24 24H24c-13.255 0-24-10.745-24-24V56c0-13.255 10.745-24 24-24h101.333c13.255 0 24 10.745 24 24zm181.334 240v-80c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256 0 24.001-10.745 24.001-24zm32-240v80c0 13.255 10.745 24 24 24H488c13.255 0 24-10.745 24-24V56c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24zm-32 80V56c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256 0 24.001-10.745 24.001-24zm-205.334 56H24c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24zM0 376v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H24c-13.255 0-24 10.745-24 24zm386.667-56H488c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zm0 160H488c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zM181.333 376v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24z"/></svg><span class="menu-item-name">分类</span></a>
+                </li>
+            
+        
+            
+                <li class="menu-item"><a href="/tags/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="icon tags"><path d="M497.941 225.941L286.059 14.059A48 48 0 0 0 252.118 0H48C21.49 0 0 21.49 0 48v204.118a48 48 0 0 0 14.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882 0l204.118-204.118c18.745-18.745 18.745-49.137 0-67.882zM112 160c-26.51 0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882 0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397 0h48.721a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882z"/></svg><span class="menu-item-name">标签</span></a>
+                </li>
+            
+        
+            
+                <li class="menu-item"><a href="/about/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="icon user-circle"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><span class="menu-item-name">关于</span></a>
+                </li>
+            
+        
+            
+                
+            
+        
+    </ul>
+</nav>
+
+                    
+                </div>
+            </div>
+            
+    <input type="checkbox" id="nav-toggle" aria-hidden="true" />
+    <label for="nav-toggle" class="nav-toggle"></label>
+    <label for="nav-toggle" class="nav-curtain"></label>
+
+
+        
+    </header>
+
+
+
+
+            
+            
+    <main class="main single" id="main">
+    <div class="main-inner">
+
+        
+
+        <article class="content post h-entry" data-align="justify" data-type="posts" data-toc-num="true">
+
+            <h1 class="post-title p-name">Python的并发编程（五）- 线程池</h1>
+
+            
+
+            
+                
+            
+
+            
+                
+
+<div class="post-meta">
+    
+        
+        <time datetime="2020-01-25T16:17:59&#43;08:00" class="post-meta-item published dt-published"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;2020.1.25</time>
+    
+    
+        
+        <time datetime="2022-01-25T16:23:08&#43;08:00" class="post-meta-item modified dt-updated"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M400 64h-48V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H160V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H48C21.49 64 0 85.49 0 112v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V160h352v298a6 6 0 0 1-6 6zm-52.849-200.65L198.842 404.519c-4.705 4.667-12.303 4.637-16.971-.068l-75.091-75.699c-4.667-4.705-4.637-12.303.068-16.971l22.719-22.536c4.705-4.667 12.303-4.637 16.97.069l44.104 44.461 111.072-110.181c4.705-4.667 12.303-4.637 16.971.068l22.536 22.718c4.667 4.705 4.636 12.303-.069 16.97z"/></svg>&nbsp;2022.1.25</time>
+    
+    
+    
+        
+        
+        
+            
+                <span class="post-meta-item category"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>&nbsp;<a href="/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" class="category-link p-category">历史文章</a></span>
+            
+        
+    
+    
+        
+        <span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;945</span>
+    
+    
+        
+        <span class="post-meta-item reading-time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;2&nbsp;mins</span>
+    
+    
+    
+</div>
+
+            
+
+            <div class="post-body e-content">
+                <h2 id="python的并发编程五--线程池"><a href="#python的并发编程五--线程池" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Python的并发编程（五）- 线程池</h2>
+<p>之前的文章学习了一些多线程的用法，在I/O密集型的程序中，多线程带来了显著的性能提升，那我们可以无限制的，大量的创建多线程任务吗？</p>
+<p>一个线程创建、销毁都是需要消耗系统资源的，如果线程数大于一定的数量，线程的创建销毁就会占用大量的系统性能，就不能充分利用到系统资源了。这时候，可以选择使用线程池了，</p>
+<h3 id="线程池"><a href="#线程池" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>线程池</h3>
+<p>创建一定数量的线程来执行任务，任务结束之后，该线程不进行销毁，而是继续从任务队列中获取新任务来执行，直到所有任务都执行结束之后，关闭所有线程。</p>
+<p><code>concurrent.futures</code>库中包含有一个<code>ThreadPoolExecutor</code>类可用来实现这个目的。下面来实现一个简单的TCP服务器，使用线程池来服务客户端：</p>
+<pre tabindex="0"><code>from socket import AF_INET, socket, SOCK_STREAM
+from concurrent.futures import ThreadPoolExecutor
+
+
+def echo_client(sock, client_addr):
+    print(&quot;{addr}已连接&quot;.format(addr=client_addr))
+    while True:
+        msg = sock.recv(40960)
+        if not msg:
+            break
+        sock.sendall(msg)
+    sock.close()
+    print(&quot;关闭连接&quot;)
+
+
+def echo_server(addr):
+    pool = ThreadPoolExecutor(128)
+    sock = socket(AF_INET, SOCK_STREAM)
+    sock.bind(addr)
+    sock.listen(5)
+    while True:
+        client_sock, client_addr = sock.accept()
+        pool.submit(echo_client, client_sock, client_addr)
+
+if __name__ == '__main__':
+    echo_server((&quot;&quot;, 5000))
+</code></pre><p>当然，我们也可以手动创建线程池，使用<code>Queue</code>来作为任务队列。</p>
+<pre tabindex="0"><code>from socket import AF_INET, socket, SOCK_STREAM
+from threading import Thread
+from queue import Queue
+
+def echo_client(q):
+    sock, client_addr = q.get()
+    print(&quot;{addr}已连接&quot;.format(addr=client_addr))
+    while True:
+        msg = sock.recv(40960)
+        if not msg:
+            break
+        sock.sendall(msg)
+    sock.close()
+    print(&quot;关闭连接&quot;)
+
+def echo_server(addr, nworkers):
+    q = Queue()
+    for n in range(nworkers):
+        # 启动nworkers个线程
+        t = Thread(target=echo_client, args=(q, ))
+        t.daemon = True
+        t.start()
+    sock = socket(AF_INET, SOCK_STREAM)
+    sock.bind(addr)
+    sock.listen(5)
+    while True:
+        client_sock, client_addr = sock.accept()
+        q.put(client_sock, client_addr)
+
+if __name__ == '__main__':
+    echo_server((&quot;&quot;, 5000), 10)
+</code></pre><p>尽量使用<code>ThreadPoolExecutor</code>而不是手动实现线程池。这么做的优势在于使得任务的提交者能够更容易从调用函数中取得结果。</p>
+<pre tabindex="0"><code>import urllib.request
+from concurrent.futures import ThreadPoolExecutor
+
+
+def fetch_url(url):
+    u = urllib.request.urlopen(url)
+    data = u.read()
+    return data
+
+pool = ThreadPoolExecutor(10)
+a = pool.submit(fetch_url, &quot;http://www.python.org&quot;)
+b = pool.submit(fetch_url, &quot;http://www.pypy.org&quot;)
+
+x = a.result()
+y = b.result()
+</code></pre><p>示例中的结果对象（即a和b）负责处理所有需要完成的阻塞和同步任务，从工作者线程中取回数据。特别是，<code>a.result()</code>操作会阻塞，直到对应的函数已经由线程执行完幷返回了结果为止。</p>
+<p><strong>注意</strong>：避免写允许线程无限增长的程序。如果在web服务中这么做了，无法阻止恶意用户对服务器发起拒绝服务攻击，从而导致服务器上创建了大量的线程，耗尽了系统资源而崩溃。通过预先初始化好的线程池，就可以小心的为所有能支持的并发总数设定一个上限。</p>
+
+            </div>
+
+            
+    
+    
+        <ul class="post-copyright">
+            <li class="copyright-item author"><span class="copyright-item-text">Author</span>: <a href="https://io-oi.me/" class="p-author h-card" target="_blank" rel="noopener">张智</a></li>
+            
+                
+                
+                
+                
+                <li class="copyright-item link"><span class="copyright-item-text">Link</span>: <a href="/posts/python-concurrent-5/" target="_blank" rel="noopener">http://zz.zzs7.top/posts/python-concurrent-5/</a></li>
+            
+            <li class="copyright-item license"><span class="copyright-item-text">License</span>: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a></li>
+            
+        </ul>
+    
+
+
+
+        </article>
+
+        
+
+        
+    <div class="updated-badge-container">
+        <span title="Updated @ 2022-01-25 16:23:08 CST" style="cursor:help">
+
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2022-01-25</text><text x="915" y="140" textLength="650" transform="scale(.1)">2022-01-25</text></g></svg>
+        </span></div>
+
+
+
+        
+
+
+        
+
+
+        
+    
+    
+        <div class="related-posts">
+            <h2 class="related-title">See Also:<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon related-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"/></svg></h2>
+            <ul class="related-list">
+                
+                    <li class="related-item">
+                        <a href="/posts/tox/" class="related-link">了解TOX以及简单使用</a>
+                    </li>
+                
+                    <li class="related-item">
+                        <a href="/posts/git-pull-request/" class="related-link">Git Pull Request</a>
+                    </li>
+                
+                    <li class="related-item">
+                        <a href="/posts/use-git-1/" class="related-link">Git 的简单使用</a>
+                    </li>
+                
+                    <li class="related-item">
+                        <a href="/posts/same-origin-policy/" class="related-link">关于同源策略</a>
+                    </li>
+                
+                    <li class="related-item">
+                        <a href="/posts/python-concurrent-7/" class="related-link">Python的并发编程（七）- 如何规避GIL带来的限制</a>
+                    </li>
+                
+            </ul>
+        </div>
+    
+
+
+
+        
+    
+        <div class="post-tags">
+            
+                
+                
+                
+                
+                    
+                    <a href="/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" rel="tag" class="post-tags-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>历史文章</a>
+                
+            
+        </div>
+    
+
+
+
+        
+
+
+        
+
+
+        
+    
+        
+        
+    
+    
+    
+    
+        <ul class="post-nav">
+            
+                <li class="post-nav-prev">
+                    <a href="/posts/python-concurrent-6/" rel="prev">&lt; Python的并发编程（六）- 多进程</a>
+                </li>
+            
+            
+                <li class="post-nav-next">
+                    <a href="/posts/python-concurrent-4/" rel="next">Python的并发编程（四）- 多线程中的锁 &gt;</a>
+                </li>
+            
+        </ul>
+    
+
+
+
+        
+    
+
+        
+
+        
+
+        
+            <div id="vcomments"></div>
+        
+
+        
+
+        
+    
+
+
+
+    </div>
+</main>
+
+
+            
+    <div id="back-to-top" class="back-to-top">
+        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a>
+    </div>
+
+
+            
+    <footer id="footer" class="footer">
+        <div class="footer-inner">
+            <div class="site-info">©&nbsp;2019–2022&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;张智</div><div class="powered-by">Powered by <a href="https://github.com/gohugoio/hugo" target="_blank" rel="noopener">Hugo</a> | Theme is <a href="https://github.com/reuixiy/hugo-theme-meme" target="_blank" rel="noopener">MemE</a></div><div class="custom-footer"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">京ICP备19016512号</a></div>
+                <div class="busuanzi-site-uv-and-pv">
+                    <span id="busuanzi_container_site_uv">本站访客数&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon busuanzi-site-uv"><path d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"/></svg>&nbsp;<span id="busuanzi_value_site_uv"></span></span>&nbsp;|&nbsp;<span id="busuanzi_container_site_pv">本站访问量&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="icon busuanzi-site-pv"><path d="M288 144a110.94 110.94 0 0 0-31.24 5 55.4 55.4 0 0 1 7.24 27 56 56 0 0 1-56 56 55.4 55.4 0 0 1-27-7.24A111.71 111.71 0 1 0 288 144zm284.52 97.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400c-98.65 0-189.09-55-237.93-144C98.91 167 189.34 112 288 112s189.09 55 237.93 144C477.1 345 386.66 400 288 400z"/></svg>&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+                </div>
+
+            
+
+
+            
+        </div>
+    </footer>
+
+
+        </div>
+        
+
+        
+
+
+
+
+
+
+    
+
+        
+
+        
+            <script>
+    function loadComments() {
+        if (typeof Valine === 'undefined') {
+            var getScript = (options) => {
+                var script = document.createElement('script');
+                script.defer = true;
+                script.crossOrigin = 'anonymous';
+                Object.keys(options).forEach((key) => {
+                    script[key] = options[key];
+                });
+                document.body.appendChild(script);
+            };
+            getScript({
+                src: 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+                onload: () => {
+                    newValine();
+                }
+            });
+        } else {
+            newValine();
+        }
+    }
+    function newValine() {
+        new Valine({
+            el: '#vcomments',
+            appId: 'sIl9NjoQGCLyOJgBgHgNcWpo-gzGzoHsz',
+            appKey: 'arzs1til8eEtvBPsdfJCiLei',
+            placeholder: 'Just go go',
+            path: window.location.pathname,
+            avatar: 'mm',
+            meta: ["nick","mail","link"],
+            pageSize:  10 ,
+            lang: 'zh-cn',
+            visitor:  true ,
+            highlight:  true ,
+            avatarForce:  false ,
+            recordIP:  false ,
+            serverURLs: '',
+            emojiCDN: '',
+            emojiMaps: {},
+            enableQQ:  false ,
+            requiredFields: []
+        });
+    }
+</script>
+
+        
+
+        
+
+        
+
+    
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js"></script>
+
+<script>
+    let imgNodes = document.querySelectorAll('div.post-body img');
+    imgNodes = Array.from(imgNodes).filter(node => node.parentNode.tagName !== "A");
+
+    mediumZoom(imgNodes, {
+        background: 'hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.95)'
+    })
+</script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js" type="module" defer></script>
+
+
+
+
+    
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+
+
+    </body>
+</html>

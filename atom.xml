@@ -1,0 +1,2455 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title type="text">SavingUnhappy</title>
+    <subtitle type="html">If you give someone a program, you will frustrate them for a day.</subtitle>
+    <updated>2022-01-25T18:41:40&#43;08:00</updated>
+    <id>http://zz.zzs7.top/</id>
+    <link rel="alternate" type="text/html" href="http://zz.zzs7.top/" />
+    <link rel="self" type="application/atom&#43;xml" href="http://zz.zzs7.top/atom.xml" />
+    <author>
+            <name>张智</name>
+            <uri>http://zz.zzs7.top/</uri>
+            
+                <email>781029588@qq.com</email>
+            </author>
+    <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
+    <generator uri="https://gohugo.io/" version="0.92.0">Hugo</generator>
+        <entry>
+            <title type="text">家用NAS搭建记录</title>
+            <link rel="alternate" type="text/html" href="http://zz.zzs7.top/posts/nas-start/" />
+            <id>http://zz.zzs7.top/posts/nas-start/</id>
+            <updated>2022-01-25T16:47:51&#43;08:00</updated>
+            <published>2021-03-25T16:39:51&#43;08:00</published>
+            <author>
+                    <name>张智</name>
+                    <uri>https://io-oi.me/</uri>
+                    <email>781029588@qq.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">最近陷入了存储焦虑的困境。我的手机120G内存已用117G，电脑256G的内存已用2…</summary>
+            
+                <content type="html">&lt;p&gt;最近陷入了存储焦虑的困境。我的手机120G内存已用117G，电脑256G的内存已用220G，女朋友的iPhone更有意思，APP还能根据使用频率自动卸载。&lt;/p&gt;
+&lt;p&gt;能怎么办，NAS搞起。有钱的选择当然是买成品的群辉或者威联通之类的了，但是从配置上来说，太缺少性价比了，所以选择自己搭建一台。&lt;/p&gt;
+&lt;p&gt;这里记录一下自己硬件选择以及搭建的流程。&lt;/p&gt;
+&lt;p&gt;如果在搭建过程中遇到什么问题，可以扫文章末尾的二维码备注”NAS“加我微信私聊问我。&lt;/p&gt;
+&lt;h2 id=&#34;硬件的选择&#34;&gt;硬件的选择&lt;/h2&gt;
+&lt;p&gt;其实开始的时候家里有个树莓派4B，4G内存版的。我在上面就安装了OMV，外接了一个1T的机械硬盘使用。但是说实话，没敢用，害怕挂掉，硬盘是笔记本拆出来的机械盘。没有独立电源供电的硬盘盒，树莓派的USB接口的供电对于硬盘来说是不稳定的，随时准备宕机。&lt;/p&gt;
+&lt;p&gt;看了矿渣产品星际蜗牛，j1900的CPU，4盘位的机箱，但是考虑到我想在家里自己部署个gitlab以及其他一些服务，害怕这CPU会比较吃力，所以放弃了选择这个。&lt;/p&gt;
+&lt;p&gt;后来又看到了同样矿渣的暴风酷播云二期，J3455的cpu，性能会比J1900好个不少。所以从咸鱼淘到了一台二手的，价格比蜗牛星际贵不少，2盘位的机箱。&lt;/p&gt;
+&lt;p&gt;硬盘是西数的14T盘，暂时只买了一块，可以先使用这，等亚马逊活动的时候再入手一块组raid。现在的文件备份的话计划定时备份到OSS中。&lt;/p&gt;
+&lt;h2 id=&#34;系统的选择&#34;&gt;系统的选择&lt;/h2&gt;
+&lt;p&gt;机器本来是刷了黑群晖的，但是毕竟是破解的，不能升级，而且不确定稳定性，所以没准备使用了。&lt;/p&gt;
+&lt;p&gt;其他免费开源的NAS系统，我主要对比了TrueNas和OMV，从两者中选择了OMV。&lt;/p&gt;
+&lt;h3 id=&#34;truenasfreenas&#34;&gt;TrueNas（FreeNas）&lt;/h3&gt;
+&lt;p&gt;优势：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;默认使用zfs文件系统（可以自己了解一下优势）&lt;/li&gt;
+&lt;li&gt;插件库丰富&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;缺点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对硬件要求比较高，官方推荐最低8G内存。&lt;/li&gt;
+&lt;li&gt;对于docker的支持不是很好（由于现在是基于FreeBSD的，不过有了基于Linux的分支，但是还不够完善）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;omv&#34;&gt;OMV&lt;/h3&gt;
+&lt;p&gt;优势：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;基于Debian系统，相关的文档比较多&lt;/li&gt;
+&lt;li&gt;硬件需求不高，树莓派都能跑&lt;/li&gt;
+&lt;li&gt;Docker支持好&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;缺点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;界面没有TrueNas好看&lt;/li&gt;
+&lt;li&gt;需要实现的功能需要自己折腾&lt;/li&gt;
+&lt;li&gt;zfs文件系统需要插件才能支持&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;关于zfs文件系统，对于我来说不是必要的，我更希望docker支持好一点，可以自己实现更丰富的功能&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&#34;系统安装与配置&#34;&gt;系统安装与配置&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;下载系统镜像。&lt;/li&gt;
+&lt;li&gt;将系统写入U盘，MacOS下使用&lt;code&gt;balenaEtcher&lt;/code&gt;，Windows下使用rufus或者其他工具都可。&lt;/li&gt;
+&lt;li&gt;进入BIOS，修改引导，选择U盘引导开机，然后安装即可。&lt;/li&gt;
+&lt;li&gt;安装的时候使用默认的英语安装，使用中文安装之后会有乱码，可以安装好之后再修改系统语言为中文。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;可以参考下面的链接，写的比较全。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.cnblogs.com/Yogile/p/12577321.html&#34;&gt;树莓派 配置 OMV 5 搭建 NAS（一） 安装 OMV 5&lt;/a&gt;&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">了解TOX以及简单使用</title>
+            <link rel="alternate" type="text/html" href="http://zz.zzs7.top/posts/tox/" />
+            <id>http://zz.zzs7.top/posts/tox/</id>
+            <updated>2022-01-25T16:37:39&#43;08:00</updated>
+            <published>2020-01-25T16:33:48&#43;08:00</published>
+            <author>
+                    <name>张智</name>
+                    <uri>https://io-oi.me/</uri>
+                    <email>781029588@qq.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">本文是我学习知识的一个记录，只是简单了解使用TOX，，英文阅读能力不错的建议看看官方…</summary>
+            
+                <content type="html">&lt;p&gt;本文是我学习知识的一个记录，只是简单了解使用TOX，，英文阅读能力不错的建议看看&lt;a href=&#34;https://tox.readthedocs.io/en/latest/&#34;&gt;官方文档&lt;/a&gt;进行深入的学习。&lt;/p&gt;
+&lt;h2 id=&#34;什么是tox&#34;&gt;什么是TOX&lt;/h2&gt;
+&lt;p&gt;简单来说，TOX是一个虚拟环境管理和命令行测试工具，目标是为了自动化，标准化的进行Python程序的测试。作用如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用不同的Python版本和解释器检查项目的包安装是否正确。&lt;/li&gt;
+&lt;li&gt;在每个环境中执行项目的测试工具，比如pytest等。&lt;/li&gt;
+&lt;li&gt;处于CI（持续集成）之前，能大幅减少测试工具所需要的时间。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;安装&#34;&gt;安装&lt;/h2&gt;
+&lt;p&gt;支持目前主流的python版本，以及其他解释器，如： CPython 2.7 and 3.4 or later, Jython-2.5.1, pypy-1.9ff&lt;/p&gt;
+&lt;p&gt;TOX可以直接安装在虚拟环境中。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;可以使用pip直接安装(推荐)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;pip install tox
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;使用源码安装&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;cd py_packages # 是你需要将包源码存放的位置，建议和其他使用源码安装的包放在一起统一管理
+git clone https://github.com/tox-dev/tox
+cd tox
+pip install .
+tox --version # 安装成功之后可以查看安装的版本
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;配置文件&#34;&gt;配置文件&lt;/h2&gt;
+&lt;p&gt;常用的是&lt;code&gt;tox.ini&lt;/code&gt;格式的配置文件。下面简单介绍一下配置文件：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[tox]
+# tox部分是全局配置
+minversion = 3.4.0  # 定义运行所需的tox的最小版本
+envlist = py27,py36  # 需要测试的python环境，会按顺序测试，使用&amp;quot;,&amp;quot;隔开，下面会说如何定义环境
+skipsdist = true  # tox默认会使用sdist构建包，对于测试来说没有必要，而且构建还会要求存在README、setup.py等文件，并且保证setup.py的格式符合要求等，所以跳过此步
+
+[testenv:py27]
+commands = python -c &#39;print &amp;quot;Python2 out! Enjoy Python3 :D!&amp;quot;&#39;
+
+[testenv:py36]
+deps =
+    -rrequirements.txt
+commands =
+    pytest
+
+# 如上面的两个&amp;quot;testenv&amp;quot;，:后面的为测试环境的名字
+# deps 是安装依赖的命令
+# commands 是环境配好之后需要执行的命令
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;执行&#34;&gt;执行&lt;/h2&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;tox
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;或者也可以在命令行中指定测试的环境&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;tox -e py36
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;举个例子&#34;&gt;举个例子&lt;/h2&gt;
+&lt;p&gt;写一个简单的例子试试&lt;/p&gt;
+&lt;p&gt;app.py&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;#!/usr/bin/python3.6
+# -*- coding: UTF-8 -*-
+
+def foo_1(a, b):
+    return a+b
+
+def foo_2(a, b):
+    return f&amp;quot;两个参数分别是{a},{b}&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;test.py&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;#!/usr/bin/python3.6
+# -*- coding: UTF-8 -*-
+
+from app import foo_1, foo_2
+
+
+def test_foo_1():
+    assert foo_1(1, 2) == 3
+    assert foo_1(&amp;quot;1&amp;quot;, &amp;quot;2&amp;quot;) == &amp;quot;12&amp;quot;
+
+
+def test_foo_2():
+    assert foo_2(1, 2) == &amp;quot;两个参数分别是1,2&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;tox.ini&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[tox]
+skipsdist = True
+envlist = py36
+
+[testenv:py36]
+deps =
+    -rrequirements.txt
+commands =
+    pytest test.py
+
+[pytest]
+addopts = -p no:warnings  # 屏蔽测试中的WARNING警告
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;看看执行结果&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;~/PycharmProjects/local » tox                                                                                                                                                                       zhi@bogon
+py36 recreate: /Users/zhi/PycharmProjects/local/.tox/py36
+py36 installdeps: -rrequirements.txt
+py36 installed: atomicwrites==1.3.0,attrs==19.1.0,importlib-metadata==0.17,more-itertools==7.0.0,packaging==19.0,pluggy==0.12.0,py==1.8.0,pyparsing==2.4.0,pytest==4.6.2,six==1.12.0,wcwidth==0.1.7,zipp==0.5.1
+py36 run-test-pre: PYTHONHASHSEED=&#39;546851202&#39;
+py36 run-test: commands[0] | pytest test.py
+============================================================================================ test session starts =============================================================================================
+platform darwin -- Python 3.6.8, pytest-4.6.2, py-1.8.0, pluggy-0.12.0
+cachedir: .tox/py36/.pytest_cache
+rootdir: /Users/zhi/PycharmProjects/local, inifile: tox.ini
+collected 2 items
+
+# 这是测试进度，后面的&amp;quot;.&amp;quot;是测试结果，如果出错，是显示的是F
+test.py ..                                                                                                                                                                                             [100%]
+
+========================================================================================== 2 passed in 0.02 seconds ==========================================================================================
+__________________________________________________________________________________________________ summary ___________________________________________________________________________________________________
+  py36: commands succeeded
+  congratulations :)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;注意：requirements.txt文件没有的话，可以不写，但是会有WARNING警告&lt;/strong&gt;。&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">Git Pull Request</title>
+            <link rel="alternate" type="text/html" href="http://zz.zzs7.top/posts/git-pull-request/" />
+            <id>http://zz.zzs7.top/posts/git-pull-request/</id>
+            <updated>2022-01-25T16:32:15&#43;08:00</updated>
+            <published>2020-01-25T16:31:34&#43;08:00</published>
+            <author>
+                    <name>张智</name>
+                    <uri>https://io-oi.me/</uri>
+                    <email>781029588@qq.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">前言 Pull-Request是GitHub上对开源项目贡献代码的工作流程。 1. Fork…</summary>
+            
+                <content type="html">&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+&lt;p&gt;Pull-Request是&lt;a href=&#34;https://github.com/&#34;&gt;GitHub&lt;/a&gt;上对开源项目贡献代码的工作流程。&lt;/p&gt;
+&lt;h2 id=&#34;1-fork原项目&#34;&gt;1. Fork原项目&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://help.github.com/assets/images/help/repository/fork_button.jpg&#34; alt=&#34;Fork&#34;&gt;&lt;/p&gt;
+&lt;p&gt;如上图，在项目的右上角，可以看到&lt;code&gt;Watch&lt;/code&gt;、&lt;code&gt;Star&lt;/code&gt;、&lt;code&gt;Fork&lt;/code&gt;，三个按钮，点击&lt;code&gt;Fork&lt;/code&gt;就可以了，成功之后在个人的仓库列表中可以看到你Fork的项目。&lt;/p&gt;
+&lt;h2 id=&#34;2-将项目clone到本地&#34;&gt;2. 将项目clone到本地&lt;/h2&gt;
+&lt;p&gt;在克隆项目的时候，克隆的是自己仓库的代码，而不是源项目的。比如你fork了user-A的项目&lt;code&gt;project-a&lt;/code&gt;，源项目地址为&lt;code&gt;https://github.com/user-A/project-a&lt;/code&gt;，在你仓库中的项目地址为&lt;code&gt;https://github.com/your-username/project-a&lt;/code&gt;。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;git clone https://github.com/your-username/project-a
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;3-创建自己的分支&#34;&gt;3. 创建自己的分支&lt;/h2&gt;
+&lt;p&gt;新建一个自己的分支，后续开发在自己分支中开发，创建分支的时候，在分支名字中表达出这个分支是进行BUG修复，或者是开发新功能。具体参考源项目的命名规范。注意创建分支的时候选择的上游分支，看项目发布规则，是在dev分支开发或者是master分支进行开发。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;git branch fixbug_dosomethings [上游分支]
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;4-在自己的分支上进行开发&#34;&gt;4. 在自己的分支上进行开发&lt;/h2&gt;
+&lt;p&gt;开发过程中的话，需要注意的就是代码规范了，最好是延续源项目的风格，当然，规范的开发风格都一样。经常提交代码是一个好习惯，避免异常状况发生之后造成损失。有权限的人可以看到你每次的提交&lt;/p&gt;
+&lt;h2 id=&#34;5-发送一个pull-request&#34;&gt;5. 发送一个Pull-Request&lt;/h2&gt;
+&lt;p&gt;在源项目新建一个Pull-Request，就在选择分支按钮的旁边，&lt;code&gt;new pull request&lt;/code&gt;，base repository，选择源项目，head repository选择你自己的仓库，选择好对应的分支就可以提交。&lt;/p&gt;
+&lt;h2 id=&#34;6-后续&#34;&gt;6. 后续&lt;/h2&gt;
+&lt;p&gt;有权限的项目参与者能够看到你创建的合并，进行code review，或者进行测试，当他们认为可以合并，那么接受本次提交并合并到源项目的目标分支中。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意：本次提交没有关闭，你后续所有在这个分支上进行的修改，commit，都会进入此次pull-request中&lt;/strong&gt;。&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">Git 的简单使用</title>
+            <link rel="alternate" type="text/html" href="http://zz.zzs7.top/posts/use-git-1/" />
+            <id>http://zz.zzs7.top/posts/use-git-1/</id>
+            <updated>2022-01-25T16:31:13&#43;08:00</updated>
+            <published>2020-01-25T16:30:31&#43;08:00</published>
+            <author>
+                    <name>张智</name>
+                    <uri>https://io-oi.me/</uri>
+                    <email>781029588@qq.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">使用Git进行代码管理 前言 在开发过程往往是多人协作开发，就需要一种合适的方式进行代码…</summary>
+            
+                <content type="html">&lt;h2 id=&#34;使用git进行代码管理&#34;&gt;使用Git进行代码管理&lt;/h2&gt;
+&lt;h3 id=&#34;前言&#34;&gt;前言&lt;/h3&gt;
+&lt;p&gt;在开发过程往往是多人协作开发，就需要一种合适的方式进行代码管理，进行代码版本管理。我接触到的两家公司都是使用的Git进行代码管理，工作过程遇到过不少问题，简单整理记录一下。&lt;/p&gt;
+&lt;p&gt;关于Git的底层实现就不详细说明了，如果想了解这方面的知识，可以去看看&lt;a href=&#34;https://git-scm.com/book/zh/v2&#34;&gt;Git-Book&lt;/a&gt;以及&lt;a href=&#34;https://jwiegley.github.io/git-from-the-bottom-up/&#34;&gt;Git from the Bottom Up&lt;/a&gt;。我只是为了记录一些常用的操作，之后可能会详细说说底层实现的东西。&lt;/p&gt;
+&lt;h3 id=&#34;简单的流程以及命令&#34;&gt;简单的流程以及命令&lt;/h3&gt;
+&lt;h4 id=&#34;准备工作&#34;&gt;准备工作&lt;/h4&gt;
+&lt;p&gt;平时大家自己学习某个技术或者空闲的时候肯定会自己写一些简单的项目，代码保存在本地肯定，机器挂了的话，就完蛋了，最好的办法是托管在知名的代码托管平台，首先想到的肯定是GitHub，还有Gitlab，国内的coding，腾讯开发者平台，码云等。都支持使用git工具进行代码管理。&lt;/p&gt;
+&lt;p&gt;一般我们会使用配置ssh-key，使用ssh来连接自己的代码仓库，不然使用https还需要输入密码，那太麻烦了。&lt;/p&gt;
+&lt;p&gt;生成ssh密钥，使用下面的命令，会让你选择保存位置，输入密码。如果没有特殊需求，一路回车就行了。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ssh-keygen
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;生成密钥之后会保存在&lt;code&gt;~/.ssh&lt;/code&gt;目录下，id_rsa是私钥，id_rsa.pub是公钥，私钥保存在你自己电脑上，公钥配置在代码托管平台上，这样就可以使用ssh连接你的代码仓库。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# 目录下会生成两个文件
+id_rsa      id_rsa.pub
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;在本地初始化一个仓库&#34;&gt;在本地初始化一个仓库&lt;/h4&gt;
+&lt;p&gt;在需要初始化的位文件夹内执行下面的命令&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;git init  # 初始化
+# 如果是在你的项目内，比如路径下有你的a.py，b.py两个文件
+git add a.py b.py  # 将需要上传到代码仓库的文件添加到暂存区，支持文件夹、单个或者多个文件。
+git commit -m &amp;quot;本次提交做了什么修改&amp;quot;  #对这次提交代码的描述
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;关联远程仓库并且将代码上传&#34;&gt;关联远程仓库，并且将代码上传&lt;/h4&gt;
+&lt;p&gt;在代码托管平台创建一个项目，此时项目是空的，你需要将你的代码提交到仓库中。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# 建立与远程仓库的联系
+git remote add git@github.com:ZhangzhiS/ZhangzhiS.github.io.git
+# 上面命令后面的链接是我自己的一个博客仓库，你可以复制你自己的项目链接
+# 使用git push将代码推送到远程仓库
+git push
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;更换电脑之后将代码拉取到本地&#34;&gt;更换电脑之后将代码拉取到本地&lt;/h4&gt;
+&lt;p&gt;比如电脑坏了，或者其他原因换电脑了，可以把远程仓库的代码拉取到本地，当然你要先配置好ssh-key。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# 直接把代码clone下来就好了
+git clone git@github.com:ZhangzhiS/ZhangzhiS.github.io.git
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;两台电脑一起修改的代码的时候&#34;&gt;两台电脑一起修改的代码的时候&lt;/h4&gt;
+&lt;p&gt;这时候就是简单的协作了。比如A电脑进行了代码文件&lt;code&gt;a.py&lt;/code&gt;进行了修改&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;git add a.py
+git commit -m 修改xxx
+git push
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;B电脑上没有A电脑修改的这部分代码，这时候可以将代码库中的修改之后的代码拉取到本地。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;git pull
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;此时你就会发现，&lt;code&gt;a.py&lt;/code&gt;已经是修改之后的了。&lt;/p&gt;
+&lt;p&gt;上面说的简单流程是自己一个人开发的时候可以用到的，每次都是pull，push的工作。因为只是自己一个在做修改，发生冲突的概率是比较小的，但是真正工作中，经常会有你和同事修改同一个文件，发生冲突的概率也会很大。&lt;/p&gt;
+&lt;p&gt;后面我会说说Git的一些别的操作。&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">关于同源策略</title>
+            <link rel="alternate" type="text/html" href="http://zz.zzs7.top/posts/same-origin-policy/" />
+            <id>http://zz.zzs7.top/posts/same-origin-policy/</id>
+            <updated>2022-01-25T16:37:33&#43;08:00</updated>
+            <published>2020-01-25T16:29:11&#43;08:00</published>
+            <author>
+                    <name>张智</name>
+                    <uri>https://io-oi.me/</uri>
+                    <email>781029588@qq.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">同源策略 同源策略是一种约定，是由Netscape提出的著名安全策略。他是浏览器最核心…</summary>
+            
+                <content type="html">&lt;h2 id=&#34;同源策略&#34;&gt;同源策略&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;同源策略是一种约定，是由&lt;a href=&#34;https://baike.baidu.com/item/Netscape/2778944&#34;&gt;Netscape&lt;/a&gt;提出的著名安全策略。他是浏览器最核心、最基本的安全功能。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;同源的定义&#34;&gt;同源的定义&lt;/h3&gt;
+&lt;p&gt;如果两个页面的协议、端口、主机都相同，则两个页面具有相同的源。&lt;/p&gt;
+&lt;p&gt;下面做一些说明：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://zz.zzs7.top/mysql-optimization.html&#34;&gt;https://zz.zzs7.top/mysql-optimization.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://zz.zzs7.top/mysql-optimization.html&#34;&gt;http://zz.zzs7.top/mysql-optimization.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://zz.zzs7.top:8000/mysql-optimization.html&#34;&gt;https://zz.zzs7.top:8000/mysql-optimization.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://s7.zzs7.top/mysql-optimization.html&#34;&gt;https://s7.zzs7.top/mysql-optimization.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;https://104.125.11.39/mysql-optimization.html&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;上面的链接中：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1和2比较：不是同源，因为1用的https，2用的是http。属于协议不同。&lt;/li&gt;
+&lt;li&gt;1和3比较：不是同源，1未指定端口的时候，默认使用的是80,而3使用的是8000端口，属于端口不同。&lt;/li&gt;
+&lt;li&gt;1和4比较：不是同源，域名不同。&lt;/li&gt;
+&lt;li&gt;1和5比较：虽然1部署在了该ip地址对应的服务器，但是依然不是同源。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在不同源的情况下1站点里面的js脚本采用ajax读取其他三个站点中的数据是会报错的。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注：IE浏览器未将不同端口加入同源策略的组成部分。&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;跨域&#34;&gt;跨域&lt;/h3&gt;
+&lt;p&gt;受同源策略的影响，不是 同源下的脚本不能操作其他源下面的对象。想要操作其他源下的对象就需要跨域。&lt;/p&gt;
+&lt;h4 id=&#34;为什么要跨域&#34;&gt;为什么要跨域&lt;/h4&gt;
+&lt;p&gt;比如某视频网站由于数据太多，分布在了不同的服务器上，所以需要突破同源策略，实现数据交互。&lt;/p&gt;
+&lt;h4 id=&#34;跨域的实现&#34;&gt;跨域的实现&lt;/h4&gt;
+&lt;p&gt;有以下几种实现方式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;降域（document.domain）&lt;/strong&gt;：同源策略认为域和子域属于不同的域。&lt;/p&gt;
+&lt;p&gt;比如&lt;a href=&#34;https://zz.zzs7.xn--tophttps-1c2n//s7.zzs7.top&#34;&gt;https://zz.zzs7.top和https://s7.zzs7.top&lt;/a&gt;。虽然都属于zzs7.top域名的子域名，但是他们属于不同域。&lt;/p&gt;
+&lt;p&gt;想让上述两个网页之间通信，可以通过设置 &lt;code&gt;document.damain=&#39;zzs7.top&#39;&lt;/code&gt;，来让浏览器认为他们在同样的域。两个页面都需设置。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;script&amp;gt;
+    document.domain = &#39;zzs7.top&#39;;
+    // 获取父窗口中变量
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;注：可以进行降域，不能升域。&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;通过jsonp跨域&lt;/strong&gt;：不同源虽然不能读写，但可以引用js。我们可以让引用的js附带数据来调用我们预先定义的函数，而数据当作参数传入。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;script&amp;gt;
+   var script = document.createElement(&#39;script&#39;);
+   script.type = &#39;text/javascript&#39;;
+
+   // 传参一个回调函数名给后端，方便后端返回时执行这个在前端定义的回调函数
+   script.src = &#39;http://zz.zzs7.top/login?user=admin&amp;amp;callback=handleCallback&#39;;
+   document.head.appendChild(script);
+
+   // 回调执行函数
+   function handleCallback(res) {
+       alert(JSON.stringify(res));
+   }
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;CORS：跨域资源共享&lt;/strong&gt;：一个W3C标准，它允许浏览器向跨源服务器发起&lt;code&gt;XMLHttpRequest请求&lt;/code&gt;，和ajax同源的使用方法一致（区别在于对于跨域请求浏览器的请求会有附加的相关设置，用户看不到），分简单请求和非简单请求。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过 &lt;strong&gt;location.hash&lt;/strong&gt;：a欲与b跨域相互通信，通过中间页c来实现。 三个页面，不同域之间利用iframe的location.hash传值，相同域之间直接js访问来通信。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;window.name&lt;/strong&gt;：window.name属性的独特之处：name值在不同的页面（甚至不同域名）加载后依旧存在，并且可以支持非常长的 name 值（2MB）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;postMessage跨域&lt;/strong&gt;：postMessage是HTML5 XMLHttpRequest Level 2中的API，且是为数不多可以跨域操作的window属性之一，它可用于解决以下方面的问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;页面和其打开的新窗口的数据传递&lt;/li&gt;
+&lt;li&gt;多窗口之间消息传递&lt;/li&gt;
+&lt;li&gt;页面与嵌套的iframe消息传递&lt;/li&gt;
+&lt;li&gt;上面三个场景的跨域数据传递&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;用法：postMessage(data,origin)方法接受两个参数
+data： html5规范支持任意基本类型或可复制的对象，但部分浏览器只支持字符串，所以传参时最好用JSON.stringify()序列化。
+origin： 协议+主机+端口号，也可以设置为”*”，表示可以传递给任意窗口，如果要指定和当前窗口同源的话设置为”/“。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;还有一些比的，比如可以通过nginx代理实现跨域等，就不在文章中细说了，后续有机会详细实践一下每种方式。&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">Python的并发编程（七）- 如何规避GIL带来的限制</title>
+            <link rel="alternate" type="text/html" href="http://zz.zzs7.top/posts/python-concurrent-7/" />
+            <id>http://zz.zzs7.top/posts/python-concurrent-7/</id>
+            <updated>2022-01-25T16:22:53&#43;08:00</updated>
+            <published>2020-01-25T16:20:50&#43;08:00</published>
+            <author>
+                    <name>张智</name>
+                    <uri>https://io-oi.me/</uri>
+                    <email>781029588@qq.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">我们已经听说过全局解释器锁（GIL），担心会影响到多线程的性能。尽管Python完全…</summary>
+            
+                <content type="html">&lt;p&gt;我们已经听说过全局解释器锁（GIL），担心会影响到多线程的性能。尽管Python完全支持多线程编程，但是在解释器的C语言实现中，有一部分并不是线程安全的，因此不能完全支持并发执行。&lt;/p&gt;
+&lt;p&gt;事实上，解释器被一个称为全局解释器锁的东西保护着，在任意时刻只允许一个Python线程投入执行。GIL带来的最明显的影响就是多线程的python程序无法充分利用多个CPU核心带来的优势（即，一个采用多线程技术的计算密集型应用只能在一个CPU上运行）。&lt;/p&gt;
+&lt;p&gt;在讨论规避GIL的常用方案之前，需要重点强调的是，GIL只会对CPU密集型的程序产生影响（主要完成计算任务的程序）。如果我们的程序主要是在做I/O操作，比如处理网络连接，那么选择多线程技术常常是一个明智的选择。因为他们大部分时间都花在等待对放发起连接上了。实际上可以创建数以千计的Python线程都没问题。在现代的计算机上运行这么多线程是不会有问题的。&lt;/p&gt;
+&lt;p&gt;在理解这部分的内容的时候，你可以将存在全局解释器锁的Python解释器看作一个加油站。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.loli.net/2019/05/14/5cda794e88ce223620.png&#34; alt=&#34;img&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;I/O密集型&lt;/strong&gt;任务中，你可以理解为有多辆小轿车驶入了加油站进行加油，虽然不知道哪个先加完，但是会比只有一个加油点的加油站顺序很快。如果是&lt;strong&gt;计算密集型&lt;/strong&gt;的任务呢，就是当这辆车驶入加油站的时候，加油站所有的资源都用来服务这一辆车了，别的车只能等待。&lt;/p&gt;
+&lt;p&gt;当然上述比喻只是为了大家方便理解两种不同类型任务的区别。&lt;/p&gt;
+&lt;p&gt;对于CPU密集型的程序，我们需要对问题的本质做些研究，例如，仔细选择底层使用的算法，这可能会比尝试将一个没有优化过的算法用多线程来并行处理所带来的性能提升要多得多。同样的，由于Python是解释型语言，往往只需要简单的将性能关键的代码转移到C语言扩展的模块中就可能得到极大的性能提升。类似NumPy这样的扩展模块对于加速涉及数组数据的特定计算也是非常高效的。最后但同样重要的是，还可以尝试使用其他的解释器实现，比如说使用了JIT编译优化技术的PYPY。&lt;/p&gt;
+&lt;p&gt;同样值得指出的是，使用多线程技术并不是为了获得性能的提升。一个CPU密集型的程序可能会用多线程来管理图形用户界面、网络连接或者其他类型的服务。在这种情况下GIL实际上会带来更多的问题。因为如果某部分代码持有GIL锁的时间过长，那就会导致其他非CPU密集型的线程都阻塞住。实际上，一个写的很糟糕的C扩展模块会让这个问题更加严重，尽管代码中C实现的部分会比之前运行的快。&lt;/p&gt;
+&lt;p&gt;说这么多，要规避GIL的限制主要有两种常用的策略。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;如果完全使用Python来编程，可以使用&lt;code&gt;multiprocessin&lt;/code&gt;模块来创建进程池，把它当作协处理器来使用。看看下面的例子：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# 大量的计算任务 (CPU bound)
+def some_work(args):
+    # ...
+    result = args
+    return result
+
+# 线程函数
+def some_thread():
+    while True:
+        # ...
+        args = None
+        r = some_work(args)
+        # ...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上面是使用线程去处理这个任务，下面我们可以将代码改为进程池的方式：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;pool = None
+
+# 大量的计算任务 (CPU bound)
+def some_work(args):
+    # ...
+    result = args
+    return result
+
+# 线程函数
+def some_thread():
+    while True:
+        # ...
+        r = pool.apply(some_work, (args))
+        # ...
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    import multiprocessing
+    pool = multiprocessing.Pool()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;使用进程池的例子通过一个巧妙的办法避开了GIL的限制。每当有线程要执行CPU密集型任务的时候，就把任务提交到进程池中，然后进程池将任务转交给运行在另一个进程中的python解释器。当线程等待结果的时候就会释放GIL。此外，由于计算是在另一个单独的解释器中进行的，这就不再受到GIL的限制了，在多核系统上，将会发现采用这种技术能够轻易利用到所有的CPU核心。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第二种方式是把重点放在C语言的扩展编程上。主要思想就是将计算密集的任务转移到C语言中，使其独立于Python，在C代码中释放GIL，这里由于我也不会C，就不做示例了。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在我们面对多线程程序性能问题的时候，不能去抱怨GIL是所有问题的根源。但是，这么做只是一种短视和幼稚的行为。举个例子，在多线程网络程序中出现神秘的“僵死”现象，这种现象可能是别的原因造成的，和GIL没有一点关系。所以要先认真研究自己的代码，判断GIL是否才是问题的关键。&lt;strong&gt;CPU密集型的处理才是需要考虑GIL，I/O密集的处理则不必要考虑&lt;/strong&gt;。&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">Python的并发编程（六）- 多进程</title>
+            <link rel="alternate" type="text/html" href="http://zz.zzs7.top/posts/python-concurrent-6/" />
+            <id>http://zz.zzs7.top/posts/python-concurrent-6/</id>
+            <updated>2022-01-25T16:23:01&#43;08:00</updated>
+            <published>2020-01-25T16:20:47&#43;08:00</published>
+            <author>
+                    <name>张智</name>
+                    <uri>https://io-oi.me/</uri>
+                    <email>781029588@qq.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">之前学习了多线程以及线程池，他们在执行I/O密集的程序的时候，性能是很高的，但是如果…</summary>
+            
+                <content type="html">&lt;p&gt;之前学习了多线程以及线程池，他们在执行I/O密集的程序的时候，性能是很高的，但是如果我们有大量的CPU密集型工作的程序，现在想利用多个CPU的优势运行的更快，应该怎么解决呢？&lt;/p&gt;
+&lt;p&gt;这时候，就不能使用多线程了，而是需要真正的并行来解决问题。&lt;/p&gt;
+&lt;p&gt;在&lt;code&gt;concurrent.futures&lt;/code&gt;库中提供了一个&lt;code&gt;ProcessPoolExecutor&lt;/code&gt;类，可用来在单独运行的python解释器实例中执行计算密集的函数。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ProcessPoolExecutor&lt;/code&gt;的典型用法是下面这样的：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;from concurrent.futures import ProcessPoolExecutor
+
+with ProcessPoolExecutor() as pool:
+    &amp;quot;&amp;quot;&amp;quot;
+    在进程池pool中并行执行任务
+    &amp;quot;&amp;quot;&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在底层，&lt;code&gt;ProcessPoolExecutor&lt;/code&gt;创建了N个独立运行的Python解释器，这里的N就是系统上检测到的可用的CPU个数。可以创建和修改Python的进程数，只要给&lt;code&gt;ProcessPoolExecutor(N)&lt;/code&gt;提供一个可选的参数。进程池会一直运行，直到with语句块中的最后一条语句执行完毕为止，此时进程池就会关闭。但是程序会一直等待所有已经提交的任务都处理完毕为止。&lt;/p&gt;
+&lt;p&gt;提交到进程池中的任务必须定义为函数形式。有两种方法可以提交任务。如果想并行处理一个列表推导式或者map()操作，可以使用&lt;code&gt;pool.map()&lt;/code&gt;：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;from concurrent.futures import ProcessPoolExecutor
+
+def work(x):
+    &amp;quot;&amp;quot;&amp;quot;任务逻辑&amp;quot;&amp;quot;&amp;quot;
+    return x
+
+data = [1, 2, 3, 4]
+
+with ProcessPoolExecutor() as pool:
+    &amp;quot;&amp;quot;&amp;quot;
+    在进程池pool中并行执行任务
+    &amp;quot;&amp;quot;&amp;quot;
+    results = pool.map(work, data)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;另一种方式是通过&lt;code&gt;pool.submit()&lt;/code&gt;来手动提交单独的任务：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;from concurrent.futures import ProcessPoolExecutor
+
+def work(x):
+    &amp;quot;&amp;quot;&amp;quot;任务逻辑&amp;quot;&amp;quot;&amp;quot;
+    return x
+
+data = 1
+
+with ProcessPoolExecutor() as pool:
+    &amp;quot;&amp;quot;&amp;quot;
+    在进程池pool中并行执行任务
+    &amp;quot;&amp;quot;&amp;quot;
+    future_result = pool.submit(work, data)
+    result = future_result.result()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果手动提交任务，得到的结果就是一个Future实例。要获取到结果还需要手动调用&lt;code&gt;result()&lt;/code&gt;方法。这么做会阻塞进程，直到结果返回为止。所以与其让进程阻塞，不如提供一个回调函数，让他执行任务完成时出发执行。示例如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;from concurrent.futures import ProcessPoolExecutor
+
+def work(x):
+    &amp;quot;&amp;quot;&amp;quot;任务逻辑&amp;quot;&amp;quot;&amp;quot;
+    return x
+
+def when_done(r):
+    print(&amp;quot;result：&amp;quot;, r.result())
+
+data = 1
+
+with ProcessPoolExecutor() as pool:
+    &amp;quot;&amp;quot;&amp;quot;
+    在进程池pool中并行执行任务
+    &amp;quot;&amp;quot;&amp;quot;
+    future_result = pool.submit(work, data)
+    future_result.add_done_callback(when_done)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;用户提供的回调函数需要接受一个Future实例，必须用他才能获取实际的结果。&lt;/p&gt;
+&lt;p&gt;尽管进程池看起来很简单，但是在设计规模更大的程序时有下面几个重要的因素需要考虑。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这种并行处理的技术只适用于可以将问题分解成各个独立部分的情况。&lt;/li&gt;
+&lt;li&gt;任务必须定义成普通函数来提交。实例方法，比包或者其他类型的可调用对象都是不支持并行处理的。&lt;/li&gt;
+&lt;li&gt;函数的参数和返回值必须可兼容&lt;code&gt;pickle&lt;/code&gt;编码。任务的执行是在单独的解释器进程中完成的。这中间需要进程间通信。因此，在不同的解释器之间交换数据必须要进行序列化处理。&lt;/li&gt;
+&lt;li&gt;提交的工作函数都不应该维护持久的状态或者带有副作用。除了简单的日志功能，一旦子进程启动，将无法控制他的行为。因此，为了让思路保持清晰，最好让每件事情都保持简单，让任务在不会修改执行环境的纯函数中执行。&lt;/li&gt;
+&lt;li&gt;进程池是通过调用UNIX上的fork()系统调用来创建的。这么做会克隆一个Python解释器，在fork()时会包含所有的程序状态。在windows上，这么做会加载一个独立的解释器拷贝，但不包含状态。克隆出来的进程在首次调用&lt;code&gt;pool.map()&lt;/code&gt;或者&lt;code&gt;pool.submit()&lt;/code&gt;之前不会实际运行。&lt;/li&gt;
+&lt;li&gt;既然是克隆一个独立的解释器，那每个进程都可以再执行线程。当进程池和多线程技术结合在一起使用的时候需要格外的小心。特别是，很可能我们应该在创建任何线程之前优先创建并加载进程池（例如，当程序启动时在主线程中创建进程池）。&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">Python的并发编程（五）- 线程池</title>
+            <link rel="alternate" type="text/html" href="http://zz.zzs7.top/posts/python-concurrent-5/" />
+            <id>http://zz.zzs7.top/posts/python-concurrent-5/</id>
+            <updated>2022-01-25T16:23:08&#43;08:00</updated>
+            <published>2020-01-25T16:17:59&#43;08:00</published>
+            <author>
+                    <name>张智</name>
+                    <uri>https://io-oi.me/</uri>
+                    <email>781029588@qq.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Python的并发编程（五）- 线程池 之前的文章学习了一些多线程的用法，在I/O密集型…</summary>
+            
+                <content type="html">&lt;h2 id=&#34;python的并发编程五--线程池&#34;&gt;Python的并发编程（五）- 线程池&lt;/h2&gt;
+&lt;p&gt;之前的文章学习了一些多线程的用法，在I/O密集型的程序中，多线程带来了显著的性能提升，那我们可以无限制的，大量的创建多线程任务吗？&lt;/p&gt;
+&lt;p&gt;一个线程创建、销毁都是需要消耗系统资源的，如果线程数大于一定的数量，线程的创建销毁就会占用大量的系统性能，就不能充分利用到系统资源了。这时候，可以选择使用线程池了，&lt;/p&gt;
+&lt;h3 id=&#34;线程池&#34;&gt;线程池&lt;/h3&gt;
+&lt;p&gt;创建一定数量的线程来执行任务，任务结束之后，该线程不进行销毁，而是继续从任务队列中获取新任务来执行，直到所有任务都执行结束之后，关闭所有线程。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;concurrent.futures&lt;/code&gt;库中包含有一个&lt;code&gt;ThreadPoolExecutor&lt;/code&gt;类可用来实现这个目的。下面来实现一个简单的TCP服务器，使用线程池来服务客户端：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;from socket import AF_INET, socket, SOCK_STREAM
+from concurrent.futures import ThreadPoolExecutor
+
+
+def echo_client(sock, client_addr):
+    print(&amp;quot;{addr}已连接&amp;quot;.format(addr=client_addr))
+    while True:
+        msg = sock.recv(40960)
+        if not msg:
+            break
+        sock.sendall(msg)
+    sock.close()
+    print(&amp;quot;关闭连接&amp;quot;)
+
+
+def echo_server(addr):
+    pool = ThreadPoolExecutor(128)
+    sock = socket(AF_INET, SOCK_STREAM)
+    sock.bind(addr)
+    sock.listen(5)
+    while True:
+        client_sock, client_addr = sock.accept()
+        pool.submit(echo_client, client_sock, client_addr)
+
+if __name__ == &#39;__main__&#39;:
+    echo_server((&amp;quot;&amp;quot;, 5000))
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当然，我们也可以手动创建线程池，使用&lt;code&gt;Queue&lt;/code&gt;来作为任务队列。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;from socket import AF_INET, socket, SOCK_STREAM
+from threading import Thread
+from queue import Queue
+
+def echo_client(q):
+    sock, client_addr = q.get()
+    print(&amp;quot;{addr}已连接&amp;quot;.format(addr=client_addr))
+    while True:
+        msg = sock.recv(40960)
+        if not msg:
+            break
+        sock.sendall(msg)
+    sock.close()
+    print(&amp;quot;关闭连接&amp;quot;)
+
+def echo_server(addr, nworkers):
+    q = Queue()
+    for n in range(nworkers):
+        # 启动nworkers个线程
+        t = Thread(target=echo_client, args=(q, ))
+        t.daemon = True
+        t.start()
+    sock = socket(AF_INET, SOCK_STREAM)
+    sock.bind(addr)
+    sock.listen(5)
+    while True:
+        client_sock, client_addr = sock.accept()
+        q.put(client_sock, client_addr)
+
+if __name__ == &#39;__main__&#39;:
+    echo_server((&amp;quot;&amp;quot;, 5000), 10)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;尽量使用&lt;code&gt;ThreadPoolExecutor&lt;/code&gt;而不是手动实现线程池。这么做的优势在于使得任务的提交者能够更容易从调用函数中取得结果。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import urllib.request
+from concurrent.futures import ThreadPoolExecutor
+
+
+def fetch_url(url):
+    u = urllib.request.urlopen(url)
+    data = u.read()
+    return data
+
+pool = ThreadPoolExecutor(10)
+a = pool.submit(fetch_url, &amp;quot;http://www.python.org&amp;quot;)
+b = pool.submit(fetch_url, &amp;quot;http://www.pypy.org&amp;quot;)
+
+x = a.result()
+y = b.result()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;示例中的结果对象（即a和b）负责处理所有需要完成的阻塞和同步任务，从工作者线程中取回数据。特别是，&lt;code&gt;a.result()&lt;/code&gt;操作会阻塞，直到对应的函数已经由线程执行完幷返回了结果为止。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：避免写允许线程无限增长的程序。如果在web服务中这么做了，无法阻止恶意用户对服务器发起拒绝服务攻击，从而导致服务器上创建了大量的线程，耗尽了系统资源而崩溃。通过预先初始化好的线程池，就可以小心的为所有能支持的并发总数设定一个上限。&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">Python的并发编程（四）- 多线程中的锁</title>
+            <link rel="alternate" type="text/html" href="http://zz.zzs7.top/posts/python-concurrent-4/" />
+            <id>http://zz.zzs7.top/posts/python-concurrent-4/</id>
+            <updated>2022-01-25T16:23:17&#43;08:00</updated>
+            <published>2020-01-25T16:17:56&#43;08:00</published>
+            <author>
+                    <name>张智</name>
+                    <uri>https://io-oi.me/</uri>
+                    <email>781029588@qq.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">如何在多线程中安全的使用可变对象呢？比如给文件中写入内容的时候，我们希望当前线程写入…</summary>
+            
+                <content type="html">&lt;p&gt;如何在多线程中安全的使用可变对象呢？比如给文件中写入内容的时候，我们希望当前线程写入完毕之后，其他线程才能够继续操作这个文件，避免文件内容错乱。&lt;/p&gt;
+&lt;h3 id=&#34;lock对象&#34;&gt;Lock对象&lt;/h3&gt;
+&lt;p&gt;可以利用threading库中的Lock对象来解决问题。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import threading
+
+class SharedCounter(object):
+
+    def __init__(self, initial_value=0):
+        self._value = initial_value
+        self._value_lock = threading.Lock()
+
+    def incr(self, delta=1):
+        &amp;quot;&amp;quot;&amp;quot;增加&amp;quot;&amp;quot;&amp;quot;
+        with self._value_lock:
+            self._value += delta
+
+    def decr(self, delta=1):
+        &amp;quot;&amp;quot;&amp;quot;减少&amp;quot;&amp;quot;&amp;quot;
+        with self._value_lock:
+            self._value -= delta
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当线程中使用with 语句时，Lock对象可以确保产生互斥的行为–也就是说，统一时间只允许一个线程with语句代码块中的逻辑。with 语句会在执行缩进的代码块时获取到锁，当控制流离开缩进语句时释放这个锁。&lt;/p&gt;
+&lt;p&gt;线程的调度从本质上来说是非确定性的。正因为如此，在多线程程序中如果不用好锁就会使得数据被随机的破坏掉，以及产生我们称之为竟态条件（race condition）的奇怪行为。要避免这些问题，只要共享的可变状态需要被多个线程访问，那么就需要使用锁。&lt;/p&gt;
+&lt;p&gt;当然还有以下这种写法：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import threading
+
+class SharedCounter(object):
+    # ....
+    def incr(self, delta=1):
+        self._value_lock.acquire()
+        self._value += delta
+        self._value_lock.release()
+
+    # ....
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;不过with不是更优雅吗？而且with也不容易出错————尤其是我们在持有锁的时候抛出了异常，我们可能会忘记调用&lt;code&gt;release()&lt;/code&gt;，而with语句总是会确保释放锁。&lt;/p&gt;
+&lt;h3 id=&#34;避免死锁&#34;&gt;避免死锁&lt;/h3&gt;
+&lt;p&gt;在多线程程序中，出现死锁的常见原因就是线程一次尝试获取了多个锁，列如有一个线程获取到第一个锁，但是他在尝试获取第二个锁的时候阻塞了，那么这个线程可能会阻塞住其他线程的执行，进而使得整个程序僵死。&lt;/p&gt;
+&lt;p&gt;避免出现死锁的的一种解决方案就是给程序的每个锁分配一个唯一的数字编号，并且在获取多个锁时按照编号的升序方式来获取。看看示例：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import threading
+from contextlib import contextmanager
+
+_local = threading.local()
+
+@contextmanager
+def acquire(locks):
+    locks = sorted(locks, key=lambda x: id(x))
+
+    acquired = getattr(_local, &amp;quot;acquired&amp;quot;, [])
+
+    if acquired and max(id(lock) for lock in acquired) &amp;gt; id(locks[0]):
+        raise RuntimeError(&amp;quot;Lock Order Violation&amp;quot;)
+
+    acquired.extend(locks)
+    _local.acquired = acquired
+    try:
+        for lock in locks:
+            lock.acquire()
+        yield
+    finally:
+        for lock in reversed(locks):
+            lock.release()
+        del acquired[-len(locks):]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;要使用这个上下文管理器，只要按照正常的方式来分配锁对象，但是当相同一个或者多个锁打交道时就是用&lt;code&gt;acquire()&lt;/code&gt;这个函数。例如：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import threading
+
+x_lock = threading.Lock()
+y_lock = threading.Lock()
+
+def thread_1():
+    while True:
+        with acquire(x_lock, y_lock):
+            print(&amp;quot;Thread-1&amp;quot;)
+
+def thread_2():
+    while True:
+        with acquire(x_lock, y_lock):
+            print(&amp;quot;Thread-2&amp;quot;)
+
+t1 = threading.Thread(target=thread_1)
+t1.daemon = True
+t1.start()
+
+t2 = threading.Thread(target=thread_1)
+t2.daemon = True
+t2.start()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果运行这个程序，就会发现这个程序运行的很好，永远不会死锁。&lt;/p&gt;
+&lt;p&gt;本文只是提供简单的讲解，编码的时候灵活运用。&lt;/p&gt;
+&lt;p&gt;明天我们来说说线程池。&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">Python的并发编程（三）-线程间通信</title>
+            <link rel="alternate" type="text/html" href="http://zz.zzs7.top/posts/python-concurrent-3/" />
+            <id>http://zz.zzs7.top/posts/python-concurrent-3/</id>
+            <updated>2022-01-25T16:23:25&#43;08:00</updated>
+            <published>2020-01-25T16:15:05&#43;08:00</published>
+            <author>
+                    <name>张智</name>
+                    <uri>https://io-oi.me/</uri>
+                    <email>781029588@qq.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">在写多线程程序的时候，可能会有需求需要我们在线程之间交换数据 我们如何在线程之间实现安…</summary>
+            
+                <content type="html">&lt;p&gt;在写多线程程序的时候，可能会有需求需要我们在线程之间交换数据&lt;/p&gt;
+&lt;p&gt;我们如何在线程之间实现安全的通信或者交换数据呢？&lt;/p&gt;
+&lt;h3 id=&#34;queue队列&#34;&gt;Queue队列&lt;/h3&gt;
+&lt;p&gt;也许将数据从一个线程发往另一个线程最安全的做法就是使用queue模块中的Queue（队列）了。&lt;/p&gt;
+&lt;p&gt;简单的流程：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;创建Queue实例，&lt;strong&gt;Queue实例会被所有的线程共享。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;put()添加元素&lt;/li&gt;
+&lt;li&gt;get()获取元素&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.loli.net/2019/05/08/5cd25f740a855.jpg&#34; alt=&#34;img&#34;&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import time
+from queue import Queue
+from threading import Thread
+
+
+def producer(out_q):
+    for i in range(10):
+        out_q.put(i)
+        time.sleep(2)
+
+
+def consumer(in_q):
+    while True:
+        data = in_q.get()
+        print(data)
+
+q = Queue()
+t1 = Thread(target=producer, args=(q, ))
+t2 = Thread(target=consumer, args=(q, ))
+t1.start()
+t2.start()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Queue实例已经拥有了所有需要的锁，所以他们可以安全的在任意多线程之间共享。&lt;/p&gt;
+&lt;p&gt;如何对生产者和消费这的关闭过程进行同步协调？&lt;/p&gt;
+&lt;p&gt;我们可以用一个特殊的终止值，当我们把它放入队列，就使消费者退出。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import time
+from queue import Queue
+from threading import Thread
+
+_sentinel = object()
+
+def producer(out_q):
+    for i in range(10):
+        out_q.put(i)
+        time.sleep(2)
+    out_q.put(_sentinel)
+
+
+def consumer(in_q):
+    while True:
+        data = in_q.get()
+        if data is _sentinel:
+            in_q.put(_sentinel)
+            break
+        print(data)
+
+q = Queue()
+t1 = Thread(target=producer, args=(q, ))
+t2 = Thread(target=consumer, args=(q, ))
+t1.start()
+t2.start()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在示例中，，当一个消费者收到这个退出信号之后，会退出。将终止值放回队列是因为如果有多个消费者，这样可以使其他监听这个队列的其他消费者线程也能够接收到这个终止值。&lt;/p&gt;
+&lt;p&gt;尽管队列是线程之间通信 的最常见的机制，但是只要添加了所需要的锁和同步功能，就可以构建自己的线程安全结构，最常见的做法就是将你的数据结构和条件变量打包在一起。&lt;/p&gt;
+&lt;p&gt;下面我们构建一个线程安全的优先级队列。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import heapq
+import threading
+
+class PriorityQueue(object):
+    def __init__(self):
+        self._queue = []
+        self._count = 0
+        self._cv = threading.Condition()
+
+    def put(self, item, priority):
+        while self._cv:
+            heapq.heappush(self._queue, (-priority, self._count, item))
+            self._count += 1
+            self._cv.notify()
+
+    def get(self):
+        with self._cv:
+            while len(self._queue) == 0:
+                self._cv.wait()
+            return heapq.heappop(self._queue)[-1]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;通过队列实现的线程之间通信是一种单向的且不确定的过程。一般来说，我们无法得知接收线程（消费者）何时会实际接收到消息并开始工作。但是，Queue对象提供了一些基本的事件完成功能。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;q.join()&lt;/code&gt;会等待队列中所有的信息被消费。&lt;/p&gt;
+&lt;p&gt;Queue对象的&lt;code&gt;put()&lt;/code&gt;和&lt;code&gt;get()&lt;/code&gt;都支持非阻塞和超时机制。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import queue
+
+q = queue.Queue()
+
+try:
+    data = q.get(block=False)
+except queue.Empty:
+    pass
+
+try:
+    q.put(&amp;quot;item&amp;quot;, block=False)
+except queue.Full:
+    pass
+
+try:
+    data = q.get(timeout=1)
+except queue.Empty:
+    pass
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以避免特定的队列操作上无限期的阻塞下去。用法比较灵活多变。&lt;/p&gt;
+&lt;p&gt;最后还有一些别的实用方法， 比如&lt;code&gt;q.qsize()&lt;/code&gt;、&lt;code&gt;q.full()&lt;/code&gt;、&lt;code&gt;q.empty()&lt;/code&gt;，他们能够告诉你队列的当前大小和状态。但是，这些方法在多线程环境中是不可靠的。例如：对&lt;code&gt;q.empty()&lt;/code&gt;的调用可能会告诉我们队列是空的，但是在完成这个调用的同时，另外的线程可能已经往队列中添加了一个元素。&lt;/p&gt;
+&lt;p&gt;所以，在编写代码的时候不要太过于依赖这些函数。&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">Python的并发编程（二）-多线程的执行状态</title>
+            <link rel="alternate" type="text/html" href="http://zz.zzs7.top/posts/python-concurrent-2/" />
+            <id>http://zz.zzs7.top/posts/python-concurrent-2/</id>
+            <updated>2022-01-25T16:23:31&#43;08:00</updated>
+            <published>2020-01-25T16:15:03&#43;08:00</published>
+            <author>
+                    <name>张智</name>
+                    <uri>https://io-oi.me/</uri>
+                    <email>781029588@qq.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">上一篇文章我们写了一个简单的多线程，我们使用start()来启动这个线程，但是如果我…</summary>
+            
+                <content type="html">&lt;p&gt;&lt;a href=&#34;https://zz.zzs7.top/python-concurrent-1.html&#34;&gt;上一篇&lt;/a&gt;文章我们写了一个简单的多线程，我们使用&lt;code&gt;start()&lt;/code&gt;来启动这个线程，但是如果我们想知道它实际会在什么时候开始运行呢？&lt;/p&gt;
+&lt;h2 id=&#34;获取线程状态&#34;&gt;获取线程状态&lt;/h2&gt;
+&lt;h3 id=&#34;使用event同步线程状态&#34;&gt;使用Event同步线程状态&lt;/h3&gt;
+&lt;p&gt;线程的核心特点就是它们能够以非确定性的方式独立执行。即，什么时候开始执行、何时被打断、何时恢复执行等状态完全由操作系统来调度管理，这是用户和程序员都无法确定的。如果程序中有其他线程需要判断某个线程是否执行到了某个点，根据这个来判断后续的操作，那就产生了线程同步的问题。&lt;/p&gt;
+&lt;p&gt;要解决这类问题，我们可以使用threading中的Event对象。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import time
+
+from threading import Thread, Event
+
+def countdown(n, started_evt):
+    print(&amp;quot;开始&amp;quot;)
+    started_evt.set()
+    while n &amp;gt; 0:
+        print(&amp;quot;n=&amp;quot;, n)
+        n-=1
+        time.sleep(5)
+
+# 创建一个Event对象
+started_evt = Event()
+
+print(&amp;quot;启动 countdown&amp;quot;)
+
+t = Thread(target=countdown, args=(10, started_evt))
+t.start()
+
+# 等待线程开始
+
+started_evt.wait()
+print(&amp;quot;countdown 正在执行&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;Event&lt;/code&gt;对象和条件标记（sticky flag）类似，允许县城等待某个事件发生。初始状态时事件被设置为0。如果时间没有被设置而线程正在等待该事件，那么线程就会被阻塞（休眠状态），直到事件被设置为止。当有线程设置了这个事件时，这回唤醒所有正在等待该事件的线程（如果存在）。如果线程等待的事件已经设置了，那么线程会继续执行。&lt;/p&gt;
+&lt;p&gt;上面的代码执行结果如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;启动 countdown
+开始
+n= 10
+countdown 正在执行
+n= 9
+n= 8
+n= 7
+n= 6
+n= 5
+n= 4
+n= 3
+n= 2
+n= 1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;“countdown 正在执行”总是会在“启动 countdown”之后打印，这里使用了时间来同步线程，使主线程等待。&lt;/p&gt;
+&lt;p&gt;代码执行的顺序为：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;t.start() 启动线程。&lt;/li&gt;
+&lt;li&gt;顺序执行到&lt;code&gt;started_evt.wait()&lt;/code&gt;的时候，会等待&lt;code&gt;started_evt.set()&lt;/code&gt;的执行。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如果注释了&lt;code&gt;started_evt.set()&lt;/code&gt;就会在&lt;code&gt;started_evt.wait()&lt;/code&gt;处阻塞，“countdown 正在执行”也不会被打印，可以自己多修改代码调试，观察打印情况。&lt;/p&gt;
+&lt;h3 id=&#34;使用condition通知事件代替event&#34;&gt;使用Condition通知事件代替Event&lt;/h3&gt;
+&lt;p&gt;Event对象最好之用于一次性的事件，也就是说，我们创建一个事件，让线程等待时间被设置，然后一旦完成了设置，Event对象就被丢弃。尽管可以使用Event对象的&lt;code&gt;clean()&lt;/code&gt;方法来清除事件，但是要安全地清楚事件并等待它被再次设置这个过程很难同步协调，可能会在成事件丢失，死锁或者其他问题（特别是，在设置完事件之后，我们无法保证发起的时间清除请求就一定会在线程再次等待该事件之前被执行）。&lt;/p&gt;
+&lt;p&gt;比如上面的代码：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;started_evt.clear()
+print(&amp;quot;tag&amp;quot;)
+started_evt.wait()
+print(&amp;quot;countdown 正在执行11&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在后面填家上面的代码，每次运行结果中，tag的打印位置是不确定的。&lt;/p&gt;
+&lt;p&gt;如果线程打算一遍又一遍地重复通知某个事件，那最好使用Condition对象来处理。&lt;/p&gt;
+&lt;p&gt;下面的代码实现了一个周期性的定时器，每当定时器超时，其他的线程都可感知到超时事件。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import time
+
+from threading import Thread, Condition
+
+class PeriodicTimer:
+    def __init__(self, interval):
+        self._interval = interval
+        self._flag = 0
+        self._cv = Condition()
+
+    def start(self):
+        t = Thread(target=self.run)
+        t.daemon = True
+        t.start()
+
+    def run(self):
+        while True:
+            time.sleep(self._interval)
+            with self._cv:
+                self._flag ^= 1
+                self._cv.notify_all()
+
+    def wait_for_tick(self):
+        while self._cv:
+            last_flag = self._flag
+            while last_flag == self._flag:
+                self._cv.wait()
+
+ptimer = PeriodicTimer(5)
+ptimer.start()
+
+def countdown(nticks):
+    while nticks &amp;gt; 0:
+        ptimer.wait_for_tick()
+        print(&amp;quot;n=&amp;quot;, nticks)
+        nticks -= 1
+
+def countup(last):
+    n = 0
+    while n &amp;lt; last:
+        ptimer.wait_for_tick()
+        print(&amp;quot;n=&amp;quot;, n)
+        n += 1
+
+Thread(target=countdown, args=(10, )).start()
+Thread(target=countup, args=(5, )).start()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Event 对象的关键特性就是他会唤醒所有等待的线程。如果我们编写的程序只希望唤醒一个单独的等待线程，那么最好使用Semaphore或者Condition对象。&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">Python的并发编程（一）-了解并发以及简单的多线程实例</title>
+            <link rel="alternate" type="text/html" href="http://zz.zzs7.top/posts/python-concurrent-1/" />
+            <id>http://zz.zzs7.top/posts/python-concurrent-1/</id>
+            <updated>2022-01-25T16:23:40&#43;08:00</updated>
+            <published>2020-01-25T16:14:57&#43;08:00</published>
+            <author>
+                    <name>张智</name>
+                    <uri>https://io-oi.me/</uri>
+                    <email>781029588@qq.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">求职过程中，好多公司的招聘信息都会写一条：有构建大型互联网服务及高并发等经验 那什么是…</summary>
+            
+                <content type="html">&lt;p&gt;求职过程中，好多公司的招聘信息都会写一条：&lt;strong&gt;有构建大型互联网服务及高并发等经验&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;那什么是高并发呢？&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;对于服务端接口来说，就是我们的接口可以同时并行处理大量的请求。&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;理解并发与并行&#34;&gt;理解并发与并行&lt;/h3&gt;
+&lt;p&gt;先了解一下并发和并行的区别。百度百科对并发和并行的解释如下：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;并发&lt;/strong&gt;当有多个线程在操作时,如果系统只有一个CPU,则它根本不可能真正同时进行一个以上的线程，它只能把CPU运行时间划分成若干个时间段,再将时间 段分配给各个线程执行，在一个时间段的线程代码运行时，其它线程处于挂起状。.这种方式我们称之为并发(Concurrent)。&lt;/p&gt;
+&lt;p&gt;**并行：**当系统有一个以上CPU时,则线程的操作有可能非并发。当一个CPU执行一个线程时，另一个CPU可以执行另一个线程，两个线程互不抢占CPU资源，可以同时进行，这种方式我们称之为并行(Parallel)。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;两者之间有什么区别呢，举个例子说明一下：&lt;/p&gt;
+&lt;p&gt;下面是ABC三座桥（画得比较丑），下面的例子只是为了帮助理解并行和并发的区别，不要太较真显示生活中怎么处理这样的情况。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A桥：当有一辆车行驶在桥面上之后，如果对面来了车，只有等待桥上的车离开，对面的车才可以上桥并通过，这样可以理解为A桥不支持并发。&lt;/li&gt;
+&lt;li&gt;B桥：当有一辆车行驶在桥面上之后，如果对面来了车，第一辆车可以进入那块小区域，对面的车过去第一辆车再接着行驶，可以说B桥支持并发。&lt;/li&gt;
+&lt;li&gt;C桥：两条车道，自己走自己的，可以说C桥支持并行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://i.loli.net/2019/05/08/5cd2711d34fca.jpg&#34; alt=&#34;img&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;python中的并发&#34;&gt;Python中的并发&lt;/h3&gt;
+&lt;p&gt;Python也在很早就开始支持多种不同的并发编程方法，包括多线程，加载子进程以及各种涉及生成器函数的技巧（协程）。&lt;/p&gt;
+&lt;h4 id=&#34;多线程&#34;&gt;多线程&lt;/h4&gt;
+&lt;p&gt;Python3提供了threading库来实现多线程，可用来在单独的线程中执行任意的Python可调用对象。&lt;/p&gt;
+&lt;h5 id=&#34;启动和停止&#34;&gt;启动和停止&lt;/h5&gt;
+&lt;p&gt;先写一个简单的函数：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import time
+
+def countdown(n):
+    while n &amp;gt; 0:
+        print(&amp;quot;n=&amp;quot;, n)
+        n-=1
+        time.sleep(5)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;使用多线程来执行上面的函数：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;from threading import Thread
+
+t = Thread(target=countdown, args=(10,))
+t.start()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注意：当创建一个线程实例时，在调用它的&lt;code&gt;start()&lt;/code&gt;方法之前，线程不会立即开始执行。&lt;strong&gt;args需要的参数为元组。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;线程实例会在他们所属的系统级线程（POSIX线程或Windows线程）中执行，这些线程完全由操作系统来管理，一旦启动之后，线程就开始独立运行，直到目标函数返回，可以使用&lt;code&gt;t.is_alive()&lt;/code&gt;来判断线程是否还在运行。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;while True:
+    if t.is_alive():
+        print(&amp;quot;执行中&amp;quot;)
+        time.sleep(10)
+    else:
+        print(&amp;quot;完成&amp;quot;)
+        break
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;也可以使用：&lt;code&gt;t.join()&lt;/code&gt;来连接到该线程，等待该线程执行结束。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;t.join()
+print(&amp;quot;完成&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在线程执行的过程中，Python的解释器会一直保持运行，直到所有的线程都终结。对于需要长时间运行的线程或者一直不断运行的后台任务，应该考虑将这些线程设置为daemon（守护线程）,daemon是无法被连接的，但是在主线程结束之后他们会自动销毁。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;t = Thread(target=countdown, args=(10,), daemon=True)
+t.start()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;除了以上展示的两种操作外，对于线程没有太多的操作可做了。比如终止线程，给线程发信号，调整线程调度属性以及执行任何其他的高级操作，如果需要，就得自己构建。&lt;/p&gt;
+&lt;p&gt;如果想要终止线程，这个线程必须要能够在某个点上轮询退出状态。我们可以试着实现一下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;class CountdownTask(object):
+    def __init__(self):
+        self.__running = True
+
+    def terminate(self):
+        self.__running = False
+
+    def run(self, n):
+        while self.__running and n &amp;gt; 0:
+            print(&amp;quot;n=&amp;quot;, n)
+            n -= 1
+            time.sleep(5)
+
+c = CountdownTask()
+
+from threading import Thread
+
+t = Thread(target=c.run, args=(10,))
+t.start()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以通过&lt;code&gt;c.terminate()&lt;/code&gt;来终止线程。&lt;/p&gt;
+&lt;h4 id=&#34;注意事项&#34;&gt;注意事项&lt;/h4&gt;
+&lt;p&gt;由于Python存在大名鼎鼎的全局解释器锁（GIL），所以Python的多线程其实只是伪多线程，解释器限制在任意时刻只允许运行一个线程。由于这个原因，不应该使用Python线程来处理计算密集型的任务，因为在这种任务中我们希望在多个CPU和行上实现&lt;strong&gt;并行&lt;/strong&gt;处理。Python线程更适合I/O处理以及设计阻塞操作的并发执行任务（即，等待I/O，等待从数据库中取出结果等）。&lt;/p&gt;
+&lt;p&gt;有时候我们会发现从Thread类中继承而来的线程类。比如：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;from threading import Thread
+
+class CountdownThread(Thread):
+    def __init__(self, n):
+        super().__init__()
+        self.n = n
+    def run(self):
+        while self.n &amp;gt; 0:
+            print(&amp;quot;n=&amp;quot;, n)
+            n -= 1
+            time.sleep(5)
+
+c = CountdownThread(5)
+c.start()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;尽管这样也可以完成任务，但这个在代码和threading库之间引入了一层额外的依赖关系。意思就是说，上面的代码只能用在有关线程的上下文中，而我们之前展示的技术中编写的代码并不会依赖于threading库。&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">leetcode-python-只出现一次的数字</title>
+            <link rel="alternate" type="text/html" href="http://zz.zzs7.top/posts/single-num/" />
+            <id>http://zz.zzs7.top/posts/single-num/</id>
+            <updated>2022-01-25T16:36:58&#43;08:00</updated>
+            <published>2019-05-10T16:01:37&#43;08:00</published>
+            <author>
+                    <name>张智</name>
+                    <uri>https://io-oi.me/</uri>
+                    <email>781029588@qq.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只…</summary>
+            
+                <content type="html">&lt;blockquote&gt;
+&lt;p&gt;给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
+说明：
+你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？
+示例 1:
+输入: [2,2,1]
+输出: 1
+示例 2:
+输入: [4,1,2,1,2]
+输出: 4&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;题目要求不使用额外的空间来实现，所以使用位运算符实现，关于位运算符：
+&lt;img src=&#34;https://i.loli.net/2019/08/14/nHARBmt2qMhawXG.png&#34; alt=&#34;image.png&#34;&gt;
+详细的请看菜鸟教程中的解释http://www.runoob.com/python/python-operators.html&lt;/p&gt;
+&lt;p&gt;代码如下&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;single_num&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;nums&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nums&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;^&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;vm&#34;&gt;__name__&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+    &lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;single_num&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/python/" term="python" label="python" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E7%AE%97%E6%B3%95/" term="算法" label="算法" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/leetcode/" term="leetcode" label="leetcode" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">深入python内存管理</title>
+            <link rel="alternate" type="text/html" href="http://zz.zzs7.top/posts/python-memory-management/" />
+            <id>http://zz.zzs7.top/posts/python-memory-management/</id>
+            <updated>2022-01-25T16:36:12&#43;08:00</updated>
+            <published>2019-04-30T15:55:27&#43;08:00</published>
+            <author>
+                    <name>张智</name>
+                    <uri>https://io-oi.me/</uri>
+                    <email>781029588@qq.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">面试中被问到python的内存管理，只是说是python有自己的内存管理机制，有自己…</summary>
+            
+                <content type="html">&lt;p&gt;面试中被问到python的内存管理，只是说是python有自己的内存管理机制，有自己的垃圾回收机制，却不能详细作答，面试官表示很遗憾。建议我代码的业务逻辑需要想，但是学习需要深入底层，也有助于扩宽自己的知识面，对自己之后的学习路径有帮助，哈哈，感谢面试官帮我指出自己的不足。&lt;/p&gt;
+&lt;p&gt;回家马上查资料，先解决这个问题。&lt;/p&gt;
+&lt;p&gt;首先看看各种python常见面试题上的答案：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;python内存管理是由私有堆空间管理的，所有的python对象和数据结构都存储在私有堆空间中。程序员没有访问堆的权限，只有解释器才能操作。为python的堆空间分配内存的是python的内存管理模块进行的，核心api会提供一些访问该模块的方法供程序员使用。python自有的垃圾回收机制回收并释放没有被使用的内存供别的程序使用。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;如果仅仅问道这，上面的答案也足够了，但是面试官想要了解到更多，可能会衍生一些别的问题，那上面的答案就不够了。&lt;/p&gt;
+&lt;p&gt;以下内容： 作者：Vamei 出处：http://www.cnblogs.com/vamei 欢迎转载，也请保留这段声明。谢谢！&lt;/p&gt;
+&lt;p&gt;语言的内存管理是语言设计的一个重要方面。他是决定语言性能的重要因素。无论是C的手动管理还是java的垃圾回收，都成为语言重要的特征。下面已python语言为例子，说明一门动态类型的面向对象的语言的内存管理方式。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;对象的内存使用&#34;&gt;对象的内存使用&lt;/h3&gt;
+&lt;p&gt;赋值语句是语言最常见的功能了。但即使是最简单的赋值语句，也可以很有内涵. 首先看看python的赋值语句：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;整数“1”为一个对象，存储在内存空间中。a是一个引用。利用赋值语句，将引用a指向对象1。Python是动态类型的语言，对象与引用分离。文章作者比较形象的解释就是：Python像使用“筷子”那样，通过引用来接触和翻动真正的食物——对象。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;下面就是一系列的实验了，建议亲自尝试&lt;/strong&gt; 可以通过python的内置函数id()，来探索对象在内存的存储。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;mi&#34;&gt;140035503539424&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 内存地址的十进制表示&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;hex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;s1&#34;&gt;&amp;#39;0x7f5c8e71c4e0&amp;#39;&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 内存地址的十六进制表示&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;在python中整数和短小的字符，python都会缓存这些对象，以便重复使用，当我们创建多个等于1的引用的时候，实际是让所有引用都指向同一个对象：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;mi&#34;&gt;140035503539424&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 等于上面id(a)的值&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;对比可以看出a和b实际是指向同一个对象的不同引用。 为了校验两个引用指向同一个对象，我们可以用“is”来判断。is用于判断两个引用所指的对象是否相同。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;good&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;good&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;very good morning&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;very good morning&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;# 原文在此处就是False，但是我的为True，通过查资料发现是python版本原因&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# Python2.3简单整数缓存范围是(-1,100)，Python2.5.4以后简单整数缓存范围至少是(-5,256)。所有的短字符也都在缓存区。&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;为了校验两个引用指向同一个对象，我们可以用“is”来判断。is用于判断两个引用所指的对象是否相同。&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;为了校验两个引用指向同一个对象，我们可以用“is”来判断。is用于判断两个引用所指的对象是否相同。&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;kc&#34;&gt;False&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 增加了字符串的长度，结果也是False&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;kc&#34;&gt;False&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;根据上面的运行结果，可以看到由于python缓存了整数和短字符串，因此每个对象只存有一份。比如所有的1的引用都指向同一对象。即使使用赋值语句，也只是创造了新的引用，而不是对象本身，长的字符串和其他对象可以有多个相同对象，可以使用赋值语句创建出新的对象。&lt;/p&gt;
+&lt;p&gt;在python中，每个对象都有存有指向该对象的应用总数，即&lt;em&gt;&lt;strong&gt;引用计数(reference count)&lt;/strong&gt;&lt;/em&gt; 呢 我们可以使用&lt;code&gt;sys&lt;/code&gt;包中的&lt;code&gt;getrefcount()&lt;/code&gt;，来查看某个对象的引用计数。需要注意的是，当使用某个引用作为参数，传递给&lt;code&gt;getrefcount()&lt;/code&gt;时，会创建一个临时引用，所以结果会比预期多1。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sys&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getrefcount&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getrefcount&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 2&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getrefcount&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;由于上述原因，&lt;code&gt;getrefcount()&lt;/code&gt;返回的结果分别是2,3，而不是期望的1。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;对象引用对象&#34;&gt;对象引用对象&lt;/h3&gt;
+&lt;p&gt;python的一个容器对象（container），比如列表字典等，可以包含多个对象。实际上，容器对象中包含的并不是对象本身，而是指向各个元素对象的引用。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;from_obj&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;object&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;fm&#34;&gt;__init__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to_obj&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+        &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_obj&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to_obj&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;from_obj&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_obj&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 140035473779144&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 140035473779144&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;可以看到a引用了对象b。&lt;/p&gt;
+&lt;p&gt;对象引用对象是python最基本的构成方式。即使是a = 1这一赋值方式，实际上是让词典的一个键值“a”的元素引用整数对象1。该词典对象用于记录所有的全局引用。该词典引用了整数对象1。我们可以通过内置函数&lt;code&gt;globals()&lt;/code&gt;来查看该词典。 当一个对象a被另一个对象b引用时，a的引用计数将增加1。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sys&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getrefcount&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getrefcount&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getrefcount&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 2&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 4&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;由于对象b引用了a两次，所以a的引用计数加2。&lt;/p&gt;
+&lt;p&gt;容器对象引用可能构成很复杂的拓扑结构。我们可以用objgraph包来绘制其引用关系。 objgraph是python的一个第三方包。&lt;a href=&#34;http://mg.pov.lt/objgraph/&#34;&gt;objgraph官网&lt;/a&gt;。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;pip install objgraph
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;使用objgraph需要安装xdot。根据自己的系统发行版本安装。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;n&#34;&gt;sudo&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pacman&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;S&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;xdot或者&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sudo&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;apt&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;install&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;xdot&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sudo&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;yun&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;install&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;xdot&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;dict&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;key1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)]&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;z&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)]&lt;/span&gt;
+
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;objgraph&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;objgraph&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;show_refs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;z&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;filename&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;ref_topo.png&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://i.loli.net/2019/08/14/Tlr7paBWn3y9jGQ.png&#34; alt=&#34;ref_topo.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;两个对象可能互相引用，从而构成所谓的引用环（reference cycle）&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;[[[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]]]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;即使是一个对象，只需要自己引用自己，也能构成引用环。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getrefcount&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;引用环会给垃圾回收机制带来很大的麻烦，我将在后面详细叙述这一点。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;引用减少&#34;&gt;引用减少&lt;/h3&gt;
+&lt;p&gt;某个引用对象的引用计数可能减少。比如使用del关键字删除某个引用&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getrefcount&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;del&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getrefcount&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;del也可以删除容器中的元素，比如：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;del&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;q&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;w&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;q&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;w&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;del&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;q&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;w&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;如果某个引用指向对象a，当这个引用被重新定向到其他对象b的时候，对象a的引用计数会减少&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sys&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getrefcount&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getrefcount&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getrefcount&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;
+&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;hr&gt;
+&lt;h3 id=&#34;垃圾回收&#34;&gt;垃圾回收&lt;/h3&gt;
+&lt;p&gt;当python中的对象越来越多，他占据的内存也会越来越大。不过不需要担心太多，python会在适当的时候启动垃圾&lt;code&gt;回收机制(garbage collection)&lt;/code&gt;，将没用的对象清除，在许多语言中都有垃圾回收机制，比如Java和Ruby。&lt;/p&gt;
+&lt;p&gt;从基本原理来说，当一个对象的引用计数降为0的时候，说明没有任何引用指向对象，这时候该对象就成为需要被清除的垃圾了。比如某个新建对象，分配给某个引用，引用数为1,当引用被删除之后，引用数为0，那么该对象就可以被垃圾回收。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;del&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;code&gt;del a&lt;/code&gt;之后已经没有任何引用指向[1,2,3]了，用户不可能通过任何方式接触或者动用这个对象，这个对象如果继续待在内存里，就成了不健康的数据。当python的&lt;em&gt;&lt;strong&gt;垃圾回收&lt;/strong&gt;&lt;/em&gt;机制启动的时候，python扫描到这个引用为0的对象，就会将它所占据的内存清空。&lt;/p&gt;
+&lt;p&gt;然而清理过程是个费力的过程。垃圾回收的时候，python不能进行其他的任务，频繁的垃圾回收，会大大降低python的工作效率。如果内存中的对象不多，就没必要总启动垃圾回收。所以python只会在特定的条件下，&lt;em&gt;&lt;strong&gt;自动启动垃圾回收&lt;/strong&gt;&lt;/em&gt;。当python运行的时候，会记录其中分配对象和取消分配对象的次数，两者的差值高于某个阈值的时候，垃圾回收才会启动。 我们可以通过gc模块的&lt;code&gt;get_threshold()&lt;/code&gt;来查看该阈值。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;gc&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;gc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;get_threshold&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;700&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;返回值中，后面的两个10,是与分代回收相关的阈值，分代回收在后面会讲到。700既是垃圾回收的启动阈值。可以通过gc中的&lt;code&gt;set_threshold()&lt;/code&gt;来重新设定。 也可以手动使用&lt;code&gt;gc.collect()&lt;/code&gt;启动垃圾回收机制。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;分代回收&#34;&gt;分代回收&lt;/h3&gt;
+&lt;p&gt;python同时使用了分代（generation）回收的策略。这一策略的基本假设是，存活时间越久的对象，越不可能在后面的程序中变成垃圾。我们的程序往往会产生大量的对象，许多对象很快产生和消失，但也有长期存在被使用的对象，出于信任和效率，对于这样一些对象，我们相信他的用处，所以减少在垃圾回收中扫描他们的频率。&lt;/p&gt;
+&lt;p&gt;python将所有的对象分为0,1,2三代，所有新建的对象都是0代对象，当某一代对象经历过垃圾回收之后，依然存活，那就归入到下一代中，垃圾回收启动时，一定会扫描所有的0代对象。如果0代对象经历过一定次数的垃圾回收，那么就启动对0待和1代的扫描清理，当1代也经历了一定数量的垃圾回收，那就启动对0,1,2，即所有的对象进行扫描。&lt;/p&gt;
+&lt;p&gt;上面&lt;code&gt;gc.get_threshold()&lt;/code&gt;返回的（700,10,10）中后面的两个数，意义就是，每经过10次对0代的垃圾回收，就会配合启动一次对1代的扫描，没经过10次对1代的扫描，才会启动一次对2代的垃圾回收。&lt;/p&gt;
+&lt;p&gt;同样可以用set_threshold()来调整，比如对2代对象进行更频繁的扫描。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;gc&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;gc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;set_threshold&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;700&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;hr&gt;
+&lt;h3 id=&#34;孤立的引用环&#34;&gt;孤立的引用环&lt;/h3&gt;
+&lt;p&gt;引用环的存在会给垃圾回收带来很大的困难，这些引用环可能构成无法使用，但是引用计数不为0的一些对象。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;del&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;del&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;上面我们先创建了两个表对象，并引用对方，构成一个引用环。删除了a，b引用之后，这两个对象不可能再从程序中调用，就没有什么用处了。但是由于引用环的存在，这两个对象的引用计数都没有降到0，不会被垃圾回收。&lt;img src=&#34;https://i.loli.net/2019/08/14/KZiDkvBopAafMHh.png&#34; alt=&#34;孤立的引用环&#34;&gt;&lt;/p&gt;
+&lt;p&gt;为了回收这样的引用环，Python复制每个对象的引用计数，可以记为gc_ref。假设，每个对象i，该计数为gc_ref_i。Python会遍历所有的对象i。对于每个对象i引用的对象j，将相应的gc_ref_j减1。&lt;img src=&#34;https://i.loli.net/2019/08/14/SezEXqxlitfMA1P.png&#34; alt=&#34;遍历后的结果&#34;&gt;在结束遍历后，gc_ref不为0的对象，和这些对象引用的对象，以及继续更下游引用的对象，需要被保留。而其它的对象则被垃圾回收。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结&lt;/h3&gt;
+&lt;p&gt;python作为一种动态类型的语言，其对象和引用分离，这与面向过程的编程语言有很大的区别。为了有效的释放内存，python内置了垃圾回收的支持。python采用了一种相对简单的垃圾回收机制，即引用计数，并因此需要解决孤立引用环的问题。Python与其它语言既有共通性，又有特别的地方。对该内存管理机制的理解，是提高Python性能的重要一步。&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">Mysql Optimization</title>
+            <link rel="alternate" type="text/html" href="http://zz.zzs7.top/posts/mysql-optimization/" />
+            <id>http://zz.zzs7.top/posts/mysql-optimization/</id>
+            <updated>2022-01-25T16:28:14&#43;08:00</updated>
+            <published>2019-04-25T16:26:50&#43;08:00</published>
+            <author>
+                    <name>张智</name>
+                    <uri>https://io-oi.me/</uri>
+                    <email>781029588@qq.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">昨天面试的时候，被问到有关于MySQL的优化方面的知识。回答了一些sql语句方面的优…</summary>
+            
+                <content type="html">&lt;p&gt;昨天面试的时候，被问到有关于MySQL的优化方面的知识。回答了一些sql语句方面的优化，以及分表，对于MySQL数据库设计的方面回答也不是很完善，所以回来重新整理了一下这方面的知识。整理的比较片面，如果想要学习更深的东西，推荐阅读专业的书籍。&lt;/p&gt;
+&lt;h3 id=&#34;尽量遵循数据库设计范式&#34;&gt;尽量遵循数据库设计范式&lt;/h3&gt;
+&lt;p&gt;遵循设计范式，是为了能够建立冗余小，结构合理的数据库。最常见的设计范式有三个：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;第一范式：原子性&lt;/p&gt;
+&lt;p&gt;原子性是需要遵循的最基本的范式了，就是需要保证每个字段是最小的不可拆分的。比如下面的用户表就是不符合原子性的，用户信息中的数据是可以继续拆分的：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;用户名&lt;/th&gt;
+&lt;th&gt;用户信息&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;张三&lt;/td&gt;
+&lt;td&gt;男，25岁&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;李四&lt;/td&gt;
+&lt;td&gt;男，30岁&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;正确的设计应该是这样的：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;用户名&lt;/th&gt;
+&lt;th&gt;性别&lt;/th&gt;
+&lt;th&gt;年龄&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;张三&lt;/td&gt;
+&lt;td&gt;男&lt;/td&gt;
+&lt;td&gt;25&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;李四&lt;/td&gt;
+&lt;td&gt;男&lt;/td&gt;
+&lt;td&gt;30&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;合理遵循第一范式，根据业务需求来确定合理的字段。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第二范式：唯一性&lt;/p&gt;
+&lt;p&gt;在一张表中，只说明一件事情，比如商品表，就只保存商品的信息，价格型号等，存在单一主键，非主键依赖于主键。&lt;/p&gt;
+&lt;p&gt;拿之前的图片平台项目来举例，先看看下面这种结构：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;图集id&lt;/th&gt;
+&lt;th&gt;图集&lt;/th&gt;
+&lt;th&gt;图片id&lt;/th&gt;
+&lt;th&gt;图片&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;童年&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;a.jpg&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;童年&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;b.jpg&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;风景&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;c.jpg&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;一个图集内会有多张图片，这样设计明显是不太合理的，一个图集有多张图片的话，一些字段会有大量的重复，再看看下面的：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;图集id&lt;/th&gt;
+&lt;th&gt;图集&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;童年&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;风景&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;图片id&lt;/th&gt;
+&lt;th&gt;图片&lt;/th&gt;
+&lt;th&gt;所属图集&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;a.jpg&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;b.jpg&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;c.jpg&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;图集拆分成一个表，图片为一个表，很大程度上减少了数据库的冗余。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第三范式：每列都依赖主键，不存在依赖传递。&lt;/p&gt;
+&lt;p&gt;如下面的例子：&lt;/p&gt;
+&lt;p&gt;用户表&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;用户id&lt;/th&gt;
+&lt;th&gt;用户名&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;张三&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;图片表&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;图片id&lt;/th&gt;
+&lt;th&gt;用户id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;这样在查图片的时候可以根据用户id找到用户的信息。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;索引&#34;&gt;索引&lt;/h3&gt;
+&lt;h4 id=&#34;为什么要建立索引呢&#34;&gt;为什么要建立索引呢&lt;/h4&gt;
+&lt;p&gt;索引是为了能够快速查询到需要的数据。在MySQL中，索引的存储类型有两种”b-tree”和”HASH”。&lt;/p&gt;
+&lt;p&gt;举例来说：&lt;/p&gt;
+&lt;p&gt;我们的用户表有5W条数据，想要查询某个openid对应的用户信息，如果没有索引，那系统会遍历所有数据，直到找到对应的数据。如果建立了索引，可以查询索引的信息，快速的找到对应的数据。&lt;/p&gt;
+&lt;h4 id=&#34;优缺点&#34;&gt;优缺点&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;优点：
+&lt;ul&gt;
+&lt;li&gt;所有字段类型都可以建立索引。&lt;/li&gt;
+&lt;li&gt;极大的加快的查询速度。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;缺点：
+&lt;ul&gt;
+&lt;li&gt;创建和维护索引都需要消耗时间，数据量越大，创建维护需要的时间也越久。&lt;/li&gt;
+&lt;li&gt;索引的存储也需要占存储空间。&lt;/li&gt;
+&lt;li&gt;每次进行数据库的增删改，索引也需要变化。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;使用原则&#34;&gt;使用原则&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;对经常更新的表避免创建过多的索引，比如用户表，一般情况下只需要对用户id创建索引就好了。&lt;/li&gt;
+&lt;li&gt;数据量小的表不一定需要创建索引，因为数据量少，就算遍历的速度都不见得会比查索引慢。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;索引的分类&#34;&gt;索引的分类&lt;/h4&gt;
+&lt;p&gt;介绍一下常用的三种索引：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;普用索引：基本索引类型，没有什么限制，允许在定义索引的列中插入重复值和空值，纯粹为了查询数据更快一点。&lt;/li&gt;
+&lt;li&gt;唯一索引：创建索引的列的值必须是唯一的，但是允许空值。&lt;/li&gt;
+&lt;li&gt;主键索引：特殊的唯一索引，使用较多，不允许有空值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;其他的比如：全文索引，组合索引，空间索引等我没用过，就先不介绍了。&lt;/p&gt;
+&lt;h4 id=&#34;创建索引&#34;&gt;创建索引&lt;/h4&gt;
+&lt;p&gt;可以在创建表的时候就创建索引，这是创建索引的语句格式。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;CREATE TABLE 表名[字段名 数据类型]  [UNIQUE|FULLTEXT|SPATIAL|...] [INDEX|KEY] [索引名字] (字段名[length]) 　　[ASC|DESC]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;我自己的话，主要编程语言为Python，项目经验大部分为Django，所以介绍一下python创建索引。&lt;/p&gt;
+&lt;p&gt;使用Django框架的话，可以在需要创建索引的字段中添加可选参数&lt;code&gt;db_index=True&lt;/code&gt;：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;class Article(models.Model):
+    # 使用db_index=True对title建立索引
+    title = models.CharField(&#39;标题&#39;, max_length=200, db_index=True)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;或者在class Meta中添加：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;class Article(models.Model):
+    &amp;quot;&amp;quot;&amp;quot;文章模型&amp;quot;&amp;quot;&amp;quot;
+    title = models.CharField(&#39;标题&#39;, max_length=200,)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=[&#39;title&#39;]),
+        ]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;使用sqlalchemy的话，在对应的字段中添加可选的&lt;code&gt;index=True&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;当然，如果不使用ORM，创建索引的方法与SQL语句是相同的。&lt;/p&gt;
+&lt;h3 id=&#34;查询过程中sql的注意事项&#34;&gt;查询过程中SQL的注意事项、&lt;/h3&gt;
+&lt;p&gt;主要避免使用不合适的查询语句，造成数据库放弃使用索引而搜索全表。&lt;/p&gt;
+&lt;p&gt;比如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;避免在where语句中使用&lt;code&gt;！=&lt;/code&gt;或者&lt;code&gt;&amp;lt;&amp;gt;&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;避免在where语句中对字段的值进行null判断。&lt;/li&gt;
+&lt;li&gt;避免使用&lt;code&gt;or&lt;/code&gt;，使用&lt;code&gt;union all&lt;/code&gt;来连接两条SQL。&lt;/li&gt;
+&lt;li&gt;避免使用&lt;code&gt;in&lt;/code&gt;和&lt;code&gt;not in&lt;/code&gt;，尽量使用&lt;code&gt;between&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;分表&#34;&gt;分表&lt;/h3&gt;
+&lt;p&gt;分为水平分表和垂直分表：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;水平分表：依据数据表的逻辑关系将同一个表中的数据按照某种条件拆分到多台数据库。比如根据用户年龄段或者地区进行拆分。&lt;/li&gt;
+&lt;li&gt;垂直分表：按照不同的表来且分到不同的数据库。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;读写分离&#34;&gt;读写分离&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;应用服务器对master进行写的操作，同步数据，读取的时候读slave数据库。&lt;/li&gt;
+&lt;li&gt;通过MySQL-Proxy调度进行读写分离。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;mysql配置优化&#34;&gt;MySQL配置优化&lt;/h3&gt;
+&lt;p&gt;我自己了解的只有配置并发数，以及调整缓存大小。详细的配置文件可以看看这个帖子。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.cnblogs.com/zhshto/p/6653424.html&#34;&gt;MySQL配置及优化&lt;/a&gt;&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">使用Hexo部署自己的博客</title>
+            <link rel="alternate" type="text/html" href="http://zz.zzs7.top/posts/hexo/" />
+            <id>http://zz.zzs7.top/posts/hexo/</id>
+            <updated>2022-01-25T16:35:54&#43;08:00</updated>
+            <published>2019-04-25T14:13:26&#43;08:00</published>
+            <author>
+                    <name>张智</name>
+                    <uri>https://io-oi.me/</uri>
+                    <email>781029588@qq.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">为什么使用Hexo来搭建博客 当然作为一个后端程序员，还是python开发，一开始想着…</summary>
+            
+                <content type="html">&lt;h2 id=&#34;为什么使用hexo来搭建博客&#34;&gt;为什么使用Hexo来搭建博客&lt;/h2&gt;
+&lt;p&gt;当然作为一个后端程序员，还是python开发，一开始想着的是自己用Django框架可以快速的写一个简单的博客。确实很快，博客列表和详情一早上就搞定了，前端使用的一个简单的模板，修修改改，样式不是很喜欢，但是可选项不多，谁让我自己不会设计，不会写前端呢。没事，可以用就好了，博客最重要的是内容，又不是外表，只能这么安慰自己。&lt;/p&gt;
+&lt;p&gt;然后求职过程中接到了一个外包，博客就搁浅了，好多想要的功能还没开始写，还是要把接到的任务放在第一位的，毕竟要吃饭的嘛。&lt;/p&gt;
+&lt;p&gt;写完任务之后，心态有点变了，我在找工作，我还要吃饭，至少工作没稳定之前没有那么多时间，就决定使用现有的博客系统来完成，然后就查一些优劣，应该选择哪种方案，参考了以下文章。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.zhihu.com/question/24179143&#34;&gt;准备自己建一个个人博客，有什么好的框架推荐？&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://git.bookislife.com/post/2015/personal-blog-choosen/&#34;&gt;个人博客平台的选择&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;结合自己目前的需求，最后选择了Hexo。&lt;/p&gt;
+&lt;h2 id=&#34;hexo&#34;&gt;Hexo&lt;/h2&gt;
+&lt;p&gt;分为介绍和部署两部分。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;介绍部分内容在文档中都有，我只是按流程做一个简单的教程，以及遇到的问题，详细的建议仔细阅读官方文档。&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&#34;介绍&#34;&gt;介绍&lt;/h3&gt;
+&lt;p&gt;Hexo是由中国人写的，有着中文文档的支持。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://hexo.io/zh-cn/&#34;&gt;hexo中文官网&lt;/a&gt;是这么介绍的：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;安装&#34;&gt;安装&lt;/h3&gt;
+&lt;h4 id=&#34;依赖&#34;&gt;依赖&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;node.js(需要6.9版本以上)&lt;/p&gt;
+&lt;p&gt;根据自己的系统环境安装，官网有对应的安装包，Linux可以直接通过命令行安装。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;git&lt;/p&gt;
+&lt;p&gt;Windows：下载并安装 &lt;a href=&#34;https://git-scm.com/download/win&#34;&gt;git&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Mac：使用 Homebrew, MacPorts ：brew install git;或下载 &lt;a href=&#34;https://sourceforge.net/projects/git-osx-installer/&#34;&gt;安装程序&lt;/a&gt; 安装。&lt;/p&gt;
+&lt;p&gt;Linux：使用对应的Linux的发行版本的安装命令安装。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;安装hexo&#34;&gt;安装Hexo&lt;/h4&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;npm install -g hexo-cli
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;命令很简单，但是在我运行的时候报错了，报错两次。（讲道理这种情况比较少出现）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;第一次是报&lt;code&gt;/usr/lib/node_modules/&lt;/code&gt;的操作权限。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;sudo chown -R `whoami` /usr/local/lib/node_modules
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;第二次是在创建&lt;code&gt;/usr/bin/hexo&lt;/code&gt;软链接的时候报错了。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;可以选择自己手动创建软链接，或者直接使用&lt;code&gt;sudo&lt;/code&gt;命令安装，我选择&lt;code&gt;sudo&lt;/code&gt;。（网上不建议这么做，怕安装的npm还是node环境多了有奇怪的异常，但是我是python开发啊，应该不会安装太多的这些环境）。&lt;/p&gt;
+&lt;h3 id=&#34;初始化&#34;&gt;初始化&lt;/h3&gt;
+&lt;p&gt;我要在&lt;code&gt;/home/zhi/hexo&lt;/code&gt;下创建一个博客站点。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;cd /home/zhi/hexo # hexo文件夹是我自己新建的，方便管理所有使用hexo创建的站点。目前是空的。
+# 初始换
+hexo init blog # blog是我需要创建的站点名字，会在当前目录下生成
+ls
+blog # 生成了对应名字的文件夹
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;blog目录里面生成了需要的文件&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;.
+├── _config.yml # 我们主要会做修改的配置文件
+├── db.json
+├── node_modules
+├── package.json
+├── package-lock.json
+├── public # 生成的静态页面会在这
+├── scaffolds # 模板
+├── source # 生成的md文章
+└── themes # 主题
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;新建文章&#34;&gt;新建文章&lt;/h4&gt;
+&lt;p&gt;新建test的文章&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;hexo new test
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在source下会生成名为test.md的文件，编写自己的博客内容。&lt;/p&gt;
+&lt;h4 id=&#34;配置&#34;&gt;配置&lt;/h4&gt;
+&lt;p&gt;hexo的配置文件为_config.yml，根据自己的需要进行配置。建议阅读hexo的文档，就不在这里赘述了。&lt;/p&gt;
+&lt;h3 id=&#34;部署&#34;&gt;部署&lt;/h3&gt;
+&lt;p&gt;官方文档提供了几种不同的部署方式，较多的人部署在了github上面。由于github在国外，访问速度大多数情况下比较感人，如果有自己的服务器的话，可以选择部署在自己的服务器上。&lt;/p&gt;
+&lt;p&gt;我在这里选择使用nginx作为服务器，部署在了&lt;a href=&#34;https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=4xhnc6a1&#34;&gt;阿里的云服务器中&lt;/a&gt;，学生机比较实惠。&lt;/p&gt;
+&lt;h3 id=&#34;方案&#34;&gt;方案&lt;/h3&gt;
+&lt;p&gt;虽然可以将public中的内容复制到服务器中，使用nginx代理静态文件，但是过程肯定是比较繁琐的，我们需要本地修改了，然后可以同步到服务器中.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://zz.zzs7.top/images/blog_flow.png&#34; alt=&#34;flow&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;环境准备&#34;&gt;环境准备&lt;/h3&gt;
+&lt;h4 id=&#34;个人pc&#34;&gt;个人PC&lt;/h4&gt;
+&lt;p&gt;在之前的过程中，安装了hexo，还需要安装部署插件。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;npm install hexo-deployer-git --save
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;服务器环境&#34;&gt;服务器环境&lt;/h4&gt;
+&lt;p&gt;我的服务器系统环境是Centos7.4.&lt;/p&gt;
+&lt;p&gt;安装Git&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;yum install git -y
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;新建 Git 用户&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;useradd -m git
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;设置 gituser 的密码&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;passwd git
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;配置ssh免密登录服务器&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;生成ssh密钥。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ssh-keygen
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;将公钥添加到服务器上。user为用户，host为服务器公网IP。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ssh-copy-id -i ~/.ssh/id_rsa.pub user@host
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;验证是否成功&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ssh user@host
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;初始化一个Git仓库。&lt;/p&gt;
+&lt;p&gt;新建 /var/repo 目录（位置并不是必须在这），并在该目录下，使用 git init –bare 创建一个名为 blog.git（名字可以自己修改，将以下的对应的内容都做修改就好） 裸仓库，并改变该目录的所有者为 git 用户。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;mkdir -p /var/repo
+cd /var/repo
+git init --bare blog.git
+chown -R git:git blog.git
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;看看生成的blog.git内的内容&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;blog.git
+├── branches
+├── config
+├── description
+├── HEAD
+├── hooks # 接下来需要在此处进行一些配置
+├── index
+├── info
+├── objects
+└── refs
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;配置Git hooks&lt;/p&gt;
+&lt;p&gt;进入上面生成的hooks目录，新建名为post-receive的文件，写入下面内容。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;#!/bin/sh
+git --work-tree=/home/www/hexo --git-dir=/var/repo/blog.git checkout -f
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;将post-receive设置为可执行。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;chmod +x /var/repo/blog.git/hooks/post-receive
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;安装nginx&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;yum install nginx
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;创建需要代理的文件夹，就是你问博客内容需要放在哪。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;mkdir -p /home/www/hexo      //创建目录
+chown -R git:git /home/www/hexo   //更改目录所有者
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;修改配置文件&lt;code&gt;/etc/nginx/nginx.conf&lt;/code&gt;中以下的内容。将root对应的文件夹改为你上面创建的文件夹。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;server {
+    listen       80 default_server;
+    listen       [::]:80 default_server;
+    server_name  _;
+    root         /home/www/hexo;
+
+    include /etc/nginx/default.d/*.conf;
+
+    location / {
+    }
+
+    error_page 404 /404.html;
+        location = /40x.html {
+    }
+
+    error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;配置&lt;code&gt;_config.yml&lt;/code&gt;文件。找到deploy选项进行修改。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# Deployment
+deploy:
+- type: git
+  repo: your_user_name@HostIP:/var/repo/blog.git
+  branch: master
+  message:
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;发布自己的博客。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;hexo clean &amp;amp;&amp;amp; hexo d -g
+&lt;/code&gt;&lt;/pre&gt;</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/categories/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="http://zz.zzs7.top/tags/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/" term="历史文章" label="历史文章" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+</feed>
